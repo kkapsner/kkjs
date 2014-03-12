@@ -1,0 +1,16 @@
+{
+	"name": "kkjs.require.js",
+	"strict": false,
+	"commonScope": true,
+	"description": "Browser implementation for the module framework.",
+	"order": [
+		"evil.js",
+		"open.js",
+		"XHR.js",
+		"names.js",
+		"cache.js",
+		"moduleFactory.js",
+		"require.js",
+		"close.js"
+	]
+}

@@ -1,0 +1,10 @@
+{
+	"name": "kkjs.EventEmitter.js",
+	"strict": true,
+	"commonScope": true,
+	"description": "Parent class for other classes that want to emit events.",
+	"order": [
+		"EventEmitter.js"
+	],
+	"exports": "EventEmitter"
+}

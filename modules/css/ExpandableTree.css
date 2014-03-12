@@ -1,0 +1,37 @@
+.expandableTree{
+	margin: 0;
+	padding: 0 0 0 10px;
+	list-style-position: outside;
+	list-style-type: none;
+}
+.expandableTree li {
+	list-style-image: none;
+	position: relative;
+	padding: 0 0 0 20px;
+}
+.expandableTree li.dir {
+	background: url('../images/folder.gif') no-repeat 0 2px;
+}
+.expandableTree li.file {
+	background: url('../images/file.png') no-repeat 0 2px;
+}
+.expandableTree li .expandableTree {
+	margin-left: -10px;
+}
+
+.expandableTree  li .indicator {
+	position: absolute;
+	top: 8px;
+	left: -16px;
+	height: 10px;
+	width: 10px;
+	cursor: pointer;
+}
+
+.expandableTree li .indicator.closed {
+	background: url('../images/plus.gif')
+}
+
+.expandableTree li .indicator.open {
+	background: url('../images/minus.gif')
+}

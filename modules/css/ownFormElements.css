@@ -1,0 +1,1 @@
+.ownCheckbox {	background-image: url("../images/checkbox.png");	display: inline-block;	width: 15px;	height: 15px;	margin: 2px 2px 2px 3px;	vertical-align: top;}.ownCheckbox:hover {	background-position: 0 -15px;}.ownCheckbox.checked{	background-position: 0 -30px;}.ownCheckbox.checked:hover {	background-position: 0 -45px;}

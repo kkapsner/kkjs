@@ -1,0 +1,15 @@
+{
+	"name": "kkjs.new.event.js",
+	"strict": true,
+	"commonScope": true,
+	"description": "Wrapper framework for the DOM event engine.",
+	"order": [
+		"variablesAndFunctions.js",
+		"EventHandler.js",
+		"EventObject.js",
+		"event.js",
+		"compatibilityEvents.js,
+		"newEvents.js
+	],
+	"exports": "event"
+}

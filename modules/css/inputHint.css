@@ -1,0 +1,23 @@
+
+.inputWrapper {
+	position: relative;
+	display: inline-block;
+}
+.inputWrapper .hint{
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 5px;
+	z-index: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	cursor: text;
+}
+
+.inputWrapper:hover .hint{
+	display: block;
+}
+
+.inputWrapper input {
+	position: relative;
+}

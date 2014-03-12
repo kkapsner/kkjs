@@ -1,0 +1,5 @@
+<filesMatch "\.js$">
+ForceType 'text/javascript'
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, OPTIONS"
+</filesMatch>

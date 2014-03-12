@@ -1,0 +1,1 @@
+<PUBLIC:ATTACH EVENT="oncontentready" ONEVENT="require('kkjs.event').fireOwn(require('kkjs.DOM').window.document, 'DOMContentLoaded')"/>

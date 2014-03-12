@@ -1,0 +1,12 @@
+{
+	"name": "kkjs.oo.js",
+	"strict": true,
+	"commonScope": true,
+	"description": "Module for simpler object inheritance.",
+	"order": [
+		"variablesAndFunctions.js",
+		"oo.js",
+		"oo.Base.js"
+	],
+	"exports": "oo"
+}

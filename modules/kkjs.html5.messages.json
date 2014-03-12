@@ -1,0 +1,20 @@
+{
+	"de": {
+		"error": {
+			"required": "Dies ist ein erforderliches Feld",
+			"pattern": "Bitte benutzen Sie das korrekte Format\n",
+			"noValidURL": "Bitte geben Sie eine g\u00FCltige Webadresse ein",
+			"noEMailAddress": "Bitte geben Sie eine g\u00FCltige E-Mail-Addresse ein",
+			"noValidDate": "Bitte geben Sie ein g\u00FCltiges Datum ein"
+		}
+	},
+	"en": {
+		"error": {
+			"required": "This is a required field",
+			"pattern": "Please use the right format\n",
+			"noValidURL": "Please enter a valid web address",
+			"noEMailAddress": "Please enter a valid e-mail address",
+			"noValidDate": "Please enter a valid date"
+		}
+	}
+}
