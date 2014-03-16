@@ -39,27 +39,38 @@ var knode = require("kkjs.node");
 //var sprintf = require("kkjs.sprintf");
 
 var Timer = NodeRepresentator.extend(function Timer(time){
-	this.time = time;
+	this.countdown = !!time;
+	if (this.countdown){
+		this.time = time;
+	}
+	else {
+		this.time = -1;
+	}
 	this.tick = this.tick.bind(this);
 }).implement({
 	time: null,
+	countdown: true,
 	animation: false,
 	getTime: function(elapsed){
-		if (elapsed){
-			return this.time - this.getTime(false);
-		}
-		
-		if (this.isRunning()){
-			return this.time - (new Date() - this.startTime);
-		}
-		else if (this.isPaused()){
-			return this.time - (this.pauseTime - this.startTime);
-		}
-		else if (this.isStopped()){
-			return 0;
+		if (!this.countdown || elapsed){
+			return this.getElapsedTime();
 		}
 		else {
+			return this.time - this.getElapsedTime();
+		}
+	},
+	getElapsedTime: function(){
+		if (this.isRunning()){
+			return (new Date() - this.startTime);
+		}
+		else if (this.isPaused()){
+			return (this.pauseTime - this.startTime);
+		}
+		else if (this.isStopped()){
 			return this.time;
+		}
+		else {
+			return 0;
 		}
 	},
 	getTimeString: function(){
