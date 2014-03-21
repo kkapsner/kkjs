@@ -10,7 +10,11 @@
  */
 
 var oo = require("./kkjs.oo");
-var is = require("./kkjs.is");
+
+var objToString = Object.prototype.toString;
+function isObject(obj){
+	return objToString.call(obj) === "[object Object]";
+}
 
 var QueryString = oo.Base.extend(function(str){
 	this.readData(str);
@@ -79,7 +83,7 @@ var QueryString = oo.Base.extend(function(str){
 				ret[name] = value;
 			}
 			else {
-				if (!is.object(ret[name])){
+				if (!isObject(ret[name])){
 					ret[name] = {};
 					retInfo[name] = {nextIndex: 0, subObjects: {}, onlyDiggits: true};
 				}
@@ -100,7 +104,7 @@ var QueryString = oo.Base.extend(function(str){
 						obj[name] = value;
 					}
 					else {
-						if (!is.object(obj[name])){
+						if (!isObject(obj[name])){
 							obj[name] = {};
 							objInfo.subObjects[name] = {nextIndex: 0, subObjects: {}, onlyDiggits: true};
 						}
@@ -116,7 +120,7 @@ var QueryString = oo.Base.extend(function(str){
 			}
 		});
 		function toArrayIfPossible(obj, objInfo){
-			if (!is.object(obj)){
+			if (!isObject(obj)){
 				return obj;
 			}
 			var ret = objInfo.onlyDiggits? []: obj;
@@ -140,13 +144,13 @@ var QueryString = oo.Base.extend(function(str){
 			
 			namescope = (namescope || "");
 			var ret = [];
-			if (namescope && is.array(value)){
+			if (namescope && Array.isArray(value)){
 				var name = namescope + "[";
 				value.forEach(function(value, i){
 					ret.push(process(value, name + i + "]"));
 				});
 			}
-			else if (is.object(value)){
+			else if (isObject(value)){
 				for (var name in value){
 					if (value.hasOwnProperty(name)){
 						var v = value[name];
