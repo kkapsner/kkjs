@@ -4,7 +4,6 @@
 var oo = require("kkjs.oo");
 var knode = require("kkjs.node");
 var event = require("kkjs.event");
-var is = require("kkjs.is");
 var css = require("kkjs.css");
 
 var Slider = oo.Base.extend(
@@ -47,7 +46,7 @@ var Slider = oo.Base.extend(
 		css.className[this.disabled? "add": "remove"](this.slider, "disabled");
 	},
 	setValue: function setValue(value){
-		if (!is.number(value)){
+		if (typeof value !== "number"){
 			value = this.value;
 		}
 		if (value < this.min){

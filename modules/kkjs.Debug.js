@@ -9,8 +9,6 @@
  * @description: sparsame Variante von Debug
  */
 
-var is = require("kkjs.is");
-
 function createMessageReceiver(callbackFn){
 	var rec = function(message){
 		try{
@@ -61,7 +59,7 @@ var Debug = {
 		}
 		
 		var name = "[object]";
-		if (is.undefined(obj)){
+		if (typeof obj === "undefined"){
 			name = "undefined";
 		}
 		else if (obj.toString){
@@ -77,7 +75,6 @@ var Debug = {
 			if (re.test(i)){
 				var wert = "nicht anzeigbar";
 				try{
-					//if (!is.null(obj[i]) && obj[i].toString)
 					wert = obj[i];
 					if (wre.test(wert)){
 						text += i + ": " + wert + "\n";
@@ -117,77 +114,35 @@ var Debug = {
 		if (!depth || isNaN(depth)){
 			depth = 5;
 		}
-		var test = [
-			"null",
-			"undefined",
-			{
-				test: "function",
-				"return": "function(){ ... }"
-			},
-			{
-				test: "number",
-				"return": function(z){return z.toString(10);}
-			},
-			{
-				test: "string",
-				"return": function(str){
-					var ret = "";
-					var replace = {
-						"\"": "\\\"",
-						"\\": "\\\\",
-						"/": "\\/",
-						"\b": "\\b",
-						"\n": "\\n",
-						"\r": "\\r",
-						"\f": "\\f",
-						"\t": "\\t"
-					};
-					for (var i = 0; i < str.length; i++){
-						var ord = str.charCodeAt(i);
-						var chr = String.fromCharCode(ord);
-						if (replace[chr]){
-							ret += replace[chr];
-							continue;
-						}
-						if (ord < 32 || ord >= 126){
-							var hex = ord.toString(16).toUpperCase();
-							while(hex.length < 4){
-								hex = "0" + hex;
-							}
-							ret += "\\u" + hex;
-							continue;
-						}
-						ret += chr;
-					}
-					return "\"" + ret + "\"";
+		switch (typeof obj){
+			case "function":
+				return "function(){ ... }";
+			case "number":
+				return obj.toString(10);
+			case "string":
+				return JSON.stringify(obj);
+			case "undefined":
+				return "undefined";
+			case "boolean":
+				return obj.toString();
+			case "object":
+				if (obj === null){
+					return "null";
 				}
-			},
-			{
-				test: "boolean",
-				"return": function(b){
-					return b.toString();
-				}
-			},
-			{
-				test: "array",
-				"return": function(a){
+				else if (Array.isArray(obj)){
 					if (!depth){
 						return "[ ... ]";
 					}
 					var ret = "[\n\t";
-					for (var i = 0; i < a.length; i++){
-						var el = a[i];
+					obj.forEach(function(el, i){
 						ret += Debug.print_r(el, depth - 1).replace(/\n/g, "\n\t");
-						if (i !== a.length - 1){
+						if (i !== obj.length - 1){
 							ret += ",\n\t";
 						}
-					}
+					});
 					return ret + "\n]";
 				}
-			},
-			{
-				test: "object",
-				"return": function(obj){
+				else {
 					if (!depth){
 						return "{ ... }";
 					}
@@ -197,25 +152,6 @@ var Debug = {
 					}
 					return "{\n\t" + ret.join("\n\t") + "\n}";
 				}
-			}
-		];
-		
-		for (var i = 0; i < test.length; i++){
-			var t = test[i];
-			var r = t;
-			
-			if (!is.string(t)){
-				r = t["return"];
-				t = t.test;
-			}
-			if (is[t](obj)){
-				if (is["function"](r)){
-					return r(obj);
-				}
-				else {
-					return r;
-				}
-			}
 		}
 		return "";
 	},
@@ -237,8 +173,8 @@ var Debug = {
 	error: function(errorNumber){
 		var name = this.getFunctionName(Debug.error.caller);
 		
-		if (!is.string(errorNumber)){
-			if (!is.number(errorNumber) || errorNumber >= this.errorList.length){
+		if (typeof errorNumber !== "string"){
+			if (typeof errorNumber !== "number" || errorNumber >= this.errorList.length){
 				errorNumber = 0;
 			}
 			errorNumber = this.errorList[errorNumber];

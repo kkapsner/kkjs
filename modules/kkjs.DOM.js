@@ -8,7 +8,6 @@
  * @description provides some DOM-spezific functionality
  */
 
-var is = require("kkjs.is");
 var kMath = require("kkjs.Math");
 
 var DOM;
@@ -59,7 +58,7 @@ DOM.getDocument = function getDocument(node){
 	if (node.document){
 		return node.document;
 	}
-	while(node.nodeType !== 9 && node.parentNode){
+	while (node.nodeType !== 9 && node.parentNode){
 		node = node.parentNode;
 	}
 	if (node.nodeType !== 9){
@@ -103,7 +102,7 @@ DOM.getWindow = function getWindow(node){
  */
 
 DOM.getWindowSize = function getWindowSize(){
-	if (is.key(window, "innerWidth")){
+	if ("innerWidth" in window){
 		return new kMath.Dimension(window.innerWidth, window.innerHeight);
 	}
 

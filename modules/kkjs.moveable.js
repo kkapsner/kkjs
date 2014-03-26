@@ -14,7 +14,6 @@
  * @used parts of kkjs:
  */
 
-var is = require("kkjs.is");
 var event = require("kkjs.event");
 var selection = require("kkjs.selection");
 var css = require("kkjs.css");
@@ -22,7 +21,7 @@ var node = require("kkjs.node");
 var kMath = require("kkjs.Math");
 
 var moveable = function makeMoveable(att){
-	if (!is.node(att.activeNode)){
+	if (!att.activeNode){
 		att.activeNode = att.node;
 	}
 	// make moveable in CSS an adjust position to left/top pixel values.

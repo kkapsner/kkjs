@@ -10,7 +10,6 @@
  * @description enabled html5 specific featuren in older browsers
  */
 
-var is = require("kkjs.is");
 var node = require("kkjs.node");
 var event = require("kkjs.event");
 var css = require("kkjs.css");
@@ -21,7 +20,7 @@ function enableSub(){
 	for (var name in this){
 		if (this.hasOwnProperty(name)){
 			var el = this[name];
-			if (!el.nativeSupport && is["function"](el.enable)){
+			if (!el.nativeSupport && typeof el.enable === "function"){
 				el.enable();
 			}
 		}
@@ -34,7 +33,7 @@ var html5 = {
 		enable: enableSub,
 		placeholder: {
 			nativeSupport: (function(){
-				return is.key(document.createElement("input"), "placeholder");
+				return "placeholder" in document.createElement("input");
 			})(),
 			enable: function(){
 				if (!this.nativeSupport){
@@ -95,7 +94,7 @@ var html5 = {
 			enable: function(){
 				var inputs = document.getElementsByTagName("input");
 				Array.prototype.forEach.call(inputs, function(input){
-					if (input.getAttribute("autofocus") !== null && !is.key(input, "autofocus")){
+					if (input.getAttribute("autofocus") !== null && !("autofocus" in input)){
 						input.focus();
 					}
 				});
@@ -104,7 +103,7 @@ var html5 = {
 		datalist: {
 			nativeSupport: (function(){
 				var inp = document.createElement("input");
-				return !!(is.key(inp, "list") && window.HTMLDataListElement);
+				return !!(("list" in inp) && window.HTMLDataListElement);
 			})(),
 			enable: function(){
 				if (!this.nativeSupport){return;
@@ -242,7 +241,7 @@ var html5 = {
 		enable: enableSub,
 		validation: {
 			nativeSupport: (function(){
-				return is.key(document.createElement("input"), "required") && is.key(document.createElement("input"), "pattern");
+				return ("required" in document.createElement("input")) && ("pattern" in document.createElement("input"));
 			})(),
 			enable: function(){
 				if (!this.nativeSupport){

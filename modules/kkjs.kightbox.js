@@ -1,7 +1,6 @@
 (function(){
 "use strict";
 
-var is = require("kkjs.is");
 var css = require("kkjs.css");
 var node = require("kkjs.node");
 var event = require("kkjs.event");
@@ -56,13 +55,13 @@ var Kightbox = EventEmitter.extend(function(){
 }).implement({
 	minSize: false,
 	setMinSize: function(size){
-		if (is.object(size)){
+		if (size && typeof size === "object"){
 			this.setMinWidth(size.width);
 			this.setMinHeight(size.height);
 		}
 	},
 	setMinWidth: function(width){
-		if (is.number(width)){
+		if (typeof width === "number"){
 			this.minSize.width = width;
 			if (width > this.size.width){
 				this.setWidth(width);
@@ -73,7 +72,7 @@ var Kightbox = EventEmitter.extend(function(){
 		}
 	},
 	setMinHeight: function(height){
-		if (is.number(height)){
+		if (typeof height === "number"){
 			this.minSize.height = height;
 			if (height > this.size.height){
 				this.setHeight(height);
@@ -92,13 +91,13 @@ var Kightbox = EventEmitter.extend(function(){
 	
 	maxSize: false,
 	setMaxSize: function(size){
-		if (is.object(size)){
+		if (size && typeof size === "object"){
 			this.setMaxWidth(size.width);
 			this.setMaxHeight(size.height);
 		}
 	},
 	setMaxWidth: function(width){
-		if (is.number(width)){
+		if (typeof width === "number"){
 			this.maxSize.width = width;
 			if (width < this.size.width){
 				this.setWidth(width);
@@ -109,7 +108,7 @@ var Kightbox = EventEmitter.extend(function(){
 		}
 	},
 	setMaxHeight: function(height){
-		if (is.number(height)){
+		if (typeof height === "number"){
 			this.maxSize.height = height;
 			if (height < this.size.height){
 				this.setHeight(height);
@@ -128,13 +127,13 @@ var Kightbox = EventEmitter.extend(function(){
 	
 	size: false,
 	setSize: function(size, noAnimation){
-		if (is.object(size)){
+		if (size && typeof size === "object"){
 			this.setWidth(size.width, noAnimation);
 			this.setHeight(size.height, noAnimation);
 		}
 	},
 	setWidth: function(width, noAnimation){
-		if (is.number(width)){
+		if (typeof width === "number"){
 			if (this.maxSize.width < width){
 				width = this.maxSize.width;
 			}
@@ -162,7 +161,7 @@ var Kightbox = EventEmitter.extend(function(){
 		}
 	},
 	setHeight: function(height, noAnimation){
-		if (is.number(height)){
+		if (typeof height === "number"){
 			if (this.maxSize.height < height){
 				height = this.maxSize.height;
 			}
@@ -367,7 +366,7 @@ var Kightbox = EventEmitter.extend(function(){
 	},
 	openNode: function(node, att){
 		this.open();
-		if (is.string(node)){
+		if (typeof node === "string"){
 			node = css.$(node)[0];
 			if (!node){
 				this.sourceNotFound();

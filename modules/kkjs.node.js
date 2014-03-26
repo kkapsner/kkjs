@@ -9,9 +9,7 @@
  * @description: provides functions for node-receiving, -manipulation and -generation
  */
 
-var is = require("./kkjs.is");
 var DOM = require("./kkjs.DOM");
-var ajax = require("./kkjs.ajax");
 var Math = require("./kkjs.Math");
 var scroll = require("./kkjs.scroll");
 //var css = require("./kkjs.css"); // exlicit in code to prevent circular dependencies, because kkjs.css also requires kkjs.node
@@ -30,7 +28,7 @@ var Node = {
 	 */
 
 	next: function nextNode(node, noChildren){
-		if (typeof node === "undefined" && is.node(this)){
+		if (typeof node === "undefined" && this !== Node){
 			node = this;
 		}
 		if (node.firstChild && !noChildren){
@@ -56,7 +54,7 @@ var Node = {
 	 */
 
 	previous: function previousNode(node, noChildren){
-		if (typeof node === "undefined" && is.node(this)){
+		if (typeof node === "undefined" && this !== Node){
 			node = this;
 		}
 		
@@ -132,46 +130,6 @@ var Node = {
 	},
 	
 	/**
-	 * Function node.ajaxUpdate
-	 * @name: node.ajaxUpdate
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: updates a nodes innerHTML by performing an AJAX request
-	 * @parameter:
-	 *	node:
-	 *	url:
-	 */
-	
-	ajaxUpdate: function ajaxUpdateNode(node, url){
-		return ajax.advanced({
-			url: url,
-			onload: function(txt){
-				// in old IEs a beginning <script>-node is ignored
-				if (txt.substring(0, 7).toLowerCase() === "<script" && is.ie && is.version < 9){
-					txt = "&nbsp;" + txt;
-				}
-				node.innerHTML = txt;
-				var scripts = node.getElementsByTagName("script");
-				var scriptsL = scripts.length;
-				for (var i = 0; i < scriptsL; i++){
-					var script = scripts[i];
-					var newScript = document.createElement("script");
-					newScript.text = script.text;
-					var attributes = scripts[i].attributes;
-					for (var j = 0; j < attributes.length; j++){
-						var att = attributes[j];
-						if (att.name === "event"){
-							continue; // IE7 - Bug
-						}
-						newScript.setAttribute(att.name, att.value);
-					}
-					script.parentNode.replaceChild(newScript, script);
-				}
-			}
-		});
-	},
-	
-	/**
 	 * Function node.create
 	 * @name: node.create
 	 * @author: Korbinian Kapsner
@@ -182,18 +140,18 @@ var Node = {
 	 */
 
 	create: function createNode(att){
-		if (is.string(att)){
+		if (typeof att === "string"){
 			return document.createTextNode(att);
 		}
 		
-		if (!is.string(att.tag)) {
+		if (typeof att.tag !== "string"){
 			return null;
 		}
 		
-		if (is.key(att, "name") && is.ie && is.version < 9){
+		/*if (("name" in att) && is.ie && is.version < 9){
 			att.tag = "<" + att.tag + " name='" + att.name + "'>";
 			delete att.name;
-		}
+		}*/
 		
 		var node;
 		if (/^fragment\|[a-z]/i.test(att.tag)){
@@ -203,7 +161,7 @@ var Node = {
 		switch (att.tag){
 			case "fragment":
 				node = document.createDocumentFragment();
-				if (is.key(att, "innerHTML")){
+				if ("innerHTML" in att){
 					var div = document.createElement(att.fragmentAs || "div");
 					div.innerHTML = att.innerHTML;
 					delete att.innerHTML;
@@ -234,17 +192,17 @@ var Node = {
 		if (att.dataset){
 			require("kkjs.dataset").set(node, att.dataset);
 		}
-		delete att.dataset
+		delete att.dataset;
 		
 		var children = att.childNodes, i;
 		delete att.childNodes;
 		if (children){
-			if (is.key(att, "innerHTML")){
+			if ("innerHTML" in att){
 				node.innerHTML = att.innerHTML;
 				delete att.innerHTML;
 			}
 			for (var i = 0; i < children.length; i++){
-				var child = is.node(children[i])? children[i]: Node.create(children[i]);
+				var child = (children[i] instanceof Element)? children[i]: Node.create(children[i]);
 				node.appendChild(child);
 			}
 		}
@@ -325,18 +283,16 @@ var Node = {
 	 */
 	
 	getCommonAncestor: function getCommonAncestor(node1, node2){
-		if (is.node(node1) && is.node(node2)){
-			if (Node.contains(node1, node2)){
-				return node1;
-			}
-			do {
-				if (Node.contains(node2, node1)){
-					return node2;
-				}
-				node2 = node2.parentNode;
-			}
-			while(node2);
+		if (Node.contains(node1, node2)){
+			return node1;
 		}
+		do {
+			if (Node.contains(node2, node1)){
+				return node2;
+			}
+			node2 = node2.parentNode;
+		}
+		while(node2);
 		return false;
 	},
 	
@@ -353,7 +309,7 @@ var Node = {
 	 */
 	
 	contains: function contains(node1, node2){
-		if (is.node(node1) && is.node(node2) && DOM.getDocument(node1) === DOM.getDocument(node2)){
+		if (DOM.getDocument(node1) === DOM.getDocument(node2)){
 			if (node1 === node2){
 				return true;
 			}
@@ -382,7 +338,7 @@ var Node = {
 	 */
 	
 	getAttribute: function getAttribute(node, att){
-		if (is.key(node, att)){
+		if (att in node){
 			return node[att];
 		}
 		return node.getAttribute(att);

@@ -9,7 +9,6 @@
  */
 
 var ajax = require("kkjs.ajax");
-var is = require("kkjs.is");
 var setDefault = require("kkjs.setDefault");
 if (setDefault.setDefault){
 	setDefault = setDefault.setDefault;
@@ -104,7 +103,7 @@ var form = {
 							}
 						default:
 							if (query[e.name]){
-								if (is.array(query[e.name])){
+								if (Array.isArray(query[e.name])){
 									query[e.name].push(e.value);
 								}
 								else {
@@ -135,7 +134,7 @@ var form = {
 			var qObject = form.ajax.getElementsQueryObject(formNode, clickedButton);
 			var query = [];
 			for (var i in qObject){
-				if (is.array(qObject[i])){
+				if (Array.isArray(qObject[i])){
 					var arr = qObject[i].slice(0);
 					for (var j = 0; j < arr.length; j++){
 						arr[j] = encodeURIComponent(i) + "=" + encodeURIComponent(arr[j]);
@@ -161,7 +160,7 @@ var form = {
 		for (var name in att.values){
 			if (att.values.hasOwnProperty(name)){
 				var value = att.values[name];
-				if (kkjs.is.array(value)){
+				if (Array.isArray(value)){
 					value.forEach(function(value){
 						children.push({
 							tag: "textarea",

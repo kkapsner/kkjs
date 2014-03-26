@@ -13,7 +13,7 @@ var oo = require("./kkjs.oo");
 
 var objToString = Object.prototype.toString;
 function isObject(obj){
-	return objToString.call(obj) === "[object Object]";
+	return typeof obj === "object" && obj !== null;
 }
 
 var QueryString = oo.Base.extend(function(str){

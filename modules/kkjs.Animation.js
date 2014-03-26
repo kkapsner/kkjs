@@ -10,7 +10,6 @@
  *
  */
 
-var is = require("kkjs.is");
 var css = require("kkjs.css");
 var oo = require("kkjs.oo");
 var EventEmitter = require("kkjs.EventEmitter");

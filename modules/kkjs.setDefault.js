@@ -11,8 +11,6 @@
  *	Default: Defaultwert - dabei werden auch Tiefendefaults übernommen (z.B. value = {hallo: 1}; default = {hallo: 0, test: {ja: 4}} -> Rückgabewert {hallo: 1, test: {ja: 4}})
  */
 
-var is = require("kkjs.is");
-
 var setDefault = function setDefault(value, Default){
 	if (Default === setDefault.spacer){
 		return value;
@@ -23,7 +21,7 @@ var setDefault = function setDefault(value, Default){
 	if (typeof value !== typeof Default){
 		return Default;
 	}
-	if (is.object(Default) && !is["function"](Default) && !is.node(Default)) {
+	if (Default && (typeof Default === "object") && Object.prototype.toString.call(Default) === "[object Object]"){
 		for (var i in Default){
 			if (Default.hasOwnProperty(i)){
 				value[i] = setDefault(value[i], Default[i]);

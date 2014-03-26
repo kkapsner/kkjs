@@ -386,7 +386,7 @@ var event = {
 		}
 		scroll = (scroll !== false)? true: false;
 		if (scroll){
-			if (is.key(ev, "pageX")){
+			if (typeof ev.pageX !== "undefined"){
 				return new kMath.Position(
 					ev.pageX - relative.left,
 					ev.pageY - relative.top
@@ -465,12 +465,12 @@ var event = {
 				return supported[eventName];
 			}
 			
-			var el = document.createElement(tags[eventName]|| "div");
+			var el = document.createElement(tags[eventName] || "div");
 			eventName = "on" + eventName;
-			var sup = is.key(el, eventName);
+			var sup = eventName in el;
 			if (!sup){
 				el.setAttribute(eventName, "return");
-				sup = is.key(el, eventName) && is["function"](el[eventName]);
+				sup = !!el[eventName] && (typeof el[eventName] === "function");
 			}
 			supported[eventName] = sup;
 			return sup;
@@ -516,7 +516,7 @@ var event = {
 		button: {
 			requreType: /mouse/i,
 			toCall: function(){
-				if (!is.key(this, "button")){
+				if (!("button" in this)){
 					this.button = this.which;
 				}
 			}
@@ -524,10 +524,10 @@ var event = {
 		wheelDelta: {
 			requireType: /mouse(wheel|scroll)/i,
 			toCall: function(){
-				if (!is.key(this, "detail") && is.key(this, "wheelDelta")){
+				if (!("detail" in this) && ("wheelDelta" in this)){
 					this.detail = this.wheelDelta / -40;
 				}
-				if (is.key(this, "detail") && !is.key(this, "wheelDelta")){
+				if (("detail" in this) && !("wheelDelta" in this)){
 					this.wheelDelta = this.detail * -40;
 				}
 			}
@@ -561,7 +561,7 @@ var event = {
 						}
 					}
 					else{
-						if (!is.key(event, index)){
+						if (!(index in event)){
 							event[index] = value;
 						}
 					}
@@ -766,20 +766,6 @@ event.remove.mousewheel = function addMouseWheelEvent(node, func){
 		return event.remove(node, "DOMMouseScroll", func);
 	}
 	return false;
-};
-
-event.add.hashchange = function addHashChangeEvent(node, func, amAnfang){
-	var handler = event.Handler.get(node);
-	if (is.ie && is.version < 8 && !(handler._events.hashchange)){
-		var oldURL = location.toString();
-		window.setInterval(function(){
-			if (location.toString() !== oldURL){
-				event.fireOwn(node, "hashchange", {type: "hashchange", oldURL: oldURL, newURL: location.toString()});
-				oldURL = location.toString();
-			}
-		}, 200);
-	}
-	handler.addEvent("hashchange", func, amAnfang);
 };
 
 event.add.contextmenu = function addContextMenuEvent(node, func, amAnfang){

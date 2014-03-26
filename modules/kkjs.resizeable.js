@@ -12,7 +12,6 @@
  * @return value: the moveable node
  */
 
-var is = require("kkjs.is");
 var selection = require("kkjs.selection");
 var css = require("kkjs.css");
 var event = require("kkjs.event");
@@ -25,7 +24,7 @@ var resizeable = function makeResizeable(att){
 		storage.startPosition = {left: 0, top: 0};
 		storage.stop = function(ev){
 			if (storage.activeNode){
-				if (is["function"](storage.activeNode.onresizestop)){
+				if (typeof storage.activeNode.onresizestop === "function"){
 					storage.activeNode.onresizestop(ev, storage.activeNode);
 				}
 				storage.activeNode = false;
@@ -123,7 +122,7 @@ var resizeable = function makeResizeable(att){
 		storage.isInit = true;
 	}
 	
-	if (is.key(att, "borderNodes")){
+	if (att.borderNodes){
 		for (var i = 0; i < att.borderNodes.length; i++){
 			if (/resize/i.test(css.get(att.borderNodes[i], "cursor"))){
 				event.add(att.borderNodes[i], "mousedown", function(ev, node){storage.start.call(this, ev, node, att);});
@@ -137,7 +136,7 @@ var resizeable = function makeResizeable(att){
 	if (!css.get(att.node, "position").match(/absolute|fixed/i)){
 		att.node.style.position = "relative";
 	}
-	else if(is.node(att.node.offsetParent)){
+	else if(att.node.offsetParent){
 		var pos = node.getPosition(att.node);
 		att.node.style.left = pos.left + "px";
 		att.node.style.top = pos.top + "px";

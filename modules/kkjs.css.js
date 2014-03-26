@@ -251,7 +251,7 @@ var css = {
 
 		get: function getClasses(node, array){
 			var ret;
-			if (!is.string(node.className)){
+			if (typeof node.className !== "string"){
 				ret = [];
 			}
 			else {
@@ -317,7 +317,7 @@ var css = {
 		 */
 
 		has: function hasClass(node, className){
-			if (!is.string(node.className)){
+			if (typeof node.className !== "string"){
 				return false;
 			}
 			if (className === ""){
@@ -372,7 +372,7 @@ var css = {
 	 */
 	
 	set: function setStyle(node, styles, value){
-		if (is.string(styles)){
+		if (typeof styles === "string"){
 			css.setSingle(node, styles, value);
 		}
 		else {
@@ -386,7 +386,7 @@ var css = {
 	}.makeArrayCallable([0], {arrayLike: true}),
 	setSingle: function setSingelStyle(node, name, value){
 		try{
-			if (is["function"](value)){
+			if (typeof value === "function"){
 				value = value.call(node, name);
 			}
 		}
@@ -395,7 +395,7 @@ var css = {
 		}
 		name = name.replace(/-([a-z])/g, function(match, hit){ return hit.toUpperCase();});
 		
-		if (is.number(value) && ["top", "right", "bottom", "left", "width", "height", "minWidth", "minHeight", "maxWidth", "maxHeight"].indexOf(name) !== -1){
+		if (typeof value === "number" && ["top", "right", "bottom", "left", "width", "height", "minWidth", "minHeight", "maxWidth", "maxHeight"].indexOf(name) !== -1){
 			var valueStr = value.toString(10);
 			if (/e/i.test(valueStr)){
 				if (Math.abs(value) < 1){
@@ -463,7 +463,7 @@ var css = {
 	 */
 	
 	get: function getStyle(node, name, pseudo){
-		if (is.array(name)){
+		if (Array.isArray(name)){
 			var ret = {};
 			for (var i = 0; i < name.length; i++){
 				ret[name[i]] = css.get(node, name[i], pseudo);
@@ -487,7 +487,7 @@ var css = {
 				realCalc = true;
 			}
 		}
-		else if (is.key(node, "currentStyle")){
+		else if (node.currentStyle){
 			// same in IE
 			if (win.document.body && win.document.body.contains(node)){
 				style = node.currentStyle;
@@ -508,7 +508,7 @@ var css = {
 		name = name.replace(/-([a-z])/g, function(match, hit){ return hit.toUpperCase();});
 		
 		var value;
-		if (is.key(style, name)){
+		if (name in style){
 			value = style[name];
 			if (color.rgbStringRE.test(value)){
 				return color.rgbStringToHex(value);
@@ -550,7 +550,7 @@ var css = {
 		}
 		
 		//return false;
-		if (is.key(style, name) && !realCalc){
+		if ((name in style) && !realCalc){
 			return style[name];
 		}
 		return null;
@@ -595,10 +595,10 @@ var css = {
 		}
 		
 		function calculateValue(start, end, pos){
-			if (is["function"](end)){
+			if (typeof end === "function"){
 				end = end.call(node);
 			}
-			if (is.number(start) && is.number(end)){
+			if ((typeof start === "number") && (typeof end === "number")){
 				return start + (end - start) * att.tween(pos);
 			}
 			if ((start.indexOf(" ") !== -1) && start.replace(/[^ ]/g, "").length === end.replace(/[^ ]/g, "").length){
@@ -616,7 +616,7 @@ var css = {
 			var units = ["px", "pt", "%", "em"];
 			for (var i = 0; i < units.length; i++){
 				var re = (new RegExp(units[i] + "$"));
-				if (re.test(start) && (is.number || re.test(end))){
+				if (re.test(start) && ((typeof end === "number") || re.test(end))){
 					return calculateValue(parseFloat(start), parseFloat(end), pos) + units[i];
 				}
 			}
@@ -704,7 +704,7 @@ var css = {
 		//Das hier hat eigentlich nichts mit CSS zu tun, aber der IE will den Filter nicht anwenden, wenn das Objekt keine "Layout" hat  - die eigenschaft zoom gibt ihm solches
 		if (
 			(node.currentStyle && !node.currentStyle.hasLayout) &&
-			typeof(node.style.zoom) !== "undefined"
+			typeof node.style.zoom !== "undefined"
 		){
 			if (is.version < 8){
 				node.style.zoom = "100%";
@@ -718,7 +718,7 @@ var css = {
 				// if (/^table-/.test(display) && display !== "table-cell"){}
 			}
 		}
-		else if (is.ie && !node.currentStyle && typeof(node.style.zoom) !== "undefined"){
+		else if (!node.currentStyle && typeof(node.style.zoom) !== "undefined"){
 			node.style.zoom = "100%";
 		}
 	},
@@ -728,7 +728,7 @@ var css = {
 		
 		// bei Nodes, die sich nicht im DOM-Baum befinden kann das einen Fehler werfen...
 		try{
-			if ("filters" in node && is.key(node.filters, filterName) && is.object(node.filters[filterName])){
+			if (node.filters && node.filters[filterName]){
 				var filter = node.filters[filterName];
 				for (var i in prop){
 					if (prop.hasOwnProperty(i)){
@@ -796,7 +796,7 @@ css.set.opacity = function(node, value){
 css.set.rotation = function(node, value){
 	function applyToTransform(name){
 		var oldValue = node.style[name]; //css.get(node, prae[n] + "Transform");
-		oldValue = (is.string(oldValue))? oldValue: "";
+		oldValue = (typeof oldValue === "string")? oldValue: "";
 		node.style[name] = oldValue.replace(/\s*rotate\(\d+(?:\.\d*)?deg\)/, "") + " rotate(" + value + ")";
 	}
 	if ("transform" in node.style){
@@ -891,7 +891,7 @@ css.get.rotation = function(node, style, pseudo){
 		var name = pre + "Transform";
 		if (name in node.style){
 			var oldValue = node.style[name]; //css.get(node, prae[n] + "Transform");
-			oldValue = (is.string(oldValue))? oldValue: "";
+			oldValue = (typeof oldValue === "string")? oldValue: "";
 			oldValue.replace(/\s*rotate\(\d+(?:\.\d*)?deg\)/, function(m, d){
 				
 			});

@@ -13,14 +13,12 @@
  *	node:
  */
 
-var is = require("./kkjs.is");
-
 var $ = function $(id, node){
 	if (!node){
 		node = document;
 	}
 	
-	if (is.node(id)){
+	if (typeof id !== "string"){
 		return id;
 	}
 	if (id.charAt(0) === "."){

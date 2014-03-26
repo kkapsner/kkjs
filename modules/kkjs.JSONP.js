@@ -8,7 +8,6 @@
  * @description: provides JSONP functionality
  */
 
-var is = require("kkjs.is");
 var node = require("kkjs.node");
 var JSONP = {
 	process: function(url, parameter){
@@ -17,14 +16,14 @@ var JSONP = {
 			type: "text/javascript"
 		});
 		var value;
-		if(is.object(parameter)){
+		if(parameter){
 			for (var name in parameter){
 				if (parameter.hasOwnProperty(name)){
 					value = parameter[name];
-					if (is["function"](value)){
+					if (typeof value === "function"){
 						value = this.createCallback(value, script);
 					}
-					else if (is.array(value)){
+					else if (Array.isArray(value)){
 						name += "[]";
 						for (var i = 0; i < value.length; i++){
 							url += "&" + encodeURIComponent(name) + "=" + encodeURIComponent(value[i]);

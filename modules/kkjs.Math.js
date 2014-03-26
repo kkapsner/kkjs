@@ -4,7 +4,6 @@
 
 
 var oo = require("kkjs.oo");
-var is = require("kkjs.is");
 
 function abstractMethod(){
 	throw new Error("abstract Method");
@@ -72,7 +71,7 @@ kMath.Vector = oo.Base.extend(function Vector(){
 		if (!this.constructor.dynamicDimension && size !== arr.length){
 			throw new Error("Array has wrong length.");
 		}
-		if (arr.some(function(v){return !is.number(v);})){
+		if (arr.some(function(v){return typeof v !== "number";})){
 			throw new TypeError("Array contains non numeric values.");
 		}
 	},
@@ -249,7 +248,7 @@ kMath.Vector3D = kMath.VectorNamed.extend(function Vector3D(x, y, z){
 	names: ["x", "y", "z"]
 });
 kMath.VectorND = kMath.Vector.extend(function verctorND(firstArg/*  */){
-	if (is.array(firstArg)){
+	if (Array.isArray(firstArg)){
 		this.fromArray(firstArg);
 	}
 	else {
@@ -318,7 +317,7 @@ kMath.Range = oo.Base.extend(function Range(min, max){
 		if (nr instanceof kMath.Range){
 			return this.contains(nr.min) && this.contains(nr.max);
 		}
-		if (!is.number(nr)){
+		if (typeof nr !== "number"){
 			return false;
 		}
 		return nr >= this.min && nr <= this.max;
@@ -327,7 +326,7 @@ kMath.Range = oo.Base.extend(function Range(min, max){
 		if (nr instanceof kMath.Range){
 			return new kMath.Range(this.restrict(nr.min), this.restrict(nr.max));
 		}
-		if (!is.number(nr)){
+		if (typeof nr !== "number"){
 			return false;
 		}
 		

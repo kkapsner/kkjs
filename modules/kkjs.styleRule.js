@@ -10,7 +10,6 @@
  * @description: provides some CSS-rule functionality
  */
 
-var is = require("./kkjs.is");
 var DOM = require("./kkjs.DOM");
 var kkjsnode = require("./kkjs.node");
 
@@ -47,10 +46,6 @@ var styleRule = {
 		
 		if (isNaN(index)){
 			index = styleRule._getRules(style).length;
-		}
-		
-		if (is.ie && is.version < 7){
-			bezeichner = bezeichner.replace(/>|\+/g, "");
 		}
 		
 		if (style.addRule){
@@ -120,14 +115,14 @@ var styleRule = {
 		return style;
 	},
 	_styleSheetWriteable: function styleSheetWriteable(st){
-		if (!is.undefined(st.readOnly) && st.readOnly){
+		if ("readOnly" in st && st.readOnly){
 			return false;
 		}
-		if (!is.undefined(st.rules) && !st.rules){
+		if ("rules" in st && !st.rules){
 			return false;
 		}
 		try{
-			if (!is.undefined(st.cssRules) && !st.cssRules){
+			if ("cssRules" in st && !st.cssRules){
 				return false;
 			}
 		}
