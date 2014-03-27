@@ -232,7 +232,7 @@ Function.DefaultParameter.prototype.process = function(arg, thisArg){
 		}
 	}
 	else {
-		if (this.deepObjectInspection && typeof arg === "object"){
+		if (this.objectDeepInspection && typeof arg === "object"){
 			var value = this.value;
 			for (var name in value){
 				if (value.hasOwnProperty(name)){
