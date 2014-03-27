@@ -111,7 +111,7 @@ if (kkjs.load.node){
 		"es5",
 		"require", "requireInjection", 
 		"is", "utf16", "setDefault", 
-		"oo", "Math", "DOM", "$", "Number.prototype", "constTabelle",
+		"oo", "Math", "DOM", "$", "Number.prototype",
 		
 		"String.prototype", "Function.prototype",
 		
