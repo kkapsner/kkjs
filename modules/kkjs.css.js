@@ -9,7 +9,6 @@
  * @description Stellt Funktionen zur Verfügung, die mit CSS-Manipulation, -Ansprache und -Ansicht zu tun haben
  */
 
-var is = require("kkjs.is");
 var color = require("kkjs.color");
 var kkjsnode = require("kkjs.node");
 var DOM = require("kkjs.DOM");
@@ -46,7 +45,6 @@ var css = {
 	 *	att:
 	 * @used parts of kkjs:
 	 *	kkjsnode
-	 * @attention: this function may cause problems in IE < 8 if it is used in onDOMReady
 	 */
 	
 	$: (function(){
@@ -480,7 +478,8 @@ var css = {
 		if (win.getComputedStyle){
 			style = win.getComputedStyle(node, pseudo);
 			// no correct style properties in opera/safari/chrome if the node is not in den DOM-tree
-			if (!win.document.getElementsByTagName("html")[0].contains(node) && !is.ff){
+			// Firefox will be captured here as well although there it would work
+			if (!win.document.getElementsByTagName("html")[0].contains(node)){
 				style = node.style;
 			}
 			else {
@@ -706,17 +705,12 @@ var css = {
 			(node.currentStyle && !node.currentStyle.hasLayout) &&
 			typeof node.style.zoom !== "undefined"
 		){
-			if (is.version < 8){
-				node.style.zoom = "100%";
+			var display = css.get(node, "display");
+			if (display === "inline"){
+				node.style.display = "inline-block"; // im IE8 brauchen die inline-Elemente doch irgendwie Layout.
 			}
-			else {
-				var display = css.get(node, "display");
-				if (display === "inline"){
-					node.style.display = "inline-block"; // im IE8 brauchen die inline-Elemente doch irgendwie Layout.
-				}
-				// if (/^ruby/.test(display)){} // diese beiden funktionieren auch nicht, aber ich hab' noch nichts Passendes gefunden
-				// if (/^table-/.test(display) && display !== "table-cell"){}
-			}
+			// if (/^ruby/.test(display)){} // diese beiden funktionieren auch nicht, aber ich hab' noch nichts Passendes gefunden
+			// if (/^table-/.test(display) && display !== "table-cell"){}
 		}
 		else if (!node.currentStyle && typeof(node.style.zoom) !== "undefined"){
 			node.style.zoom = "100%";
