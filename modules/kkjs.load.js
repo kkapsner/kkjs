@@ -109,8 +109,8 @@ if (kkjs.load.node){
 	
 	var basicModules = [
 		"es5",
-		"require", "requireInjection", 
-		"is", "utf16", "setDefault", 
+		"require", "requireInjection",
+		"is", "utf16",
 		"oo", "Math", "DOM", "$", "Number.prototype",
 		
 		"String.prototype", "Function.prototype",

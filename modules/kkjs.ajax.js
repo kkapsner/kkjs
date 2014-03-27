@@ -8,10 +8,6 @@
  * @description: AJAX functionality
  */
 
-var setDefault = require("kkjs.setDefault");
-if (setDefault.setDefault){
-	setDefault = setDefault.setDefault;
-}
 var URL = require("kkjs.URL");
 
 var ajax = {
@@ -89,22 +85,6 @@ var ajax = {
 	 */
 	
 	advanced: function advancedAJAX(att){
-		att = setDefault(att, {
-			url: setDefault.spacer,
-			type: "GET",
-			xDomain: false,
-			asynch: true,
-			onbeforesend: function(){},
-			onload: function(){},
-			onerror: function(){},
-			onfunctionerror: function(e){throw e;},
-			onrequestfinished: function(){},
-			send: setDefault.spacer,
-			preventCaching: true,
-			user: setDefault.spacer,
-			password: setDefault.spacer,
-			header: setDefault.spacer
-		});
 		
 		if (att.preventCaching){
 			att.url = att.url.replace(/#.*$/, "");
@@ -131,7 +111,29 @@ var ajax = {
 			return onready();//return onready.call(req);
 		}
 		return req;
-	},
+	}.setDefaultParameter(
+		new Function.DefaultParameter(
+			{
+				url: null,
+				type: "GET",
+				xDomain: false,
+				asynch: true,
+				onbeforesend: function(){},
+				onload: function(){},
+				onerror: function(){},
+				onfunctionerror: function(e){throw e;},
+				onrequestfinished: function(){},
+				send: null,
+				preventCaching: true,
+				user: null,
+				password: null,
+				header: null
+			},
+			{
+				objectDeepInspection: true
+			}
+		)
+	),
 	
 	// interieur functions
 	_getRequest: function getRequest(xDomain){

@@ -150,12 +150,6 @@ var form = {
 	},
 	
 	submit: function(att){
-		att = kkjs.setDefault(att, {
-			values: {},
-			url: "",
-			method: "POST",
-			target: "_blank"
-		});
 		var children = [];
 		for (var name in att.values){
 			if (att.values.hasOwnProperty(name)){
@@ -194,7 +188,18 @@ var form = {
 		
 		document.body.appendChild(form);
 		form.submit();
-	}
+	}.setDefaultParameter(new Function.DefaultParameter(
+		{
+			values: {},
+			url: "",
+			method: "POST",
+			target: "_blank"
+		},
+		{
+			checkType: true,
+			objectDeepInspection: true
+		}
+	))
 };
 
 kkjs.form = form;
