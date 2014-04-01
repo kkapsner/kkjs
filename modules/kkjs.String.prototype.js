@@ -219,7 +219,7 @@ String.prototype.decodeHTMLentities = String.prototype.decodeHTMLEntities = (fun
 			}
 			return "&" + c + ";";
 		});
-	}
+	};
 }());
 
 /**
