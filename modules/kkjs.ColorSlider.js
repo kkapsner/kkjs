@@ -16,7 +16,7 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 		}
 	}
 	
-	if (!kkjs.is.object(this.value)){
+	if (typeof this.value === "string"){
 		var c = kkjs.color.hex.toRgb(this.value);
 		this.value = {
 			red: c.r,
@@ -134,7 +134,7 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 			value = kkjs.color.hex.toRgb(str);
 		}
 		if (typeof value === "object"){
-			if (kkjs.is.key(obj, "r") && kkjs.is.key(obj, "g") && kkjs.is.key(obj, "b")){
+			if (("r" in obj) && ("g" in obj) && ("b" in obj)){
 				r = obj.r;
 				g = obj.g;
 				b = obj.b;

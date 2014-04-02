@@ -202,7 +202,7 @@ var Node = {
 				delete att.innerHTML;
 			}
 			for (var i = 0; i < children.length; i++){
-				var child = (children[i] instanceof Element)? children[i]: Node.create(children[i]);
+				var child = (children[i] instanceof window.Node)? children[i]: Node.create(children[i]);
 				node.appendChild(child);
 			}
 		}

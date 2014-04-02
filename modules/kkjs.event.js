@@ -102,7 +102,10 @@ var event = {
 							catch (e){
 								if (window.console && window.console.log){
 									window.console.log(e.message);
-									window.console.log(e);
+									window.console.error(e);
+									if (e.stack){
+										window.console.log(e.stack);
+									}
 								}
 							}
 							if (currRet !== null){
@@ -342,7 +345,7 @@ var event = {
 	onDOMReady: function onDOMReady(func, doc){
 		doc = DOM.getDocument(doc);
 		var win = DOM.getWindow(doc);
-		if (/loaded|complete/.test(win.readyState)){
+		if (/loaded|complete/.test(doc.readyState)){
 			func.apply(doc);
 		}
 		else {
@@ -353,10 +356,15 @@ var event = {
 			};
 			event.add(doc, "DOMContentLoaded", eventFunction);
 			event.add(win, "load", eventFunction);
-			if (!doc.DOMReadyBehaviorAdded && is.ie && is.version < 9){
+			var html = doc.getElementsByTagName("HTML")[0];
+			if (
+				!doc.DOMReadyBehaviorAdded &&
+				(typeof html.style.behavior !== "undefined") &&
+				is.version < 9
+			){
 				//ajax.preload(kkjs.url.htc + "onDOMReady.htc"); //seems to be unneccessary
 				//document.write("<script type=\"text/javascript\" defer>require('kkjs.event').fireOwn(require('kkjs.DOM').window.document, 'DOMContentLoaded')<\/script>");
-				doc.getElementsByTagName("HTML")[0].style.behavior += " url(" + kkjs.url.htc + "onDOMReady.htc)";
+				html.style.behavior += " url(" + kkjs.url.htc + "onDOMReady.htc)";
 				doc.DOMReadyBehaviorAdded = true;
 			}
 		}
@@ -749,23 +757,25 @@ event.remove.mouseleave = function removeMouseLeaveEvent(node, func){
 	return event.remove(node, "mouseout", new event.FunctionWrapper("mouseleave", func));
 };
 
-event.add.mousewheel = function addMouseWheelEvent(node, func, amAnfang){
+event.add.wheel = event.add.mousewheel = function addMouseWheelEvent(node, func, amAnfang){
+	if (event.supported("wheel")){
+		return event.add(node, "wheel", func, amAnfang);
+	}
 	if (event.supported("mousewheel")){
 		return event.add(node, "mousewheel", func, amAnfang);
 	}
-	if (is.ff){
-		return event.add(node, "DOMMouseScroll", func, amAnfang);
-	}
-	return false;
+	// only old firefox left over
+	return event.add(node, "MozMousePixelScroll", func, amAnfang);
 };
-event.remove.mousewheel = function addMouseWheelEvent(node, func){
+event.remove.wheel = event.remove.mousewheel = function addMouseWheelEvent(node, func){
+	if (event.supported("wheel")){
+		return event.remove(node, "wheel", func, amAnfang);
+	}
 	if (event.supported("mousewheel")){
 		return event.remove(node, "mousewheel", func);
 	}
-	if (is.ff){
-		return event.remove(node, "DOMMouseScroll", func);
-	}
-	return false;
+	// only old firefox left over
+	return event.remove(node, "MozMousePixelScroll", func);
 };
 
 event.add.contextmenu = function addContextMenuEvent(node, func, amAnfang){
