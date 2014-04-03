@@ -9,10 +9,6 @@
  */
 
 var ajax = require("kkjs.ajax");
-var setDefault = require("kkjs.setDefault");
-if (setDefault.setDefault){
-	setDefault = setDefault.setDefault;
-}
 
 var form = {
 	
@@ -38,12 +34,12 @@ var form = {
 		 */
 		
 		send: function sendForm(formNode, att){
-			att = setDefault(att, {
-				url: formNode.getAttribute("action"),
-				type: formNode.getAttribute("method"),
-				clickedButton: setDefault.spacer,
-				asynch: false
-			});
+			if (!att.url){
+				att.url = formNode.getAttribute("action");
+			}
+			if (!att.type){
+				att.type = formNode.getAttribute("method");
+			}
 			
 			if (att.type.toLowerCase() === "get"){
 				att.url = att.url.replace(/[\?#].*$/, "") + "?" + form.ajax.getElementsQueryString(formNode, att.clickedButton);
@@ -53,7 +49,7 @@ var form = {
 			}
 			
 			return ajax.advanced(att);
-		},
+		}.setDefaultParameter(null, new Function.DefaultParameter({asynch: false}),
 		
 		/**
 		 * Function form.ajax.simpleSend
