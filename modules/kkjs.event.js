@@ -8,9 +8,7 @@
  * @version 1.0
  */
 
-var is = require("kkjs.is");
 var oo = require("kkjs.oo");
-//var ajax = require("kkjs.ajax");
 var kkjsscroll = require("kkjs.scroll");
 var DOM = require("kkjs.DOM");
 var kMath = require("kkjs.Math");
@@ -356,17 +354,6 @@ var event = {
 			};
 			event.add(doc, "DOMContentLoaded", eventFunction);
 			event.add(win, "load", eventFunction);
-			var html = doc.getElementsByTagName("HTML")[0];
-			if (
-				!doc.DOMReadyBehaviorAdded &&
-				(typeof html.style.behavior !== "undefined") &&
-				is.version < 9
-			){
-				//ajax.preload(kkjs.url.htc + "onDOMReady.htc"); //seems to be unneccessary
-				//document.write("<script type=\"text/javascript\" defer>require('kkjs.event').fireOwn(require('kkjs.DOM').window.document, 'DOMContentLoaded')<\/script>");
-				html.style.behavior += " url(" + kkjs.url.htc + "onDOMReady.htc)";
-				doc.DOMReadyBehaviorAdded = true;
-			}
 		}
 	},
 	
@@ -429,16 +416,10 @@ var event = {
 	 * @return value: the node
 	 * @problems:
 	 *	IE: if you are over window-scrollbar the function returns an empty object
-	 *	Safari + Opera: needs pageX/Y
 	 */
 	getElementFromMousePosition: function getElementFromMousePosition(ev){
 		if (document.elementFromPoint){
-			var pos = {x: ev.clientX, y: ev.clientY};
-			if (is.safari || is.opera){
-				pos = {x: ev.pageX, y: ev.pageY};
-			}
-			
-			var node = document.elementFromPoint(pos.x, pos.y);
+			var node = document.elementFromPoint(ev.clientX, ev.clientY);
 			if (node && node.nodeType === 3){
 				node = node.parentNode;
 			}
