@@ -32,43 +32,6 @@ String.prototype.firstToUpperCase = function firstToUpperCase(restToLowerCase){
 	return str.charAt(0).toUpperCase() + str.substring(1);
 };
 
-/**
- * Function String.prototype.toFixedLength
- * @name: String.prototype.toFixedLength
- * @version: 1.0
- * @author: Korbinian Kapsner
- * @last modify: 17.01.2010
- * @description: Gibt einen String zurück mit der angegebenen Länge
- * @parameter:
- *	length. gewünschte Länge
- *	fill: Füllzeichen - wenn nicht gegeben wird ein " " verwendet
- *	right: ob die Verlängerung auf der rechten Seite angefügt oder gekürzt werden soll - Standard links
- *
- */
-
-String.prototype.toFixedLength = function toFixedLength(length, fill, right){
-	if (!fill){
-		fill = " ";
-	}
-	if (this.length > length){
-		if (right){
-			return this.substr(0, length);
-		}
-		else {
-			return this.substr(this.length - length);
-		}
-	}
-	var pad = "";
-	for (var i = 0; i < length - this.length; i++){
-		pad += fill;
-	}
-	if (right){
-		return this + pad;
-	}
-	else {
-		return pad + this;
-	}
-};
 
 /**
  * Function String.prototype.reverse
@@ -239,36 +202,6 @@ String.prototype.encodeHTMLentities = String.prototype.encodeHTMLEntities = func
 			return str + "&#" + code + ";";
 		}, "");
 	});
-};
-
-/**
- * Function String.prototype.isEMailAddress
- * @name: String.prototype.isEMailAddress
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 01.01.2011
- * @description: checks whether the string is a valid E-Mail-Address (as defined in html5)
- * @parameter:
- *
- */
-
-String.prototype.isEMailAddress = function isEMailAddress(){
-	return (/(?:[a-zA-Z0-9!#$%&'*+-\/=?\^_`{|}~]|\.)+@[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)+\.?/).test(this);
-};
-
-/**
- * Function String.prototype.isValidURL
- * @name: String.prototype.isValidURL
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 01.01.2011
- * @description: checks whether the string is a valid URL (as defined in html5)
- * @parameter:
- *
- */
-
-String.prototype.isValidURL = function isValidURL(){
-	return true;
 };
 
 
