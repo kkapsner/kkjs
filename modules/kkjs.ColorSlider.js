@@ -6,7 +6,6 @@
 
 kkjs.load.module("Slider");
 kkjs.load.module("ColumnSlider");
-kkjs.load.module("layout");
 kkjs.load.module("moveable");
 
 kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
@@ -42,13 +41,13 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 		style: {
 			fontSize: "9px",
 			lineHeight: "12px",
-			width: "38px",
-			height: "12px",
+			width: "36px",
+			height: "10px",
 			margin: "0",
-			padding: "0",
 			textAlign: "center",
 			backgroundColor: "white",
-			border: "0px none transparent"
+			border: "2px solid black",
+			borderRadius: "3px"
 		}
 	});
 	kkjs.event.add.advancedChange(this.valueInput, function(){
@@ -62,7 +61,9 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 			width: "50px",
 			height: "30px",
 			display: "inline-block",
-			margin: "2px"
+			margin: "2px",
+			border: "2px solid black",
+			borderRadius: "3px"
 		},
 		childNodes:[
 			{
@@ -72,16 +73,12 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 					position: "absolute",
 					left: "50%",
 					top: "50%",
-					width: "38px",
-					height: "12px",
-					margin: "-6px -19px"
+					width: "40px",
+					height: "14px",
+					margin: "-7px -20px"
 				},
-				childNodes: [
-					this.valueInput,
-					kkjs.layout.create.border()
-				]
+				childNodes: [this.valueInput]
 			},
-			kkjs.layout.create.border(),
 			{
 				tag: "div",
 				style: {
@@ -131,18 +128,18 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 	setValue: function(value, g, b){
 		var r;
 		if (typeof value === "string"){
-			value = kkjs.color.hex.toRgb(str);
+			value = kkjs.color.hex.toRgb(value);
 		}
 		if (typeof value === "object"){
-			if (("r" in obj) && ("g" in obj) && ("b" in obj)){
-				r = obj.r;
-				g = obj.g;
-				b = obj.b;
+			if (("r" in value) && ("g" in value) && ("b" in value)){
+				r = value.r;
+				g = value.g;
+				b = value.b;
 			}
 			else {
-				r = obj.red;
-				g = obj.green;
-				b = obj.blue;
+				r = value.red;
+				g = value.green;
+				b = value.blue;
 			}
 		}
 		else {
