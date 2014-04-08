@@ -199,7 +199,6 @@ Function.DefaultParameter = function DefaultParameter(value, params){
 Function.DefaultParameter.prototype.checkFunction = null;
 Function.DefaultParameter.prototype.allowNull = false;
 Function.DefaultParameter.prototype.checkType = false;
-Function.DefaultParameter.prototype.parseObject = false;
 Function.DefaultParameter.prototype.returnFunction = null;
 Function.DefaultParameter.prototype.returnClone = false;
 Function.DefaultParameter.prototype.objectDeepInspection = true;
