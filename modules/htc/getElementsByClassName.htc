@@ -1,6 +1,0 @@
-<PUBLIC:COMPONENT>
-	<PUBLIC:METHOD NAME="getElementsByClassName" INTERNALNAME="_getElementsByClassName"/>
-	<SCRIPT LANGUAGE="JScript" type="text/javascript">
-		_getElementsByClassName = Element.prototype.getElementsByClassName;
-	</SCRIPT>
-</PUBLIC:COMPONENT>

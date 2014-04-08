@@ -105,7 +105,6 @@ if (kkjs.load.node){
 	kkjs.url.load = getDirRE.exec(kkjs.load.node.src)[1];
 	kkjs.url.images = kkjs.url.load + "images/";
 	kkjs.url.css = kkjs.url.load + "css/";
-	kkjs.url.htc = kkjs.url.load + "htc/";
 	
 	var basicModules = [
 		"es5",
