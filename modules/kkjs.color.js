@@ -1,6 +1,8 @@
 (function(){
 "use strict";
 
+var sprintf = require("kkjs.sprintf");
+
 /**
  * Object color
  * @name: color
@@ -269,7 +271,7 @@ var color = {
 			}
 			return v;
 		}
-		return "#" + parse(r).toHex(2) + parse(g).toHex(2) + parse(b).toHex(2);
+		return sprintf("#%02X%02X%02X", parse(r), parse(g), parse(b));
 	},
 	
 	/**

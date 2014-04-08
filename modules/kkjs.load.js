@@ -111,9 +111,9 @@ if (kkjs.load.node){
 		"es5",
 		"require", "requireInjection",
 		"utf16",
-		"oo", "Math", "DOM", "$", "Number.prototype",
-		
-		"String.prototype", "Function.prototype",
+		"oo", "Math", "DOM", "$", "sprintf",
+
+		"Number.prototype",	"String.prototype", "Function.prototype",
 		
 		"scroll", "URL", "ajax", "color", "dataset", "node", "css", "DOM.compatible",
 		{
