@@ -229,9 +229,6 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 				cursor: "move",
 				border: "1px solid black"
 			},
-			childNodes: [
-				//kkjs.layout.create.border()
-			],
 			colorSlider: this,
 			foundStyle: {width: "0px", height: "0px", margin: "0px", opacity: 0},
 			notFoundStyle: {width: "2000px", height: "2000px", margin: "-1000px", opacity: 0},
