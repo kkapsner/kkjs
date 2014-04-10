@@ -6,7 +6,7 @@
  * @name: fullscreen
  * @author: Korbinian Kapsner
  * @version: 1.0
- * @description: fullscreen description
+ * @description: provides cross-browser access to the fullscreen API
  */
 
 var event = require("kkjs.event");
@@ -47,7 +47,25 @@ var name = {
 };
 
 var fullscreen = {
+	/**
+	 * Boolean fullscreen.isSupported
+	 * @name: fullscreen.isSupported
+	 * @author: Korbinian Kapsner
+	 * @description: boolean that indicates if the fullscreen API is supported
+	 *	by the current browser.
+	 */
 	isSupported: !!(name.request && name.cancel && (name.windowStatus || name.documentStatus || name.element)),
+	
+	/**
+	 * Function fullscrren.request
+	 * @name: fullscrren.request
+	 * @author: Korbinian Kapsner
+	 * @version: 1.0
+	 * @description: starts a fullscreen request if the API is supported.
+	 *	If the request is accepted by the user the website is displayed fullscreen.
+	 * @parameter:
+	 *	el (optional): HTML-node that should be displayed fullscreen
+	 */
 	request: function(el){
 		if (fullscreen.isSupported){
 			el = el || document.documentElement;
@@ -55,12 +73,31 @@ var fullscreen = {
 		}
 		return null;
 	},
+	
+	/**
+	 * Function fullscrren.cancel
+	 * @name: fullscrren.cancel
+	 * @author: Korbinian Kapsner
+	 * @version: 1.0
+	 * @description: exits the fullscreen mode.
+	 * @parameter:
+	 */
 	cancel: function(){
 		if (fullscreen.isSupported){
 			return document[name.cancel]();
 		}
 		return null;
 	},
+	
+	/**
+	 * Function fullscrren.toggle
+	 * @name: fullscrren.toggle
+	 * @author: Korbinian Kapsner
+	 * @version: 1.0
+	 * @description: toggles between fullscreen and normal mode.
+	 * @parameter:
+	 *	el (optional): HTML-node that should be displayed fullscreen
+	 */
 	toggle: function(el){
 		if (fullscreen.is()){
 			fullscreen.cancel();
@@ -69,6 +106,16 @@ var fullscreen = {
 			fullscreen.request(el);
 		}
 	},
+	
+	/**
+	 * Function fullscrren.is
+	 * @name: fullscrren.is
+	 * @author: Korbinian Kapsner
+	 * @version: 1.0
+	 * @description: checks if the site runs in fullscreen mode.
+	 * @parameter:
+	 * @return value: boolean: true if the website runs in fullscreen mode
+	 */
 	is: function(globalFullscreenCheck){
 		if (globalFullscreenCheck){
 			var wName = name.windowStatus;
@@ -84,6 +131,7 @@ var fullscreen = {
 	}
 };
 
+// add fullscreen events to the kkjs.event API.
 event.add.fullscreenchange = function(el, func, amAnfang){
 	return event.add(el, name.event.change, func, amAnfang);
 };
