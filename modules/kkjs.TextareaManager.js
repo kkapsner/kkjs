@@ -11,7 +11,7 @@
  */
 
 kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
-	if (!kkjs.is.node(node) || node.nodeName !== "TEXTAREA"){
+	if (!node || node.nodeName !== "TEXTAREA"){
 		throw new ReferenceError("First parameter must be a textarea.");
 	}
 	this.textarea = node;
@@ -34,7 +34,7 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 		kkjs.event.remove.key(this.textarea, "\t", "press", this.preventDefault);
 	},
 	insertTab: function insertTab(ev){
-		var m = (kkjs.is.node(this))? this.kkjsManager: this;
+		var m = this.kkjsManager? this.kkjsManager: this;
 		
 		m.insertStringAtSelection("\t");
 		
@@ -54,7 +54,7 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 		kkjs.event.remove.key(this.textarea, "\r", "press", this.preventDefault);
 	},
 	insertAutoIndent: function insertAutoIndent(ev){
-		var m = (kkjs.is.node(this))? this.kkjsManager: this;
+		var m = this.kkjsManager? this.kkjsManager: this;
 		
 		var value = m.textarea.value.substring(0, m.getCarretPosition().start);
 		var letzteZeile = /([^\n\r]*)$/.exec(value)[1];
@@ -99,7 +99,7 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 	},
 	
 	getCarretPosition: function getCarretPosition(){
-		if (kkjs.is.key(this.textarea, "selectionStart")){
+		if ("selectionStart" in this.textarea){
 			return {
 				start: this.textarea.selectionStart,
 				end: this.textarea.selectionEnd
@@ -127,7 +127,7 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 		if (typeof end === "undefined"){
 			end = start;
 		}
-		if (kkjs.is.key(this.textarea, "selectionStart")){
+		if ("selectionStart" in this.textarea){
 			this.textarea.selectionStart = start;
 			this.textarea.selectionEnd   = end;
 		}
@@ -253,7 +253,7 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 		});
 	},
 	updateLineNumbers: function updateLineNumbers(){
-		var m = (kkjs.is.node(this))? this.kkjsManager: this;
+		var m = this.kkjsManager? this.kkjsManager: this;
 		m.update(true);
 		var HTML = "";
 		for (var i = 0; i < m.lines.length; i++){
@@ -405,7 +405,7 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 	},
 	
 	createAequivTA: function createAequivTA(noNew){
-		if (kkjs.is.node(this.aequivTA)){
+		if (this.aequivTA){
 			if (!noNew){
 				kkjs.removeNode(this.aequivTA);
 			}
