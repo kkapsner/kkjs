@@ -194,14 +194,19 @@ var date = {
 					helpDate.setMonth(0);
 					return diggits((_date - helpDate) / (1000 * 3600 * 24) + 1, 3);
 				
-				case "U": case "V": case "W": return "";
+				case "U": return "";
+				case "V": return diggits(_date.getWeek(), 2);
+				case "W": return "";
 				
 				case "b": case "h": return date.localeStrings[date.locale].months.s[_date.getMonth()];
 				case "B": return date.localeStrings[date.locale].months.l[_date.getMonth()];
 				case "m": return diggits(_date.getMonth() + 1,2);
 				
 				case "C": return Math.floor(_date.getFullYear() / 100);
-				case "g": case "G": return "";
+				
+				case "g": return diggits(_date.getWeekYear() % 100, 2);
+				case "G": return diggits(_date.getWeekYear(), 4);
+				
 				case "y": return _date.getFullYear().toString().substr(2);
 				case "Y": return diggits(_date.getFullYear(), 4);
 				
