@@ -1,0 +1,9 @@
+{
+	"name": "kkjs.ajax.js",
+	"strict": true,
+	"commonScope": true,
+	"description": "Provides a powerfull but easy to use AJAX functionality",
+	"order": [
+		"variablesAndFunctions.js"
+	]
+}
