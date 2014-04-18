@@ -265,4 +265,30 @@ Function.prototype.getName = function getName(){
 	}
 };
 
+Function.prototype.help = function help(){
+	/**
+	 * Function Function.prototype.help
+	 * @name: Function.prototype.help
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @description: Provides help for a given function.
+	 * @return value: returns the first block comment in a function, which
+	 *	should contain the documentation. If no comment is present an empty
+	 *	string is returned.
+	 */
+	
+	var code = this.toString();
+	var commentStart = code.indexOf("/*");
+	var commentEnd = code.indexOf("*/", commentStart);
+	
+	if (commentStart !== -1){
+		return code.substring(commentStart, commentEnd + 2).replace(/(\r?\n|\r)\t+/g, "$1");
+	}
+	else {
+		// no block comment found
+		return "";
+	}
+	
+};
+
 })();
