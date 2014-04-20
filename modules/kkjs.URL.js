@@ -14,18 +14,40 @@ var URL = oo.Base.extend(function(url){
 	this.setHref(url);
 }).implement({
 	toString: function(){
+		/**
+		 * Function URL.toString
+		 * @name: URL.toString
+		 * @description: String cast for the URL.
+		 * @return value: the href of the URL.
+		 */
+		
 		return this.getHref();
 	},
 	getHref: function(){
+		/**
+		 * Function URL.getHref
+		 * @name: URL.getHref
+		 * @description: Gets the href of the URL.
+		 * @return value: the href of the URL.
+		 */
+		
 		var searchJoin = (this.search === "" || this.search.charAt(0) === "?")? "": "?";
 		var hashJoin = (this.hash === "" || this.hash.charAt(0) === "#")? "": "#";
 		return this.protocol + "//" + (this.username? this.username + "@": "") + this.host + this.pathname + searchJoin + this.search + hashJoin + this.hash;
 	},
-	setHref: function(url){
-		if (!url) {
-			url = location.href;
+	setHref: function(href){
+		/**
+		 * Function URL.setHref
+		 * @name: URL.setHref
+		 * @description: Sets the href of the URL.
+		 * @parameter:
+		 *	href: new href to be set
+		 */
+		
+		if (!href) {
+			href = location.href;
 		}
-		var match = /^([^:\/]*:)?(?:\/\/(?:([^@\/]*)@)?(([^:\/]*)(?::(\d*))?)(\/))?([^\?#]*)(\?[^#]*)?(#.*)?$/i.exec(url);
+		var match = /^([^:\/]*:)?(?:\/\/(?:([^@\/]*)@)?(([^:\/]*)(?::(\d*))?)(\/))?([^\?#]*)(\?[^#]*)?(#.*)?$/i.exec(href);
 		this.protocol = match[1] || location.protocol;
 		this.username = match[2] || "";
 		this.host = match[3] || location.host;
@@ -41,6 +63,16 @@ var URL = oo.Base.extend(function(url){
 	}
 }).implementStatic({
 	isSameOrigin: function(url1, url2){
+		/**
+		 * Function URL.isSameOrigin
+		 * @name: URL.isSameOrigin
+		 * @description: Checks if two URLs meet the SOP.
+		 * @parameter:
+		 *	url1: first URL to check
+		 *	url2: second URL
+		 * @return value: if the URLs have the same origin.
+		 */
+		
 		return url1.protocol === url2.protocol &&
 		       url1.host === url1.host &&
 		       url1.hostname === url2.hostname &&

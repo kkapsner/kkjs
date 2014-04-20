@@ -13,22 +13,22 @@ var sprintf = require("kkjs.sprintf");
 
 var color = {
 	rgbStringRE: /^\s*rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/,
-	/**
-	 * Function color.mix
-	 * @name: color.mix
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 12.9.2011
-	 * @description: mischt zwei farben
-	 * @parameter:
-	 *	c1: Farbe 1 in hex-Repräsentierung
-	 *	c2: Farbe 2 in hex-Repräsentierung
-	 *	ratio: Mischungsverhältnis (0: 100% c1; 1: 100% c2)
-	 *	type: in welcher Repräsentierung numerisch gemischt werden soll (default: "rgb")
-	 * @return value: Mischfarbe in hex-Repräsentierung
-	 */
-	
 	mix: function mix(c1, c2, ratio, type){
+		/**
+		 * Function color.mix
+		 * @name: color.mix
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 12.9.2011
+		 * @description: mischt zwei farben
+		 * @parameter:
+		 *	c1: Farbe 1 in hex-Repräsentierung
+		 *	c2: Farbe 2 in hex-Repräsentierung
+		 *	ratio: Mischungsverhältnis (0: 100% c1; 1: 100% c2)
+		 *	type: in welcher Repräsentierung numerisch gemischt werden soll (default: "rgb")
+		 * @return value: Mischfarbe in hex-Repräsentierung
+		 */
+		
 		if (ratio < 0 ){
 			ratio = 0;
 		}
@@ -36,9 +36,17 @@ var color = {
 			ratio = 1;
 		}
 		function m(p){
+			/**
+			 * Mixing
+			 */
+			
 			return (1 - ratio) * c1[p] + ratio * c2[p];
 		}
 		function h(){
+			/**
+			 * Hue mixing.
+			 */
+			
 			if (c1.s === 0 || c1.l === 100 || c1.l === 0 || c1.v === 0){
 				return c2.h;
 			}
@@ -77,18 +85,18 @@ var color = {
 		}
 	},
 	
-	/**
-	 * Function color.hexToRGB
-	 * @name: color.hexTorGB
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 13.10.2009
-	 * @description: wandelt eine hexadecimale Farbe (z.B. #88AF20) in eine rgb-Farbe um (return als Objekt mit Instanzen r, g und b)
-	 * @parameter:
-	 *	str:
-	 */
-	
 	hexToRgb: function hexToRgb(str){
+		/**
+		 * Function color.hexToRGB
+		 * @name: color.hexTorGB
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 13.10.2009
+		 * @description: wandelt eine hexadecimale Farbe (z.B. #88AF20) in eine rgb-Farbe um (return als Objekt mit Instanzen r, g und b)
+		 * @parameter:
+		 *	str:
+		 */
+		
 		str = str.toString();
 		if (str.charAt(0) === "#"){
 			if (str.length === 7){
@@ -114,18 +122,18 @@ var color = {
 		}
 	},
 	
-	/**
-	 * Function color.hexToHsl
-	 * @name: color.hexToHsl
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 13.10.2009
-	 * @description: wandelt eine Hexfarbe in eine HSL-Farbe um (retrun als Objekt mit Instanzen h, s und l)
-	 * @parameter:
-	 *	str:
-	 */
-	
 	hexToHsl: function hexToHsl(str){
+		/**
+		 * Function color.hexToHsl
+		 * @name: color.hexToHsl
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 13.10.2009
+		 * @description: wandelt eine Hexfarbe in eine HSL-Farbe um (retrun als Objekt mit Instanzen h, s und l)
+		 * @parameter:
+		 *	str:
+		 */
+		
 		var farbe = color.hexToRgb(str);
 		if (farbe){
 			var MAX = [0, ""];
@@ -168,18 +176,18 @@ var color = {
 		}
 	},
 	
-	/**
-	 * Function color.hexToHsv
-	 * @name: color.hexToHsv
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 13.10.2009
-	 * @description: wandelt eine Hexfarbe in eine HSV-Farbe um (retrun als Objekt mit Instanzen h, s und v)
-	 * @parameter:
-	 *	str:
-	 */
-	
 	hexToHsv: function hexToHsv(str){
+		/**
+		 * Function color.hexToHsv
+		 * @name: color.hexToHsv
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 13.10.2009
+		 * @description: wandelt eine Hexfarbe in eine HSV-Farbe um (retrun als Objekt mit Instanzen h, s und v)
+		 * @parameter:
+		 *	str:
+		 */
+		
 		var farbe = color.hexToRgb(str);
 		if (farbe){
 			var MAX = [0, ""];
@@ -222,18 +230,18 @@ var color = {
 		}
 	},
 	
-	/**
-	 * Function color.rgbStringToHex
-	 * @name: color.rgbStringToHex
-	 * @version: 1.0
-	 * @author: Korbinian Kapsner
-	 * @last modify: 13.10.2009
-	 * @description: wandelt eine einen RGB-String (z.B: "rgb(255, 10, 0)") in eine Hexzahl um
-	 * @parameter:
-	 *	str:
-	 */
-	
 	rgbStringToHex: function rgbStringToHex(str){
+		/**
+		 * Function color.rgbStringToHex
+		 * @name: color.rgbStringToHex
+		 * @version: 1.0
+		 * @author: Korbinian Kapsner
+		 * @last modify: 13.10.2009
+		 * @description: wandelt eine einen RGB-String (z.B: "rgb(255, 10, 0)") in eine Hexzahl um
+		 * @parameter:
+		 *	str:
+		 */
+		
 		str = str.toString();
 		var m;
 		if ((m = str.match(color.rgbStringRE)) !== null){
@@ -244,24 +252,28 @@ var color = {
 		}
 	},
 	
-	/**
-	 * Function color.rgbToHex
-	 * @name: color.rgbToHex
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 13.10.2009
-	 * @description: gitb die Farbe mit Rotwert r, Grünwert g und Blauwert b als Hexfarbe zurück
-	 * @parameter:
-	 *	r:
-	 *	g:
-	 *	b:
-	 */
-	
 	rgbToHex: function rgbToHex(r, g, b){
+		/**
+		 * Function color.rgbToHex
+		 * @name: color.rgbToHex
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 13.10.2009
+		 * @description: gitb die Farbe mit Rotwert r, Grünwert g und Blauwert b als Hexfarbe zurück
+		 * @parameter:
+		 *	r:
+		 *	g:
+		 *	b:
+		 */
+		
 		if (typeof r === "object" && !g && ! b){
 			g = r.g; b = r.b; r = r.r;
 		}
 		function parse(v){
+			/**
+			 * Generates an integer between 0 and 255.
+			 */
+			
 			v = Math.round(parseFloat(v));
 			if (v < 0){
 				v = 0;
@@ -274,20 +286,20 @@ var color = {
 		return sprintf("#%02X%02X%02X", parse(r), parse(g), parse(b));
 	},
 	
-	/**
-	 * Function color.hslToRgb
-	 * @name: color.hslToRgb
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 13.10.2009
-	 * @description: wandelt eine HSL-Farbe in eine RGB-farbe um (es ist auch ein Übergabewert for der Gestallt der Rückgabe von hexToHSL möglich)
-	 * @parameter:
-	 *	h:
-	 *	s:
-	 *	l:
-	 */
-	 
 	hslToRgb: function hslToRgb(h, s, l){
+		/**
+		 * Function color.hslToRgb
+		 * @name: color.hslToRgb
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 13.10.2009
+		 * @description: wandelt eine HSL-Farbe in eine RGB-farbe um (es ist auch ein Übergabewert for der Gestallt der Rückgabe von hexToHSL möglich)
+		 * @parameter:
+		 *	h:
+		 *	s:
+		 *	l:
+		 */
+		 
 		if (typeof(h) === "object" && !s && !l){
 			l = h.l; s = h.s; h = h.h;
 		}
@@ -328,20 +340,20 @@ var color = {
 		return ret;
 	},
 	
-	/**
-	 * Function color.hsvToHex
-	 * @name: color.hsvToHex
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 13.10.2009
-	 * @description: wandelt eine HSV-Farbe in eine Hexfarbe um (es ist auch ein Übergabewert von der Gestallt der Rückgabe von hexToHSV möglich)
-	 * @parameter:
-	 *	h:
-	 *	s:
-	 *	v:
-	 */
-	 
 	hsvToHex: function hsvToHex(h, s, v){
+		/**
+		 * Function color.hsvToHex
+		 * @name: color.hsvToHex
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 13.10.2009
+		 * @description: wandelt eine HSV-Farbe in eine Hexfarbe um (es ist auch ein Übergabewert von der Gestallt der Rückgabe von hexToHSV möglich)
+		 * @parameter:
+		 *	h:
+		 *	s:
+		 *	v:
+		 */
+		 
 		if (typeof(h) === "object" && !s && !v){
 			v = h.l; s = h.s; h = h.h;
 		}
@@ -388,19 +400,20 @@ color.rgb = {
 	toHsl: function(r, g, b){ return color.hex.toHsl(color.rgbToHex(r, g, b));},
 	toHsv: function(r, g, b){ return color.hex.toHsv(color.rgbToHex(r, g, b));},
 	
-	/**
-	 * Function color.rgb.complementary
-	 * @name: color.rgb.complementary
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 13.10.2009
-	 * @description: gibt die Komplementärfarbe einer Hexfarbe zurück
-	 * @parameter:
-	 *	r:
-	 *	g:
-	 *	b:
-	 */
 	complementary: function complementaerfarbe(r, g, b){
+		/**
+		 * Function color.rgb.complementary
+		 * @name: color.rgb.complementary
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 13.10.2009
+		 * @description: gibt die Komplementärfarbe einer Hexfarbe zurück
+		 * @parameter:
+		 *	r:
+		 *	g:
+		 *	b:
+		 */
+		
 		if (typeof r === "object" && !g && ! b){
 			g = r.g; b = r.b; r = r.r;
 		}

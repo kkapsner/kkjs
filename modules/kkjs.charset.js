@@ -180,45 +180,75 @@ var convertMap = {
 	"UTF-8": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * UTF-8 encode function
+			 */
 			utf8.encode(str);
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * UTF-8 decode function
+			 */
 			utf8.decode(str);
 		}
 	},
 	"UTF-16": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * UTF-16 encode function
+			 */
 			utf16.toByteStream(str);
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * UTF-16 decode function
+			 */
 			utf16.fromByteStrem(str);
 		}
 	},
 	"UTF-16BE": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * UTF-16BE encode function
+			 */
 			utf16.toByteStream(str, false);
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * UTF-16BE decode function
+			 */
 			utf16.fromByteStrem(str, false);
 		}
 	},
 	"UTF-16LE": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * UTF-16LE encode function
+			 */
 			utf16.toByteStream(str, true);
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * UTF-16LE decode function
+			 */
 			utf16.fromByteStrem(str, true);
 		}
 	},
 	"UTF-32": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * UTF-32 encode function
+			 */
 			return "\x00\x00\xFE\xFF" + convertMap["UTF-32BE"].unicodeTOcharset(str);
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * UTF-32 decode function
+			 */
 			switch (str.substring(0, 4)){
 				case "\xFF\xFE\x00\x00":
 					return convertMap["UTF-32LE"].charsetToUnicode(str.substring(4));
@@ -232,6 +262,9 @@ var convertMap = {
 	"UTF-32BE": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * UTF-32BE encode function
+			 */
 			var arr = utf16.toCharCodeArray(str);
 			var l = arr.length;
 			var ret = "";
@@ -246,6 +279,9 @@ var convertMap = {
 			return ret;
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * UTF-32BE decode function
+			 */
 			var l = str.length;
 			var ret = "";
 			for (var i = 0; i < l - 3; i += 4){
@@ -262,6 +298,9 @@ var convertMap = {
 	"UTF-32LE": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * UTF-32LE encode function
+			 */
 			var arr = utf16.toCharCodeArray(str);
 			var l = arr.length;
 			var ret = "";
@@ -276,6 +315,9 @@ var convertMap = {
 			return ret;
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * UTF-32LE decode function
+			 */
 			var l = str.length;
 			var ret = "";
 			for (var i = 0; i < l - 3; i += 4){
@@ -293,6 +335,9 @@ var convertMap = {
 	"UTF-7": {
 		mapping: false,
 		unicodeTOcharset: function(str, del){
+			/**
+			 * UTF-7 encode function
+			 */
 			if (!del){
 				del = "+";
 			}
@@ -306,6 +351,9 @@ var convertMap = {
 			});
 		},
 		charsetTOunicode: function(str, del){
+			/**
+			 * UTF-7 decode function
+			 */
 			if (!del){
 				del = "+";
 			}
@@ -324,27 +372,45 @@ var convertMap = {
 	"UTF7-IMAP": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * UTF7-IMAP encode function
+			 */
 			return convertMap["UTF-7"].unicodeTOcharset(str, "&");
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * UTF7-IMAP decode function
+			 */
 			return convertMap["UTF-7"].charsetTOunicode(str, "&");
 		}
 	},
 	"BASE64": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * BASE64 encode function
+			 */
 			return base64.encode(str);
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * BASE64 decode function
+			 */
 			return base64.decode(str);
 		}
 	},
 	"HTML-ENTITIES": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * HTML-ENTITIES encode function
+			 */
 			return str.encodeHTMLEntities();
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * HTML-ENTITIES decode function
+			 */
 			return str.decodeHTMLEntities();
 		}
 	},
@@ -352,6 +418,9 @@ var convertMap = {
 	"7BIT": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * 7BIT encode function
+			 */
 			var arr = utf16.toCharCodeArray(str);
 			var l = arr.length;
 			var ret = "";
@@ -363,12 +432,18 @@ var convertMap = {
 			return ret;
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * 7BIT decode function
+			 */
 			return str;
 		}
 	},
 	"BYTE": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * BYTE encode function
+			 */
 			var arr = utf16.toCharCodeArray(str);
 			var l = arr.length;
 			var ret = "";
@@ -380,12 +455,18 @@ var convertMap = {
 			return ret;
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * BYTE decode function
+			 */
 			return str;
 		}
 	},
 	"BYTE2BE": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * BYTE2BE encode function
+			 */
 			var arr = utf16.toCharCodeArray(str);
 			var l = arr.length;
 			var ret = "";
@@ -398,6 +479,9 @@ var convertMap = {
 			return ret;
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * BYTE2BE decode function
+			 */
 			var l = str.length;
 			var ret = "";
 			for (var i = 0; i < l - 1; i += 2){
@@ -412,6 +496,9 @@ var convertMap = {
 	"BYTE2LE": {
 		mapping: false,
 		unicodeTOcharset: function(str){
+			/**
+			 * BYTE2LE encode function
+			 */
 			var arr = utf16.toCharCodeArray(str);
 			var l = arr.length;
 			var ret = "";
@@ -424,6 +511,9 @@ var convertMap = {
 			return ret;
 		},
 		charsetTOunicode: function(str){
+			/**
+			 * BYTE2LE decode function
+			 */
 			var l = str.length;
 			var ret = "";
 			for (var i = 0; i < l - 1; i += 2){
@@ -473,6 +563,9 @@ for (var original in aliases){
 }
 
 function translate(str, encoding, from, to){
+	/**
+	 * Internal translation function.
+	 */
 	encoding = encoding.toUpperCase();
 	if (!convertMap.hasOwnProperty(encoding)){
 		throw new Error("Unknown character set " + encoding + ".");
@@ -504,15 +597,35 @@ else if (typeof kkjs !== "undefined"){
 
 charset.illegalReplaceChar = "";
 charset.encode = function(str, encoding){
+	/**
+	 * Function charset.encode
+	 * @name: charset.encode
+	 * @author: Korbinian Kapsner
+	 * @description: Encodes a JS-string (unicode encoded) in a desired other
+	 *	charset
+	 * @parameter:
+	 *	str: String to be encoded
+	 *	encoding: Charset to be used.
+	 * @return value: The encoded string.
+	 */
 	return translate(str, encoding, "unicode", "charset");
 };
 
-/**
- * Function charset.decode
- * @name: charset.decode
- * @description: takes a byte-stream (if the string contains a character > \xFF it is replaced by a character that has only the lower 8-bit set)
- */
 charset.decode = function(str, encoding){
+	/**
+	 * Function charset.decode
+	 * @name: charset.decode
+	 * @author: Korbinian Kapsner
+	 * @description: Decodes a string in a iven encoding and decodes to a
+	 *	JS-string (unicode encoded). It takes a byte-stream (if the string
+	 *	contains a character > \xFF it is replaced by a character that has only
+	 *	the lower 8-bit set)
+	 * @parameter:
+	 *	str: String to be decoded
+	 *	encoding: Charset to be used.
+	 * @return value: The decoded string.
+	 */
+	 
 	return translate(str.replace(/[\x00-\xFF]/g, function(c){
 		return String.fromCharCode(
 			c.charCodeAt(0) & 0xFF

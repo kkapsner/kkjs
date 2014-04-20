@@ -6,20 +6,19 @@
  *
  **/
 
-/**
- * Function Number.prototype.isInRange
- * @name: Number.prototype.isInRange
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description: Überprüft, ob die Zahl in einem bestimmten Bereich liegt
- * @parameter:
- *	lower: untere Grenze
- *	upper: obere Grenze
- *
- */
-
 Number.prototype.isInRange = function isInRange(lower, upper){
+	/**
+	 * Function Number.prototype.isInRange
+	 * @name: Number.prototype.isInRange
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 04.08.2009
+	 * @description: Überprüft, ob die Zahl in einem bestimmten Bereich liegt
+	 * @parameter:
+	 *	lower: untere Grenze
+	 *	upper: obere Grenze
+	 *
+	 */
 
 	if (this >= lower && this <= upper){
 		return true;
@@ -30,19 +29,18 @@ Number.prototype.isInRange = function isInRange(lower, upper){
 	return false;
 };
 
-/**
- * Function Number.prototype.setInRange
- * @name: Number.prototype.setInRange
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description: Bsp.: (2).setInRange(0, 1) == 1; (2).setInRange(-3, 0) == 0
- * @parameter:
- *	lower: untere Grenze
- *	upper: obere Grenze
- */
-
 Number.prototype.setInRange = function setInRange(lower, upper){
+	/**
+	 * Function Number.prototype.setInRange
+	 * @name: Number.prototype.setInRange
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 04.08.2009
+	 * @description: Bsp.: (2).setInRange(0, 1) == 1; (2).setInRange(-3, 0) == 0
+	 * @parameter:
+	 *	lower: untere Grenze
+	 *	upper: obere Grenze
+	 */
 
 	if (typeof lower === "undefined" || lower === null){
 		lower = this;
@@ -62,20 +60,19 @@ Number.prototype.setInRange = function setInRange(lower, upper){
 	return this;
 };
 
-/**
- * Function Number.prototype.setInCircle
- * @name: Number.prototype.setInCircle
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description: "zwängt" eine Zahl in einen Ring, Bsp: Winkel -60° == 300°
- * @parameter:
- *	lower: untere Grenze
- *	upper: obere Grenze
- *
- */
-
 Number.prototype.setInCircle = function setInCircle(lower, upper){
+	/**
+	 * Function Number.prototype.setInCircle
+	 * @name: Number.prototype.setInCircle
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 04.08.2009
+	 * @description: "zwängt" eine Zahl in einen Ring, Bsp: Winkel -60° == 300°
+	 * @parameter:
+	 *	lower: untere Grenze
+	 *	upper: obere Grenze
+	 *
+	 */
 
 	var zahl = this;
 	if (lower === upper){

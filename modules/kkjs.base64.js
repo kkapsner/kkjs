@@ -14,20 +14,19 @@
 var base = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 var base64 = {
-	/**
-	 * Function base64.encode
-	 * @name: base64.encode
-	 * @version: 1.0
-	 * @author: Korbinian Kapsner
-	 * @last modify: 09.04.2012
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 * @used parts of kkjs:
-	 *
-	 */
 
 	encode: function encodeBase64(str){
+		/**
+		 * Function base64.encode
+		 * @name: base64.encode
+		 * @version: 1.0
+		 * @author: Korbinian Kapsner
+		 * @last modify: 09.04.2012
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 */
+		
 		var addedNull = 0;
 		while (str.length % 3 !== 0){
 			addedNull++;
@@ -54,21 +53,20 @@ var base64 = {
 		return ret;
 	},
 	
-	/**
-	 * Function base64.decode
-	 * @name: base64.decode
-	 * @version: 1.0
-	 * @author: Korbinian Kapsner
-	 * @last modify: 17.01.2010
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 * @used parts of kkjs:
-	 *
-	 */
-
 	decode: function decodeBase64(str){
-
+		/**
+		 * Function base64.decode
+		 * @name: base64.decode
+		 * @version: 1.0
+		 * @author: Korbinian Kapsner
+		 * @last modify: 17.01.2010
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 * @used parts of kkjs:
+		 *
+		 */
+		
 		str = str.replace(/[\s\n\r]+/g, "");
 		var addedNull = 0;
 		str = str.replace(/\=+$/, function(match){

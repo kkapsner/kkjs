@@ -354,7 +354,7 @@ var css = {
 				}
 				return true;
 			}
-		}.makeArrayCallable([0], {arrayLike: true})
+		}.makeArrayCallable([0, 1], {arrayLike: true})
 	},
 	
 	/**

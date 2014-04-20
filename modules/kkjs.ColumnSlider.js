@@ -8,6 +8,15 @@
 
 kkjs.ColumnSlider = kkjs.Slider.extend(
 	function ColumnSlider(att){
+		/**
+		 * Constructor ColumnSlider
+		 * @name: ColumnSlider
+		 * @author: Korbinian Kapsner
+		 * @description: A vertical slider that has a column.
+		 * @parameter:
+		 *	att:
+		 */
+		
 		this.column = kkjs.node.create({tag: "div"});
 		//this.Super("constructor")(att);
 		kkjs.Slider.call(this, att);
@@ -19,6 +28,10 @@ kkjs.ColumnSlider = kkjs.Slider.extend(
 	}
 ).implement({
 	_onset: function(){
+		/**
+		 * Implementation of the Slider-Interface.
+		 */
+		
 		var pxValue = this.value / (this.max - this.min) * this.slideLength;
 		var sliderStyle = {};
 		var columnStyle = {};
@@ -42,9 +55,25 @@ kkjs.ColumnSlider = kkjs.Slider.extend(
 	},
 	onset: function(){},
 	getSliderStyle: function getSliderStyle(){
+		/**
+		 * Function ColumnSlider.getSliderStyle
+		 * @name: ColumnSlider.getSliderStyle
+		 * @author: Korbinian Kapsner
+		 * @description: Returns the default style of the slider.
+		 * @return value: the default style for the slider.
+		 */
+		
 		return {height: "16px", width: "16px", backgroundColor: "black", margin: "-8px"};
 	},
 	_getSliderStyle: function getSliderStyle(){
+		/**
+		 * Function ColumnSlider._getSliderStyle
+		 * @name: ColumnSlider._getSliderStyle
+		 * @author: Korbinian Kapsner
+		 * @description: Returns the style of the slider.
+		 * @return value: the style for the slider.
+		 */
+		
 		var ret = this.getSliderStyle();
 		ret.position = "absolute";
 		if (this.direction === "h"){
@@ -58,9 +87,25 @@ kkjs.ColumnSlider = kkjs.Slider.extend(
 		return ret;
 	},
 	getColumnStyle: function getColumnStyle(){
+		/**
+		 * Function ColumnSlider.getColumnStyle
+		 * @name: ColumnSlider.getColumnStyle
+		 * @author: Korbinian Kapsner
+		 * @description: Returns the default style of the column.
+		 * @return value: the default style for the column.
+		 */
+		
 		return {backgroundColor: "#999", width: "10px", height: "10px", margin: "-5px"};
 	},
 	_getColumnStyle: function getColumnStyle(){
+		/**
+		 * Function ColumnSlider._getColumnStyle
+		 * @name: ColumnSlider._getColumnStyle
+		 * @author: Korbinian Kapsner
+		 * @description: Returns the current style of the column.
+		 * @return value: the current style for the column.
+		 */
+		
 		var ret = this.getColumnStyle();
 		ret.position = "absolute";
 		if (this.direction === "h"){

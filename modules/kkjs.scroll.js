@@ -13,36 +13,36 @@
 var Math = require("./kkjs.Math");
  
 var scroll = {
-	/**
-	 * Function scroll.get
-	 * @name scroll.get
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: returns the scroll-position /-size of the node (default: window/document.documentElement)
-	 * @parameter:
-	 *	node
-	 * @return value: a object with the attributes top, left, width and height
-	 */
-	
 	get: function getScrollPosition(node){
+		/**
+		 * Function scroll.get
+		 * @name scroll.get
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: returns the scroll-position /-size of the node (default: window/document.documentElement)
+		 * @parameter:
+		 *	node
+		 * @return value: a object with the attributes top, left, width and height
+		 */
+		
 		return scroll.getPosition(node).toObject(
 			scroll.getSize(node).toObject()
 		);
 	},
 	
-	/**
-	 * Function scroll.getPosition
-	 * @name scroll.getPosition
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: returns the scroll-position of the node (default: window)
-	 * @parameter:
-	 *	node
-	 * @return value: a kkjs.Math.Position object (a Vector with the attributes top and left)
-	 * Opera has Problems to detect scrollposition when page is reloaded - solved if page is scrolled DOWN once
-	 */
-	
 	getPosition: function getScrollPosition(node){
+		/**
+		 * Function scroll.getPosition
+		 * @name scroll.getPosition
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: returns the scroll-position of the node (default: window)
+		 * @parameter:
+		 *	node
+		 * @return value: a kkjs.Math.Position object (a Vector with the attributes top and left)
+		 * Opera has Problems to detect scrollposition when page is reloaded - solved if page is scrolled DOWN once
+		 */
+		
 		if (node){
 			return new Math.Position(node.scrollLeft, node.scrollTop);
 		}
@@ -60,18 +60,18 @@ var scroll = {
 		);
 	},
 	
-	/**
-	 * Function scroll.getSize
-	 * @name: scroll.getSize
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: returns the scroll-size of the node (default: document.documentElement)
-	 * @parameter:
-	 *	node:
-	 * @return value: a kkjs.Math.Dimension-object (a Vector with the attributes width and height)
-	 */
-	
 	getSize: function getScrollSize(node){
+		/**
+		 * Function scroll.getSize
+		 * @name: scroll.getSize
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: returns the scroll-size of the node (default: document.documentElement)
+		 * @parameter:
+		 *	node:
+		 * @return value: a kkjs.Math.Dimension-object (a Vector with the attributes width and height)
+		 */
+		
 		if (!node){
 			node = document.documentElement;
 		}

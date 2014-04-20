@@ -23,6 +23,9 @@ var TraySlider = Slider.extend(function(att){
 }).implement({
 	onset: function(){},
 	_onset: function(){
+		/**
+		 * Implementation of the Slider Interface.
+		 */
 		var dir = (this.direction === "h")? "left": "top";
 		kkjs.css.set(this.slider, dir, this.value / (this.max - this.min) * this.slideLength + "px");
 		this.onset();

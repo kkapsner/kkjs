@@ -11,12 +11,22 @@
 var node = require("kkjs.node");
 var JSONP = {
 	process: function(url, parameter){
+		/**
+		 * Function JSONP.process
+		 * @name: JSONP.process
+		 * @author: Korbinian Kapsner
+		 * @description: Initiates an JSONP request
+		 * @parameter:
+		 *	url: The URL were the request should be sent to.
+		 *	parameter: GET-Parameter that should be sent with the request.
+		 */
+		
 		var script = node.create({
 			tag: "script",
 			type: "text/javascript"
 		});
 		var value;
-		if(parameter){
+		if (parameter){
 			for (var name in parameter){
 				if (parameter.hasOwnProperty(name)){
 					value = parameter[name];
@@ -41,9 +51,21 @@ var JSONP = {
 	
 	callback: {},
 	createCallback: function(callbackFn, script){
+		/**
+		 * Function JSONP.createCallback
+		 * @name: JSONP.createCallback
+		 * @author: Korbinian Kapsner
+		 * @description: Creates and registers a callback for a JSONP.
+		 *	Should only be used by JSONP.process().
+		 * @parameter:
+		 *	callbackFn: The callback function for the JSONP.
+		 *	script: the <script> node
+		 * @return value: A string with the JS-"path" to the function.
+		 */
+		
 		var callback = "_" + this.callbackCount.toString(36);
 		this.callbackCount++;
-		this.callback[callback] = function (jobj){
+		this.callback[callback] = function(jobj){
 			callbackFn(jobj);
 			if (script.parentNode){
 				script.parentNode.removeChild(script);

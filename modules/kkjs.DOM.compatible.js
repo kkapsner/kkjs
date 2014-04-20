@@ -13,6 +13,7 @@
 // FF<9 has no NODE.contains
 if (window.Node && Node.prototype && !Node.prototype.contains && Element.prototype.compareDocumentPosition){
 	Element.prototype.contains = function contains(node){
+		/* Polyfill for NODE.contains for old FF */
 		return ((this.compareDocumentPosition(node) & 16) === 16) || this.isSameNode(node);
 	};
 }
@@ -22,6 +23,7 @@ if (!document.getElementsByClassName){
 	// IE 8
 	if (document.querySelectorAll){
 		document.getElementsByClassName = Element.prototype.getElementsByClassName = function getElementsByClassName(str){
+			/* Polyfill for NODE.getElementsByClassName for IE 8 */
 			return this.querySelectorAll("." + str.replace(/^\s+/, "").replace(/\s+/, "."));
 		};
 	}

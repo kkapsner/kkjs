@@ -10,32 +10,33 @@
 
 var rand = Math.random;
 var random = {
-	/**
-	 * Function random.inRange
-	 * @name: random.inRange
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: returns a number between lower (including) and upper (excluding)
-	 * @parameter:
-	 *	lower:
-	 *	upper:
-	 */
-	
 	inRange: function randomInRange(lower, upper){
+		/**
+		 * Function random.inRange
+		 * @name: random.inRange
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: returns a number between lower (including) and upper (excluding)
+		 * @parameter:
+		 *	lower:
+		 *	upper:
+		 */
+		
 		return lower + rand()*(upper - lower);
 	},
 	
-	/**
-	 * Function random.gauss
-	 * @name: random.inRange
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: returns random numbers according to a normal distribution. The polar method is used.
-	 * @parameter:
-	 *	mu: mean of the distribution
-	 *	sigma2: variance of the 
-	 */
 	gauss: function randomGauss(mu, sigma2){
+		/**
+		 * Function random.gauss
+		 * @name: random.inRange
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: returns random numbers according to a normal distribution. The polar method is used.
+		 * @parameter:
+		 *	mu: mean of the distribution
+		 *	sigma2: variance of the 
+		 */
+		
 		var u1, u2, p, q;
 		do {
 			u1 = random.inRange(-1, 1);
@@ -53,17 +54,18 @@ var random = {
 	 * @description: integers only
 	 */
 	integer: {
-		/**
-		 * Function random.integer.inRange
-		 * @name: random.integer.inRange
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: returns an int between lower and upper (including both)
-		 * @parameter:
-		 *	lower:
-		 *	upper:
-		 */
 		inRange: function randomIntInRange(lower, upper){
+			/**
+			 * Function random.integer.inRange
+			 * @name: random.integer.inRange
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: returns an int between lower and upper (including both)
+			 * @parameter:
+			 *	lower:
+			 *	upper:
+			 */
+			
 			return Math.floor(random.inRange(lower, upper + 1));
 		}
 	},
@@ -75,16 +77,17 @@ var random = {
 	 * @description: integers only
 	 */
 	array: {
-		/**
-		 * Function random.array.shuffle
-		 * @name: random.array.shuffle
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: shuffles the provided array
-		 * @parameter:
-		 *	array:
-		 */
 		shuffle: function shuffleArray(arr){
+			/**
+			 * Function random.array.shuffle
+			 * @name: random.array.shuffle
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: shuffles the provided array
+			 * @parameter:
+			 *	array:
+			 */
+			
 			for (var i = arr.length; i--;){
 				var sIndex = random.integer.inRange(0, i);
 				var h = arr[i];

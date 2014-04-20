@@ -8,6 +8,15 @@ var css = require("kkjs.css");
 
 var Slider = oo.Base.extend(
 	function Slider(att){
+		/**
+		 * Constructor Slider
+		 * @name: Slider
+		 * @author: Korbinian Kapsner
+		 * @description: Creates a slider.
+		 * @parameter:
+		 *	att:
+		 */
+		
 		for (var i in att){
 			if (att.hasOwnProperty(i)){
 				this[i] = att[i];
@@ -42,10 +51,28 @@ var Slider = oo.Base.extend(
 	_onset: function(){},
 	onchange: function(){},
 	setDisabled: function setDisabled(disabled){
+		/**
+		 * Function Slider.setDisabled
+		 * @name: Slider.setDisabled
+		 * @author: Korbinian Kapsner
+		 * @description: Setter for the disabled state of the slider.
+		 * @parameter:
+		 *	disabled: if the sclider should be disabled or enabled.
+		 */
+		
 		this.disabled = !!disabled;
 		css.className[this.disabled? "add": "remove"](this.slider, "disabled");
 	},
 	setValue: function setValue(value){
+		/**
+		 * Function Slider.setValue
+		 * @name: Slider.setValue
+		 * @author: Korbinian Kapsner
+		 * @description: Setter for the value of the slider.
+		 * @parameter:
+		 *	value: new value of the slider.
+		 */
+		
 		if (typeof value !== "number"){
 			value = this.value;
 		}
@@ -63,14 +90,28 @@ var Slider = oo.Base.extend(
 		return this;
 	},
 	changeValue: function changeValue(){
+		/**
+		 * Function Slider.changeValue
+		 * @name: Slider.changeValue
+		 * @author: Korbinian Kapsner
+		 * @description: triggers the onchange event.
+		 * @parameter:
+		 */
+		
 		this.onchange(this.value);
 	},
 	getValue: function getValue(){
+		/**
+		 * Function Slider.getValue
+		 * @name: Slider.getValue
+		 * @author: Korbinian Kapsner
+		 * @description: Getter for the value of the slider.
+		 * @return value: value of the slider.
+		 */
+		
 		return this.value;
 	},
-	drag: function(){
-		
-	}
+	drag: function(){}
 }).implementStatic({
 	activeSlider: false,
 	dragStart: {top: 0, left: 0}

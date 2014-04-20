@@ -10,6 +10,9 @@
  */
 
 var isString = function(str){
+	/**
+	 * Validation function if str is a string.
+	 */
 	switch (typeof str){
 		case "string":
 			return true;
@@ -26,12 +29,13 @@ var cookie = {
 	// this should be true if you want to be sure, that all your special characters (like ä, ö ü ², µ, €, \n, \t, ...) are treated in a safe way - but with this option enabled the string stored in the cookie can get much longer
 	secureEncoding: true,
 	
-	/**
-	 * Function cookie.update
-	 * @name: cookie.update
-	 */
-	
 	update: function(){
+		/**
+		 * Function cookie.update
+		 * @name: cookie.update
+		 * @description: updates the cookie object.
+		 */
+		
 		var cString = document.cookie.toString();
 		var werte = cString.split(";");
 		for (var i = 0; i < werte.length; i++){
@@ -43,12 +47,16 @@ var cookie = {
 		return this;
 	},
 	
-	/**
-	 * Function cookie.getValue
-	 * @name: cookie.getValue
-	 */
-	
 	getValue: function(name){
+		/**
+		 * Function cookie.getValue
+		 * @name: cookie.getValue
+		 * @description: Returns the value of a cookie.
+		 * @parameter:
+		 *	name: name of the cookie
+		 * @return value: value stored in the cookie
+		 */
+		
 		this.update();
 		if (isString(this[name])){
 			return this[name];
@@ -56,12 +64,22 @@ var cookie = {
 		return this.defaultReturnValue;
 	},
 	
-	/**
-	 * Function cookie.setValue
-	 * @name: cookie.setValue
-	 */
-	
 	setValue: function(name, value, att){
+		/**
+		 * Function cookie.setValue
+		 * @name: cookie.setValue
+		 * @description: Sets the value of a cookie.
+		 * @parameter:
+		 *	name: name of the cookie
+		 *	value: value to be stored in the cookie
+		 *	att: attributes of the cookie. This is an object with these keys:
+		 *		expires: expiration date. Either a Date-object or a GMT formated
+		 *			string
+		 *		domain: domain for the cookie
+		 *		path: path for the cookie
+		 *		secure: if the cookie should be secure
+		 */
+		
 		if (!isString(name)){
 			throw new TypeError("Invalid argument. Name must be a string.");
 		}
@@ -93,29 +111,49 @@ var cookie = {
 		return this;
 	},
 	
-	/**
-	 * Function cookie.deleteValue
-	 * @name: cookie.deleteValue
-	 */
-	
-	deleteValue: function(wert, att){
+	deleteValue: function(name, att){
+		/**
+		 * Function cookie.deleteValue
+		 * @name: cookie.deleteValue
+		 * @description: deletes a cookie
+		 * @parameter:
+		 *	name: name of the cookie
+		 *	att: attributes for the cookie (see cookie.setValue)
+		 */
+		
 		if (!att){
 			att = {};
 		}
 		att.expire = new Date(0);
-		this.setValue(wert, "", att);
-		delete this[wert];
+		this.setValue(name, "", att);
+		delete this[name];
 		return this;
 	},
 	
 	
 	encode: function encode(str){
+		/**
+		 * Function cookie.encode
+		 * @name: cookie.encode
+		 * @description: Encoding function for cookie values as some characters
+		 *	can not be stored in cookies
+		 * @parameter:
+		 *	str: the string to get encoded
+		 */
 		if (this.secureEncoding){
 			return str.replace(/([^a-z0-9])/ig, function(m, f){return "+" + f.charCodeAt(0).toString(36) + "/";});
 		}
 		return str.replace(/(%|=|;)/g, function(match, f){return "%" + {"%": "%%", "=": "%_", ";": "%."}[f];});
 	},
 	decode: function decode(str){
+		/**
+		 * Function cookie.decode
+		 * @name: cookie.decode
+		 * @description: Decoding function for cookie values as some characters
+		 *	can not be stored in cookies
+		 * @parameter:
+		 *	str: the string to get decoded
+		 */
 		if (this.secureEncoding){
 			return str.replace(/\+([a-z0-9]+?)\//ig, function(m, f){return String.fromCharCode(parseInt(f, 36));});
 		}

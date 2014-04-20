@@ -1,14 +1,5 @@
 (function(){
 "use strict";
-/**
- * Class kkjs.Animation
- * @author: Korbinian Kapsner
- * @name: kkjs.Animation
- * @version: 1.0
- * @description:
- * @parameter
- *
- */
 
 var css = require("kkjs.css");
 var oo = require("kkjs.oo");
@@ -16,6 +7,19 @@ var EventEmitter = require("kkjs.EventEmitter");
 var Timer = require("kkjs.Timer");
 
 var Animation = EventEmitter.extend(function Animation(node, property, tween, duration){
+	/**
+	 * Class Animation
+	 * @author: Korbinian Kapsner
+	 * @name: Animation
+	 * @version: 1.0
+	 * @description: 
+	 * @parameter:
+	 *	node: the node to be animated
+	 *	property: the property of the node to be animated
+	 *	tween: used transition tween
+	 *	duration: duration of the animation.
+	 */
+	 
 	this.node = node;
 	this.property = property;
 	this.tween = tween || function(x){return x;};
@@ -31,14 +35,37 @@ var Animation = EventEmitter.extend(function Animation(node, property, tween, du
 	timer: null,
 	
 	stop: function(){
+		/**
+		 * Function Animation.stop
+		 * @name: Animation.stop
+		 * @author: Korbinian Kapsner
+		 * @description: stops the Animation immediately.
+		 */
 		window.clearTimeout(this.timeout);
 		this.timer.stop();
 	},
 	
 	runCSSTo: function(toValue){
+		/**
+		 * Function Animation.runCSSTo
+		 * @name: Animation.runCSSTo
+		 * @author: Korbinian Kapsner
+		 * @description: starts the animation of a CSS property.
+		 * @parameter:
+		 *	toValue: end value.
+		 */
 		this.runTo(toValue, true);
 	},
 	runTo: function(toValue, isCSS){
+		/**
+		 * Function Animation.runTo
+		 * @name: Animation.runTo
+		 * @author: Korbinian Kapsner
+		 * @description: starts the animation.
+		 * @parameter:
+		 *	toValue: end value.
+		 *	isCSS: if the property is CSS.
+		 */
 		this.stop();
 		var timer = this.timer;
 		timer.time = this.duration;

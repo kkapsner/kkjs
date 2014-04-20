@@ -25,19 +25,19 @@ else {
 DOM.window = window;
 DOM.document = document;
 
-/**
- * Function DOM.getDocument
- * @name: DOM.getDocument
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description:
- * @parameter:
- *	node:
- *
- */
-
 DOM.getDocument = function getDocument(node){
+	/**
+	 * Function DOM.getDocument
+	 * @name: DOM.getDocument
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 04.08.2009
+	 * @description:
+	 * @parameter:
+	 *	node:
+	 *
+	 */
+	
 	if (!node){
 		return DOM.document;
 	}
@@ -67,18 +67,18 @@ DOM.getDocument = function getDocument(node){
 	return node;
 };
 
-/**
- * Function DOM.getWindow
- * @name: DOM.getWindow
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description:
- * @parameter:
- *	node:
- */
-
 DOM.getWindow = function getWindow(node){
+	/**
+	 * Function DOM.getWindow
+	 * @name: DOM.getWindow
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 04.08.2009
+	 * @description:
+	 * @parameter:
+	 *	node:
+	 */
+	
 	var doc = DOM.getDocument(node);
 	if (doc){
 		if (doc.parentWindow){
@@ -91,17 +91,17 @@ DOM.getWindow = function getWindow(node){
 	return null;
 };
 
-/**
- * Function DOM.getWindowSize
- * @name: DOM.getWindowSize
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 11.03.2010
- * @description:
- * @parameter:
- */
-
 DOM.getWindowSize = function getWindowSize(){
+	/**
+	 * Function DOM.getWindowSize
+	 * @name: DOM.getWindowSize
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 11.03.2010
+	 * @description:
+	 * @parameter:
+	 */
+	
 	if ("innerWidth" in window){
 		return new kMath.Dimension(window.innerWidth, window.innerHeight);
 	}

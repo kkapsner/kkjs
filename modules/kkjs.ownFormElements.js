@@ -24,7 +24,7 @@ kkjs.event.onWindowLoad(function(){
 				var sp = kkjs.node.create({
 					tag: "span",
 					checkbox: inp,
-					/*onclick: function(ev){
+					/*onclick: function(ev){/*
 						if (inp.disabled){
 							return;
 						}
@@ -41,6 +41,7 @@ kkjs.event.onWindowLoad(function(){
 						this.update();
 					},*/
 					update: function(){
+						/**/
 						this.className = "ownCheckbox" + (this.checkbox.checked? " checked": "");
 					}
 				});

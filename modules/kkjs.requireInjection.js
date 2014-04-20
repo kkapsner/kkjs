@@ -1,6 +1,8 @@
 /* no module
  * just enables the faster HTML loading cache.
- * This cannot be done in the callback-function of the kkjs.require.js because the execution of the following modules starts in IE before the callback is fired.
+ * This cannot be done in the callback-function of the kkjs.require.js because
+ * the execution of the following modules starts in IE before the callback is
+ * fired.
  */
 
 require.addCacheSearchFunction(function(module){
