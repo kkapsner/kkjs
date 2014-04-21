@@ -33,6 +33,13 @@ var renderEngine = "canvas";
 
 var renderUpdate  = {
 	VML: function(ring, node){
+		/**
+		 * VML rendering function
+		 * @parameter:
+		 *	ring: the ring instance
+		 *	node: the display node
+		 */
+		
 		var value = (ring.value - ring.range.min) / (ring.range.max - ring.range.min);
 		var path = "ar -1311, -1311, 1311, 1311, 1311,     0, 1311, 0" +
 			"ar  -851,  -851,  851,  851,  851,     0,  851, 0";
@@ -55,6 +62,13 @@ var renderUpdate  = {
 		node.path = path;
 	},
 	canvas: function(ring, node){
+		/**
+		 * canvas rendering function
+		 * @parameter:
+		 *	ring: the ring instance
+		 *	node: the display node
+		 */
+		
 		if (!node.getContext){
 			return;
 		}
@@ -112,6 +126,14 @@ var renderUpdate  = {
 var RingIndicator = require("kkjs.Progress").extend().implement(require("kkjs.NodeRepresentator")).implement({
 	fillAndEmpty: false,
 	updateDimensions: function(){
+		/**
+		 * Function RingIndicator.updateDimensions
+		 * @name: RingIndicator.updateDimensions
+		 * @author: Korbinian Kapsner
+		 * @description: updates the <canvas> paint dimensions to match the
+		 *	nodes real dimensions.
+		 */
+		
 		if (this.nodes){
 			this.nodes.forEach(function(node){
 				if (renderEngine === "canvas"){
@@ -122,6 +144,7 @@ var RingIndicator = require("kkjs.Progress").extend().implement(require("kkjs.No
 		}
 	},
 	_createNode: function(){
+		/* Implementation of the NodeRepresentator API */
 		var node;
 		switch (renderEngine){
 			case "VML":
@@ -141,6 +164,7 @@ var RingIndicator = require("kkjs.Progress").extend().implement(require("kkjs.No
 		return node;
 	},
 	_updateNode: function(node){
+		/* Implementation of the NodeRepresentator API */
 		switch (renderEngine){
 			case "VML":
 					renderUpdate.VML(this, node);

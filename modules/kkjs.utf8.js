@@ -20,16 +20,16 @@ var utf8 = {
 	
 	BOM: "\xEF\xBB\xBF",
 	
-	/**
-	 * Function utf8.toCharCodeArray
-	 * @name: utf8.toCharCodeArray
-	 * @description: takes a utf8-coded string!
-	 * @parameter:
-	 *	str:
-	 *	errorCode: (optional) defaults to 0xFFFD;
-	 */
-	
 	toCharCodeArray: function(str, errorCode){
+		/**
+		 * Function utf8.toCharCodeArray
+		 * @name: utf8.toCharCodeArray
+		 * @description: takes a utf8-coded string!
+		 * @parameter:
+		 *	str:
+		 *	errorCode: (optional) defaults to 0xFFFD;
+		 */
+		
 		if (typeof errorCode === "undefined"){
 			errorCode = 0xFFFD;
 		}
@@ -78,30 +78,31 @@ var utf8 = {
 		return ret;
 	},
 	
-	/**
-	 * Function utf8.fromCharCodeArray
-	 * @name: utf8.fromCharCodeArray
-	 * @description:
-	 * @parameter:
-	 *	arr
-	 */
-	
 	fromCharCodeArray: function(arr){
+		/**
+		 * Function utf8.fromCharCodeArray
+		 * @name: utf8.fromCharCodeArray
+		 * @description:
+		 * @parameter:
+		 *	arr
+		 */
+		
 		return utf8.fromCharCode.apply(utf8, arr);
 	},
 	 
-	/**
-	 * Function utf8.fromCharCode
-	 * @name: utf8.fromCharCode
-	 * @description:
-	 * @parameter:
-	 *	code:
-	 *	code2:
-	 *	...
-	 */
-	
 	fromCharCode: (function(){
+		/**
+		 * Function utf8.fromCharCode
+		 * @name: utf8.fromCharCode
+		 * @description:
+		 * @parameter:
+		 *	code:
+		 *	code2:
+		 *	...
+		 */
+		
 		function encode(code){
+			/* single character code encoding function */
 			if (code <= 0x7F){
 				return String.fromCharCode(code);
 			}
@@ -122,6 +123,16 @@ var utf8 = {
 			}
 		}
 		return function(code/*, code2, code3, ...*/){
+			/**
+			 * Function utf8.fromCharCode
+			 * @name: utf8.fromCharCode
+			 * @description:
+			 * @parameter:
+			 *	code:
+			 *	code2:
+			 *	...
+			 */
+			
 			var l = arguments.length;
 			var ret = "";
 			for (var i = 0; i < l; i++){
@@ -131,29 +142,29 @@ var utf8 = {
 		};
 	})(),
 	
-	/**
-	 * Function utf8.encode
-	 * @name: utf8.encode
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 *
-	 */
-
 	encode: function encodeUTF8(str){
+		/**
+		 * Function utf8.encode
+		 * @name: utf8.encode
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 *
+		 */
+		
 		return utf8.fromCharCode.apply(utf8, utf16.toCharCodeArray(str));
 	},
 	
-	/**
-	 * Function utf8.decode
-	 * @name: utf8.decode
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 *
-	 */
-
 	decode: function decodeUTF8(str){
+		/**
+		 * Function utf8.decode
+		 * @name: utf8.decode
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 *
+		 */
+		
 		return utf16.fromCharCodeArray(utf8.toCharCodeArray(str));
 	}
 };

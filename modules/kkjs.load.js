@@ -24,6 +24,19 @@ window.kkjs = {
 kkjs.load = {
 	node: false,
 	module: function(module, callback, forceLoad){
+		/**
+		 * Function kkjs.load.module
+		 * @name: kkjs.load.module
+		 * @description: Module loading function. Should only be used before
+		 *	DOMReady. Deprecated. Use require() instead.
+		 * @parameter:
+		 *	module: the module name to be loaded
+		 *	callback: a callback function to be executed after the module is
+		 *		loaded.
+		 *	forceLoad: if a new loading should be forced. Otherwise caching will
+		 *		be in place.
+		 */
+		
 		if (!kkjs[module] || forceLoad){
 			return kkjs.load.script(kkjs.url.load + "kkjs." + module + ".js", callback);
 		}
@@ -31,6 +44,16 @@ kkjs.load = {
 	},
 	documentClosed: false,
 	onscriptload: function(node, callbackID){
+		/**
+		 * Function kkjs.load.onscripload
+		 * @name: kkjs.load.onscripload
+		 * @description: Callback for onload-Events. Should only be used in
+		 *	kkjs.load.script().
+		 * @parameter:
+		 *	node: <script>-node that fired the event.
+		 *	callbackID: ID of the callback function.
+		 */
+		
 		if (node && node.readyState && node.readyState !== "complete"){
 			return;
 		}
@@ -44,6 +67,17 @@ kkjs.load = {
 	},
 	callbacks: [],
 	script: function(url, callback){
+		/**
+		 * Function kkjs.load.script
+		 * @name: kkjs.load.script
+		 * @description: Arbitraty script loading function. Should only be used
+		 *	before DOMReady.
+		 * @parameter:
+		 *	url: URL of the script to be loaded
+		 *	callback: a callback function to be executed after the module is
+		 *		loaded.
+		 */
+		
 		var callbackID = false;
 		if (typeof callback === "function"){
 			callbackID = kkjs.load.callbacks.push(callback) - 1;
@@ -61,6 +95,7 @@ kkjs.load = {
 			sc.type = "text/javascript";
 			if (callbackID){
 				sc.onload = sc.onreadystatechange = function(){
+					/* onload-event callback */
 					kkjs.load.onscriptload(this, callbackID);
 				};
 			}
