@@ -5,15 +5,16 @@
 	 * Module for simpler object inheritance.
 	 */
 	
-	// a valid for ... in loop over EVERY entry (also toString in IE)
 	function forIn(obj, func){
+		/* a valid for ... in loop over EVERY entry (also toString in IE) */
 		Object.keys(obj).forEach(function(name){
 			func(name, obj[name], obj);
 		});
 	}
 	
-	// functionality to implement things
 	function implementFunction(target, obj){
+		/* functionality to implement things */
+		
 		// if we want to implement a interface
 		if (typeof obj === "function"){
 			obj = obj.prototype;
@@ -33,19 +34,19 @@
 	 */
 	
 	var oo = {
-		/**
-		 * Function oo.extend
-		 * @name: oo.extend
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: extends a given class by a second one
-		 * @parameter:
-		 *	parentClass:
-		 *	childClass:
-		 * @return value: the childClass
-		 */
-		
 		extend: function extend(parentClass, childClass){
+			/**
+			 * Function oo.extend
+			 * @name: oo.extend
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: extends a given class by a second one
+			 * @parameter:
+			 *	parentClass:
+			 *	childClass:
+			 * @return value: the childClass
+			 */
+			
 			forIn(parentClass, function(i){
 				if (!(i in childClass)){
 					childClass[i] = parentClass[i];
@@ -67,44 +68,44 @@
 			return childClass;
 		},
 		
-		/**
-		 * Function oo.implement
-		 * @name: oo.implement
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: implements functionality to a class
-		 *	targetClass:
-		 *	implemention1: can be the constructor of a class or a object (instance)
-		 *	implemention2:
-		 *	...
-		 *	implementionN:
-		 * @parameter:
-		 * @return value: the target-class
-		 */
-		
 		implement: function implement(targetClass){
+			/**
+			 * Function oo.implement
+			 * @name: oo.implement
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: implements functionality to a class
+			 *	targetClass:
+			 *	implemention1: can be the constructor of a class or a object (instance)
+			 *	implemention2:
+			 *	...
+			 *	implementionN:
+			 * @parameter:
+			 * @return value: the target-class
+			 */
+			
 			for (var i = 1; i < arguments.length; i += 1){
 				implementFunction(targetClass.prototype, arguments[i]);
 			}
 			return targetClass;
 		},
 		
-		/**
-		 * Function oo.implementStatic
-		 * @name: oo.implementStatic
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: implements static functionality to a class
-		 *	targetClass:
-		 *	implemention1: can be the constructor of a class or a object (instance)
-		 *	implemention2:
-		 *	...
-		 *	implementionN:
-		 * @parameter:
-		 * @return value: the target-class
-		 */
-		
 		implementStatic: function implementStatic(targetClass){
+			/**
+			 * Function oo.implementStatic
+			 * @name: oo.implementStatic
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: implements static functionality to a class
+			 *	targetClass:
+			 *	implemention1: can be the constructor of a class or a object (instance)
+			 *	implemention2:
+			 *	...
+			 *	implementionN:
+			 * @parameter:
+			 * @return value: the target-class
+			 */
+			
 			for (var i = 1; i < arguments.length; i += 1){
 				implementFunction(targetClass, arguments[i]);
 			}
@@ -126,15 +127,45 @@
 	
 	
 	oo.Base.extend = function(childClass){
+		/**
+		 * Function oo.Base.extend
+		 * @name: oo.Base.extend
+		 * @author: Korbinian Kapsner
+		 * @description: Creates a new child-class of the class. See oo.extend().
+		 * @parameter:
+		 *	childClass (optional): The constructor implementation of the new "Class"
+		 * @return value: The new construtor
+		 */
+		
 		if (typeof childClass === "undefined"){
 			var parentConstructor = this;
 			childClass = function noConstructorDummy(){
+				/**
+				 * Constructor noConstructorDummy
+				 * @name: noConstructorDummy
+				 * @author: Korbinian Kapsner
+				 * @description: Auto generated constructor that only calles the
+				 *	parent class constructor.
+				 */
+				
 				parentConstructor.apply(this, arguments);
 			};
 		}
 		return oo.extend(this, childClass);
 	};
 	oo.Base.implement = function(){
+		/**
+		 * Function oo.Base.implement
+		 * @name: oo.Base.implement
+		 * @author: Korbinian Kapsner
+		 * @description: Implements an interface/mixin or creates new members.
+		 *	See oo.implement().
+		 * @parameter:
+		 *	implementation1: implementation that will be added.
+		 *	...
+		 * @return value: this.
+		 */
+		
 		var args = [this];
 		for (var i = 0; i < arguments.length; i++){
 			args.push(arguments[i]);
@@ -142,6 +173,18 @@
 		return oo.implement.apply(oo, args);
 	};
 	oo.Base.implementStatic = function(){
+		/**
+		 * Function oo.Base.implementStatic
+		 * @name: oo.Base.implementStatic
+		 * @author: Korbinian Kapsner
+		 * @description: Implements an interface/mixin or creates new static members.
+		 *	See oo.implementStatic().
+		 * @parameter:
+		 *	implementation1: implementation that will be added.
+		 *	...
+		 * @return value: this.
+		 */
+		
 		var args = [this];
 		for (var i = 0; i < arguments.length; i++){
 			args.push(arguments[i]);
@@ -150,13 +193,9 @@
 	};
 	oo.Base = oo.Base.extend(function BaseClass(){});
 	
-	
-	if (typeof exports !== "undefined"){
-		for (var i in oo){
-			if (oo.hasOwnProperty(i)){
-				exports[i] = oo[i];
-			}
-		}
+	// exporting variable to the right environment
+	if (typeof exports !== "undefined" && typeof module !== "undefined"){
+		module.exports = oo;
 	}
 	else if (typeof kkjs !== "undefined"){
 		kkjs.oo = oo;
