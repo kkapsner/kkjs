@@ -14,19 +14,19 @@ var DOM = require("./kkjs.DOM");
 var kkjsnode = require("./kkjs.node");
 
 var styleRule = {
-	/**
-	 * Function styleRule.create
-	 * @name: styleRule.create
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: fuegt eine CSS-Regel in das Dokument ein
-	 * @parameter:
-	 *	rule:
-	 *	index:
-	 *
-	 */
-	
 	create: function createCSSRule(rule, index, doc){
+		/**
+		 * Function styleRule.create
+		 * @name: styleRule.create
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: fuegt eine CSS-Regel in das Dokument ein
+		 * @parameter:
+		 *	rule:
+		 *	index:
+		 *
+		 */
+		
 		var match = /^([^{}]+?)\s*\{([^{}]*)\}/.exec(rule), bezeichner, regel;
 		if (match){
 			bezeichner = match[1];
@@ -62,18 +62,18 @@ var styleRule = {
 		return styleRule._getRules(style)[index];
 	},
 	
-	/**
-	 * Function styleRule.getBySelector
-	 * @name: styleRule.getBySelector
-	 * @author: Korbinian Kapsner
-	 * @version: 0.9
-	 * @description:
-	 * @parameter:
-	 *	selector:
-	 *	doc:
-	 */
-	
 	getBySelector: function getCSSRuleBySelector(selector, doc){
+		/**
+		 * Function styleRule.getBySelector
+		 * @name: styleRule.getBySelector
+		 * @author: Korbinian Kapsner
+		 * @version: 0.9
+		 * @description:
+		 * @parameter:
+		 *	selector:
+		 *	doc:
+		 */
+		
 		selector = selector.replace(/(^|\s+|,)([a-z]+)/i, function(m, s, t){return s + t.toUpperCase();});
 		doc = DOM.getDocument(doc);
 		var style = doc.styleSheets;
@@ -90,6 +90,16 @@ var styleRule = {
 	
 	// interieur functions
 	_getWriteableStyleSheet: function getWriteableStyleSheet(doc){
+		/**
+		 * Function styleRule._getWriteableStyleSheet
+		 * @name: styleRule._getWriteableStyleSheet
+		 * @author: Korbinian Kapsner
+		 * @version: 0.9
+		 * @description:
+		 * @parameter:
+		 *	doc:
+		 */
+		
 		doc = DOM.getDocument(doc);
 		var style = doc.styleSheets;
 		
@@ -115,6 +125,16 @@ var styleRule = {
 		return style;
 	},
 	_styleSheetWriteable: function styleSheetWriteable(st){
+		/**
+		 * Function styleRule._styleSheetWriteable
+		 * @name: styleRule._styleSheetWriteable
+		 * @author: Korbinian Kapsner
+		 * @version: 0.9
+		 * @description:
+		 * @parameter:
+		 *	st:
+		 */
+		
 		if ("readOnly" in st && st.readOnly){
 			return false;
 		}
@@ -132,6 +152,16 @@ var styleRule = {
 		return true;
 	},
 	_getRules: function getRules(style){
+		/**
+		 * Function styleRule._getRules
+		 * @name: styleRule._getRules
+		 * @author: Korbinian Kapsner
+		 * @version: 0.9
+		 * @description:
+		 * @parameter:
+		 *	style:
+		 */
+		
 		if (style.rules){
 			return style.rules;
 		}
@@ -141,6 +171,16 @@ var styleRule = {
 		throw new Error("This Browser does not support CSS-rule modification.");
 	},
 	_getWriteableRules: function getWriteableRules(doc){
+		/**
+		 * Function styleRule._getWriteableRules
+		 * @name: styleRule._getWriteableRules
+		 * @author: Korbinian Kapsner
+		 * @version: 0.9
+		 * @description:
+		 * @parameter:
+		 *	doc:
+		 */
+		
 		return styleRule._getRules(styleRule._getWriteableStyleSheet(doc));
 	}
 };

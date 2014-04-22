@@ -16,17 +16,18 @@ var p = (typeof DOMParser !== "undefined")? new DOMParser(): false;
 
 var parser = {
 	
-	/**
-	 * Function parser.html
-	 * @name: parser.html
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: parses a HTML-string (also a fragment) to a HTML-documentFragment
-	 * @parameter:
-	 *	html: the html-string
-	 * @return: the HTML-documentFragment is returned on success and null on failure.
-	 */
 	html: (function(){
+		/**
+		 * Function parser.html
+		 * @name: parser.html
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: parses a HTML-string (also a fragment) to a HTML-documentFragment
+		 * @parameter:
+		 *	html: the html-string
+		 * @return: the HTML-documentFragment is returned on success and null on failure.
+		 */
+		
 		var validParents = {
 			address   : {tag: "body"},
 			area      : {tag: "map"},
@@ -88,17 +89,18 @@ var parser = {
 		};
 	})(),
 	
-	/**
-	 * Function parser.xml
-	 * @name: parser.xml
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: parses a XML-string to a XML-document
-	 * @parameter:
-	 *	xml: the XML-string
-	 * @return: the XML-document is returned on success and null on failure.
-	 */
 	xml: function(xml){
+		/**
+		 * Function parser.xml
+		 * @name: parser.xml
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: parses a XML-string to a XML-document
+		 * @parameter:
+		 *	xml: the XML-string
+		 * @return: the XML-document is returned on success and null on failure.
+		 */
+		
 		try {
 			if (p){
 				return p.parseFromString(xml, "text/xml");

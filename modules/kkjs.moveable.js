@@ -2,18 +2,6 @@
 
 "use strict";
 
-/**
- * Function moveable
- * @name: moveable
- * @author: Korbinian Kapsner
- * @version: 1.0
- * @description: makes a node freely moveable
- * @parameter:
- *	att: the configuration-object (must have the attibute node)
- * @return value: the moveable node
- * @used parts of kkjs:
- */
-
 var event = require("kkjs.event");
 var selection = require("kkjs.selection");
 var css = require("kkjs.css");
@@ -21,6 +9,17 @@ var node = require("kkjs.node");
 var kMath = require("kkjs.Math");
 
 var moveable = function makeMoveable(att){
+	/**
+	 * Function moveable
+	 * @name: moveable
+	 * @author: Korbinian Kapsner
+	 * @version: 1.0
+	 * @description: makes a node freely moveable
+	 * @parameter:
+	 *	att: the configuration-object (must have the attibute node)
+	 * @return value: the moveable node
+	 */
+
 	if (!att.activeNode){
 		att.activeNode = att.node;
 	}
@@ -44,6 +43,16 @@ var movingNode = null;
 var startPosition = new kMath.Position(0, 0);
 var attributes = {};
 moveable.startByScript = function(position, att){
+	/**
+	 * Function moveable.startByScript
+	 * @name: moveable.startByScript
+	 * @author: Korbinian Kapsner
+	 * @description: starts the moving.
+	 * @parameter:
+	 *	position: start position of the mouse
+	 *	att: the configuration-object. See moveable().
+	 */
+	
 	activeNode = att.node;
 	if (att.moveClone){
 		movingNode = att.node.cloneNode(true);
@@ -65,6 +74,16 @@ moveable.startByScript = function(position, att){
 	
 };
 moveable.start = function(ev, att){
+	/**
+	 * Function moveable.start
+	 * @name: moveable.start
+	 * @author: Korbinian Kapsner
+	 * @description: starts the moving by an event.
+	 * @parameter:
+	 *	ev: the event object
+	 *	att: the configuration-object. See moveable().
+	 */
+	
 	moveable.stop(ev, activeNode);
 	if (att.onstart && att.onstart(ev, att.node) === false){
 		return;
@@ -77,6 +96,15 @@ moveable.start = function(ev, att){
 	moveable.startByScript(event.getMousePosition(ev, true), att);
 };
 moveable.stop = function(ev){
+	/**
+	 * Function moveable.stop
+	 * @name: moveable.stop
+	 * @author: Korbinian Kapsner
+	 * @description: stops the moving.
+	 * @parameter:
+	 *	ev: the event object
+	 */
+	
 	if (activeNode){
 		if (attributes.onstop && attributes.onstop(ev, activeNode, movingNode) === false){
 			return;

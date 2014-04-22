@@ -14,6 +14,19 @@ var css = require("kkjs.css");
 kkjs.sortable = {
 	dragNDrop: {
 		set: function set(node, att){
+			/**
+			 * Function sortable.dragNDrop.set
+			 * @name: sortable.dragNDrop.set
+			 * @author: Korbinian Kapsner
+			 * @description: enables drag'n'drop sorting in a node.
+			 * @parameter:
+			 *	node: the node to be sortable
+			 *	att: additional parameter-object:
+			 *		handleSelector: CSS-selector for the handle to be sensitive
+			 *		onaftersort: event listener
+			 *		direction: both|horizontal|vertical
+			 */
+			
 			att = att || {};
 			if (kkjs.is.array(node)){
 				for (var i = 0; i < node.length; i++){
@@ -46,6 +59,16 @@ kkjs.sortable = {
 			}
 		},
 		unset: function unset(node, att){
+			/**
+			 * Function sortable.dragNDrop.unset
+			 * @name: sortable.dragNDrop.unset
+			 * @author: Korbinian Kapsner
+			 * @description: disables drag'n'drop sorting in a node.
+			 * @parameter:
+			 *	node: the node to be no longer sortable
+			 *	att: additional parameter-object:
+			 *		handleSelector: CSS-selector for the handle to be sensitive
+			 */
 			att = att || {};
 			if (kkjs.is.array(node)){
 				for (var i = 0; i < node.length; i++){
@@ -74,6 +97,7 @@ var active = null;
 var mouseStartPosition = {left: 0, top: 0};
 
 var DnDmouseDown = function(ev){
+	/* Event listener for the DnD */
 	mouseStartPosition = kkjs.event.getMousePosition(ev);
 	active = this.toMove;
 	css.set(active, {position: "relative", top: "0px", left: "0px"});

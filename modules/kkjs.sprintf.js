@@ -1,19 +1,19 @@
 (function(){
 "use strict";
 
-/**
- * Function sprintf
- * @name: sprintf
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description: like all sprintf
- * @parameter:
- *	formatStr:
- *	[parameter1, ...]
- */
-
 var sprintf = function sprintf(formatStr){
+	/**
+	 * Function sprintf
+	 * @name: sprintf
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 04.08.2009
+	 * @description: like all sprintf
+	 * @parameter:
+	 *	formatStr:
+	 *	[parameter1, ...]
+	 */
+	
 	var argIndex = 0;
 	var args = Array.prototype.slice.call(arguments, 1);
 	return formatStr.replace(
