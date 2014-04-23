@@ -117,7 +117,7 @@
 	left: -5px;
 	background-image: url('../images/fancy_left.png');
 }
-.kkjs_kightbox:hover .button.prev, .kkjs_kightbox:hover .button.next {
+.kkjs_kightbox .container:hover .button.prev, .kkjs_kightbox .container:hover .button.next {
 	display: block;
 }
 
