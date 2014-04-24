@@ -92,6 +92,17 @@ var shifts = {
 };
 
 function isValidBitSize(size, inBytes){
+	/**
+	 * Function isValidBitSize
+	 * @name: isValidBitSize
+	 * @author: Korbinian Kapsner
+	 * @description: Checks if the given size is valid for AES.
+	 * @parameter:
+	 *	size: the size to check
+	 *	inBytes: if the size is given in bytes
+	 * @return value: if AES can handle the bit size
+	 */
+	
 	if (inBytes){
 		size *= 8;
 	}
@@ -99,6 +110,16 @@ function isValidBitSize(size, inBytes){
 }
 
 function applySBox(input){
+	/**
+	 * Function applySBox
+	 * @name: applySBox
+	 * @author: Korbinian Kapsner
+	 * @description: applies the S-Box to the input string.
+	 * @parameter:
+	 *	input: the input string.
+	 * @return value: the modified string.
+	 */
+	
 	var out = "";
 	for (var i = 0; i < input.length; i++){
 		out += String.fromCharCode(sBox[input.charCodeAt(i)]);
@@ -107,6 +128,16 @@ function applySBox(input){
 }
 
 function applyInverseSBox(input){
+	/**
+	 * Function applyInverseSBox
+	 * @name: applyInverseSBox
+	 * @author: Korbinian Kapsner
+	 * @description: applies the inverse S-Box to the input string.
+	 * @parameter:
+	 *	input: the input string.
+	 * @return value: the modified string.
+	 */
+	
 	var out = "";
 	for (var i = 0; i < input.length; i++){
 		out += String.fromCharCode(inverseSBox[input.charCodeAt(i)]);
@@ -115,6 +146,17 @@ function applyInverseSBox(input){
 }
 
 function xor(str, num, i){
+	/**
+	 * Function xor
+	 * @name: xor
+	 * @author: Korbinian Kapsner
+	 * @description: Performs an XOR
+	 * @parameter:
+	 *	str: the string where the XOR should be performed in
+	 *	num: the XOR number
+	 *	i: the position in the string where the XOR is computed
+	 * @return value: the modified string
+	 */
 	return str.substring(0, i) +
 		String.fromCharCode(
 			str.charCodeAt(i) ^ num
@@ -123,6 +165,16 @@ function xor(str, num, i){
 }
 
 function xorStr(str1, str2){
+	/**
+	 * Function xorStr
+	 * @name: xorStr
+	 * @author: Korbinian Kapsner
+	 * @description: XORs two strings
+	 * @parameter:
+	 *	str1: first string
+	 *	str2: second string
+	 * @return value: the XORed string
+	 */
 	var out = "";
 	var minLength = Math.min(str1.length, str2.length);
 	for (var i = 0; i < minLength; i++){
@@ -134,6 +186,16 @@ function xorStr(str1, str2){
 }
 
 function times(time, nr){
+	/**
+	 * Function times
+	 * @name: times
+	 * @author: Korbinian Kapsner
+	 * @description: Computes the "times" operation
+	 * @parameter:
+	 *	time:
+	 *	nr:
+	 * @return value: the computed value
+	 */
 	switch (time){
 		case 1:
 			return nr;
@@ -155,6 +217,16 @@ function times(time, nr){
 }
 
 function mixColumnGeneral(col, v){
+	/**
+	 * Function mixColumnGeneral
+	 * @name: mixColumnGeneral
+	 * @author: Korbinian Kapsner
+	 * @description: a general implementation of the mix column step
+	 * @parameter:
+	 *	col: column to be mixed
+	 *	v: mix vector
+	 * @return value: the mixed string.
+	 */
 	var a = [];
 	for (var i = 0; i < 4; i++){
 		a[i] = col.charCodeAt(i);
@@ -168,13 +240,40 @@ function mixColumnGeneral(col, v){
 }
 
 function mixColumn(col){
+	/**
+	 * Function mixColumn
+	 * @name: mixColumn
+	 * @author: Korbinian Kapsner
+	 * @description: performs the mix column step.
+	 * @parameter:
+	 *	col: the column
+	 * @return value: the computed string
+	 */
 	return mixColumnGeneral(col, [2, 1, 1, 3]);
 }
 function inverseMixColumn(col){
+	/**
+	 * Function inverseMixColumn
+	 * @name: inverseMixColumn
+	 * @author: Korbinian Kapsner
+	 * @description: performs the inverse mix column step.
+	 * @parameter:
+	 *	col: the column
+	 * @return value: the computed string
+	 */
 	return mixColumnGeneral(col, [0x0e, 0x09, 0x0d, 0x0b]);
 }
 
 function getRows(block){
+	/**
+	 * Function getRows
+	 * @name: getRows
+	 * @author: Korbinian Kapsner
+	 * @description: calculate the rows from a block.
+	 * @parameter:
+	 *	block: the current block
+	 * @return value: the rows
+	 */
 	var rows = ["", "", "", ""];
 	for (var i = 0; i < block.length; i += 4){
 		for (var j = 0; j < 4; j++){
@@ -184,9 +283,28 @@ function getRows(block){
 	return rows;
 }
 function shiftRow(row, shift){
+	/**
+	 * Function shiftRow
+	 * @name: shiftRow
+	 * @author: Korbinian Kapsner
+	 * @description: shifts a row
+	 * @parameter:
+	 *	row: the row to shift
+	 *	shift: the number of shifts.
+	 * @return value: the shifted rows.
+	 */
 	return row.substring(shift) + row.substring(0, shift);
 }
 function getBlockFromRows(rows){
+	/**
+	 * Function getBlockFromRows
+	 * @name: getBlockFromRows
+	 * @author: Korbinian Kapsner
+	 * @description: creates a block from rows.
+	 * @parameter:
+	 *	rows: the rows
+	 * @return value: the created block
+	 */
 	var block = "";
 	for (var i = 0; i < rows[0].length; i++){
 		for (var j = 0; j < 4; j++){
@@ -197,6 +315,16 @@ function getBlockFromRows(rows){
 }
 
 function keyScheduleCore(fourBytesString, rconIndex){
+	/**
+	 * Function keyScheduleCore
+	 * @name: keyScheduleCore
+	 * @author: Korbinian Kapsner
+	 * @description: performs the key schedule core.
+	 * @parameter:
+	 *	fourBytesString:
+	 *	rconIndex:
+	 * @return value: the calculated value
+	 */
 	// rotate
 	var out = fourBytesString.substring(1) + fourBytesString.charAt(0);
 	// apply Rijndael's S-box
@@ -239,18 +367,19 @@ var AES = {
 		
 	},
 	
-	/**
-	 * Function crypt.AES.expandKey
-	 * @name: crypt.AES.expandKey
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 23.04.2013
-	 * @description: 
-	 * @parameter:
-	 *	key: the used key
-	 *	blockSize: blocksize to use
-	 */
 	expandKey: function(key, blockSize){
+		/**
+		 * Function crypt.AES.expandKey
+		 * @name: crypt.AES.expandKey
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 23.04.2013
+		 * @description: 
+		 * @parameter:
+		 *	key: the used key
+		 *	blockSize: blocksize to use
+		 */
+		
 		var keySize = key.length;
 		if (!isValidBitSize(keySize, true)){
 			throw new Error("Unsupported key size.");
@@ -265,6 +394,8 @@ var AES = {
 		
 		var t;
 		function xorAndExpand(){
+			/* XOR the key and expand */
+			
 			t = xorStr(
 				t,
 				expandedKey.substr(expandedKey.length - keySize, 4)
@@ -294,28 +425,34 @@ var AES = {
 		
 		return expandedKey.substr(0, requiredKeySize);
 	}.setDefaultParameter(null, new Function.DefaultParameter(128, {checkFunction: function(size){
+		/* check if the bit size is valid */
 		return isValidBitSize(size);
 	}})),
 	
-	/**
-	 * Function crypt.AES.encryptBlock
-	 * @name: crypt.AES.encryptBlock
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 23.04.2013
-	 * @description: 
-	 * @parameter:
-	 *	block: the block to be encrypted
-	 *	expandedKey: the expanded key from expandKey
-	 */
 	encryptBlock: function(block, expandedKey){
+		/**
+		 * Function crypt.AES.encryptBlock
+		 * @name: crypt.AES.encryptBlock
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 23.04.2013
+		 * @description: 
+		 * @parameter:
+		 *	block: the block to be encrypted
+		 *	expandedKey: the expanded key from expandKey
+		 */
+		
 		var blockSize = block.length;
 		
 		function xorWithKey(){
+			/* block XOR key */
+			
 			block = xorStr(block, expandedKey);
 			expandedKey = expandedKey.substring(blockSize);
 		}
 		function shiftRows(){
+			/* shift all rows */
+			
 			var rows = getRows(block);
 			for (var i = 1; i < 4; i++){
 				rows[i] = shiftRow(rows[i], shifts[blockSize * 8][i]);
@@ -323,6 +460,8 @@ var AES = {
 			block = getBlockFromRows(rows);
 		}
 		function mixColumns(){
+			/* mix the columns */
+			
 			var newBlock = "";
 			for (i = 0; i < blockSize; i += 4){
 				newBlock += mixColumn(block.substring(i));
@@ -346,26 +485,31 @@ var AES = {
 		return block;
 	 },
 	 
-	/**
-	 * Function crypt.AES.decryptBlock
-	 * @name: crypt.AES.decryptBlock
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 23.04.2013
-	 * @description: 
-	 * @parameter:
-	 *	block: the block to be decrypted
-	 *	expandedKey: the expanded key from expandKey
-	 */
 	decryptBlock: function(block, expandedKey){
+		/**
+		 * Function crypt.AES.decryptBlock
+		 * @name: crypt.AES.decryptBlock
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 23.04.2013
+		 * @description: 
+		 * @parameter:
+		 *	block: the block to be decrypted
+		 *	expandedKey: the expanded key from expandKey
+		 */
+		
 		var blockSize = block.length;
 		
 		function xorWithKey(){
+			/* block XOR key */
+			
 			var keySize = expandedKey.length;
 			block = xorStr(block, expandedKey.substring(keySize - blockSize));
 			expandedKey = expandedKey.substring(0, keySize - blockSize);
 		}
 		function shiftRows(){
+			/* shift the rows */
+			
 			var rows = getRows(block);
 			for (var i = 1; i < 4; i++){
 				rows[i] = shiftRow(rows[i], rows[i].length - shifts[blockSize * 8][i]);
@@ -373,6 +517,8 @@ var AES = {
 			block = getBlockFromRows(rows);
 		}
 		function mixColumns(){
+			/* mix the columns */
+			
 			var newBlock = "";
 			for (i = 0; i < blockSize; i += 4){
 				newBlock += inverseMixColumn(block.substring(i));
@@ -397,18 +543,18 @@ var AES = {
 		return block;
 	 },
 	
-	/**
-	 * Function crypt.AES.displayBlock
-	 * @name: crypt.AES.displayBlock
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 23.04.2013
-	 * @description: 
-	 * @parameter:
-	 *	block: the block to be displayed in console
-	 */
-	
 	displayBlock: function(block){
+		/**
+		 * Function crypt.AES.displayBlock
+		 * @name: crypt.AES.displayBlock
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 23.04.2013
+		 * @description: 
+		 * @parameter:
+		 *	block: the block to be displayed in console
+		 */
+		
 		console.log(getRows(block).map(function(r){
 			return r.split("").map(function(c){
 				var str = c.charCodeAt(0).toString(16);

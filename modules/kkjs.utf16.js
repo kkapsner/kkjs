@@ -14,17 +14,17 @@
 
  
 var utf16 = {
-	/**
-	 * Function utf16.toCharCodeArray
-	 * @name: utf16.toCharCodeArray
-	 * @description: Takes a JS-String (which is UTF-16 encoded) and returns an array of the character codes (unicode). If an error is detected (low surrogate before high surrogate
-	 *	or high surrogate without low surrogate) the current character is ignored an the next (possibliy the second surrogate from the error) is processed.
-	 * @parameter:
-	 *	str:
-	 *	removeErrorChar:
-	 */
-	
-	toCharCodeArray: function(str, removeErrorChar){
+	toCharCodeArray: function toCharCodeArray(str, removeErrorChar){
+		/**
+		 * Function utf16.toCharCodeArray
+		 * @name: utf16.toCharCodeArray
+		 * @description: Takes a JS-String (which is UTF-16 encoded) and returns an array of the character codes (unicode). If an error is detected (low surrogate before high surrogate
+		 *	or high surrogate without low surrogate) the current character is ignored an the next (possibliy the second surrogate from the error) is processed.
+		 * @parameter:
+		 *	str:
+		 *	removeErrorChar:
+		 */
+		
 		var l = str.length;
 		var ret = new Array(l), retI = 0;
 		var code, high, low, ok;
@@ -58,28 +58,32 @@ var utf16 = {
 		return ret;
 	},
 	
-	/**
-	 * Function utf16.fromCharCodeArray
-	 * @name: utf16.fromCharCodeArray
-	 * @description:
-	 * @parameter:
-	 *	arr:
-	 */
-	fromCharCodeArray: function(arr){
+	fromCharCodeArray: function fromCharCodeArray(arr){
+		/**
+		 * Function utf16.fromCharCodeArray
+		 * @name: utf16.fromCharCodeArray
+		 * @description:
+		 * @parameter:
+		 *	arr:
+		 */
+		
 		return utf16.fromCharCode.apply(utf16, arr);
 	},
 	
-	/**
-	 * Function utf16.fromCharCode
-	 * @name: utf16.fromCharCode
-	 * @description:
-	 * @parameter:
-	 *	code:
-	 *	code2:
-	 *	...
-	 */
 	fromCharCode: (function(){
+		/**
+		 * Function utf16.fromCharCode
+		 * @name: utf16.fromCharCode
+		 * @description:
+		 * @parameter:
+		 *	code:
+		 *	code2:
+		 *	...
+		 */
+		
 		function encode(code){
+			/* single charactor code encoding function */
+			
 			if (code > 0xFFFF){
 				code -= 0x10000;
 				var high = ((code >>> 10) & 0x03FF) | 0xD800;
@@ -90,7 +94,17 @@ var utf16 = {
 				return String.fromCharCode(code);
 			}
 		}
-		return function(code/*, code2, code3, ...*/){
+		return function fromCharCode(code/*, code2, code3, ...*/){
+			/**
+			 * Function utf16.fromCharCode
+			 * @name: utf16.fromCharCode
+			 * @description:
+			 * @parameter:
+			 *	code:
+			 *	code2:
+			 *	...
+			 */
+			
 			var l = arguments.length;
 			var ret = "";
 			for (var i = 0; i < l; i++){
@@ -100,15 +114,16 @@ var utf16 = {
 		};
 	})(),
 	
-	/**
-	 * Function utf16.toByteStream
-	 * @name: utf16.toByteStream
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 *	littleEndian: Boolean, default false (BOM is prepended)
-	 */
 	toByteStream: function(str, littleEndian){
+		/**
+		 * Function utf16.toByteStream
+		 * @name: utf16.toByteStream
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 *	littleEndian: Boolean, default false (BOM is prepended)
+		 */
+		
 		var l = str.length;
 		var ret = "";
 		if (typeof littleEndian === "undefined"){
@@ -128,15 +143,16 @@ var utf16 = {
 		return ret;
 	},
 	
-	/**
-	 * Function utf16.fromByteStream
-	 * @name: utf16.fromByteStream
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 *	littleEndian: Boolean, default: look at BOM
-	 */
 	fromByteStream: function(str, littleEndian){
+		/**
+		 * Function utf16.fromByteStream
+		 * @name: utf16.fromByteStream
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 *	littleEndian: Boolean, default: look at BOM
+		 */
+		
 		var ret = "";
 		if (typeof littleEndian === "undefined"){
 			switch (str.substring(0, 2)){

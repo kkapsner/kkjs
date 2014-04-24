@@ -12,18 +12,18 @@
 var DOM = require("kkjs.DOM");
 
 var selection = {
-	/**
-	 * Function selection.get
-	 * @name: selection.get
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 05.08.2009
-	 * @description: gibt die Selektion zurück
-	 * @parameter:
-	 *	node:
-	 */
-	
 	get: function getSelection(node){
+		/**
+		 * Function selection.get
+		 * @name: selection.get
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 05.08.2009
+		 * @description: gibt die Selektion zurück
+		 * @parameter:
+		 *	node:
+		 */
+		
 		if (!node){
 			node = document;
 		}
@@ -42,18 +42,18 @@ var selection = {
 		}
 	},
 	
-	/**
-	 * Function selection.getRange
-	 * @name: selection.getRange
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 05.08.2009
-	 * @description: gibt den TextRange bzw. MozillaRange der Selektion zurück - bei mehrfachselektion wird ein Array der Ranges zurückgegeben
-	 * @parameter:
-	 *	node:
-	 */
-
 	getRange: function getSelectedRange(node){
+		/**
+		 * Function selection.getRange
+		 * @name: selection.getRange
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 05.08.2009
+		 * @description: gibt den TextRange bzw. MozillaRange der Selektion zurück - bei mehrfachselektion wird ein Array der Ranges zurückgegeben
+		 * @parameter:
+		 *	node:
+		 */
+		
 		var sel = selection.get(node);
 		if (sel.createRange){
 			return sel.createRange();
@@ -78,19 +78,19 @@ var selection = {
 		}
 	},
 	
-	/**
-	 * Function selection.selectNode
-	 * @name: selection.selectNode
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 05.08.2009
-	 * @description: selektiert die Node toSelect
-	 * @parameter:
-	 *	toSelect:
-	 *	node:
-	 */
-
 	selectNode: function selectNode(toSelect, node){
+		/**
+		 * Function selection.selectNode
+		 * @name: selection.selectNode
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 05.08.2009
+		 * @description: selektiert die Node toSelect
+		 * @parameter:
+		 *	toSelect:
+		 *	node:
+		 */
+		
 		var sel = selection.empty(node), range;
 		if (sel.addRange){
 			range = DOM.getDocument(node).createRange();
@@ -108,17 +108,17 @@ var selection = {
 		return false;
 	},
 	
-	/**
-	 * Function selection.empty
-	 * @name;: selection.empty
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: removes all selections
-	 * @parameter:
-	 *	node:
-	 */
-	
 	empty: function emptySelection(node){
+		/**
+		 * Function selection.empty
+		 * @name;: selection.empty
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: removes all selections
+		 * @parameter:
+		 *	node:
+		 */
+		
 		var sel = selection.get(node);
 		if (sel.removeAllRanges){
 			sel.removeAllRanges();
@@ -129,19 +129,19 @@ var selection = {
 		return sel;
 	},
 	
-	/**
-	 * Function selection.collapse
-	 * @name: selection.collapse
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 05.08.2009
-	 * @description: lässt die aktuelle Selektion am vorderen (begin = true, default) oder hinteren "zusammenfallen"
-	 * @parameter:
-	 *	begin:
-	 *	node:
-	 */
-
 	collapse: function selectionCollapse(begin, node){
+		/**
+		 * Function selection.collapse
+		 * @name: selection.collapse
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 05.08.2009
+		 * @description: lässt die aktuelle Selektion am vorderen (begin = true, default) oder hinteren "zusammenfallen"
+		 * @parameter:
+		 *	begin:
+		 *	node:
+		 */
+		
 		var sel = selection.get(node);
 		
 		if (typeof(begin) !== "boolean"){
@@ -171,6 +171,16 @@ var selection = {
 };
 
 selection.get.text = function getSelectedText(node){
+	/**
+	 * Function selection.get.text
+	 * @name: selection.get.text
+	 * @author: Korbinian Kapsner
+	 * @description: returns the text of the selection
+	 * @parameter:
+	 *	node (optional): node to be searched for a selection
+	 * @return value: the selected text.
+	 */
+	
 	var sel = selection.get(node);
 	if (sel.toString){
 		return sel.toString();

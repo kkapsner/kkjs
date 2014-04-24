@@ -17,16 +17,19 @@ var AES = require("./kkjs.crypt.AES");
 var blockModes = {
 	ECB: {
 		encrypt: function(blocks, cipheredBlocks, currentIndex, expandedKey){
+			/* ECB encrypt function */
 			var block = blocks[currentIndex];
-			return cipheredBlocks[currentIndex] = AES.encryptBlock(block, expandedKey)
+			return cipheredBlocks[currentIndex] = AES.encryptBlock(block, expandedKey);
 		},
 		decrypt: function(cipheredBlocks, blocks, currentIndex, expandedKey){
+			/* ECB decrypt function */
 			var block = cipheredBlocks[currentIndex];
-			return blocks[currentIndex] = AES.decryptBlock(block, expandedKey)
+			return blocks[currentIndex] = AES.decryptBlock(block, expandedKey);
 		}
 	},
 	CBC: {
 		encrypt: function(blocks, cipheredBlocks, currentIndex, expandedKey, iv){
+			/* CBC encrypt function */
 			var block = blocks[currentIndex];
 			if (currentIndex){
 				iv = cipheredBlocks[currentIndex - 1];
@@ -38,6 +41,7 @@ var blockModes = {
 			);
 		},
 		decrypt: function(cipheredBlocks, blocks, currentIndex, expandedKey, iv){
+			/* CBC decrypt function */
 			var block = cipheredBlocks[currentIndex];
 			if (currentIndex){
 				iv = cipheredBlocks[currentIndex - 1];
@@ -54,6 +58,7 @@ var blockModes = {
 	},
 	PCBC: {
 		encrypt: function(blocks, cipheredBlocks, currentIndex, expandedKey, iv){
+			/* PCBC encrypt function */
 			var block = blocks[currentIndex];
 			if (currentIndex){
 				iv = AES.utils.xorStr(blocks[currentIndex - 1], cipheredBlocks[currentIndex - 1]);
@@ -65,6 +70,7 @@ var blockModes = {
 			);
 		},
 		decrypt: function(cipheredBlocks, blocks, currentIndex, expandedKey, iv){
+			/* PCBC decrypt function */
 			var block = cipheredBlocks[currentIndex];
 			if (currentIndex){
 				iv = AES.utils.xorStr(blocks[currentIndex - 1], cipheredBlocks[currentIndex - 1]);
@@ -82,6 +88,7 @@ var blockModes = {
 	CFB: {
 		stream: true,
 		encrypt: function(blocks, cipheredBlocks, currentIndex, expandedKey, iv){
+			/* CFB encrypt function */
 			var block = blocks[currentIndex];
 			if (currentIndex){
 				iv = cipheredBlocks[currentIndex - 1];
@@ -96,6 +103,7 @@ var blockModes = {
 			);
 		},
 		decrypt: function(cipheredBlocks, blocks, currentIndex, expandedKey, iv){
+			/* CFB decrypt function */
 			var block = cipheredBlocks[currentIndex];
 			if (currentIndex){
 				iv = cipheredBlocks[currentIndex - 1];
@@ -113,6 +121,7 @@ var blockModes = {
 	OFB: {
 		stream: true,
 		encrypt: function(blocks, cipheredBlocks, currentIndex, expandedKey, iv){
+			/* OFB encrypt function */
 			var block = blocks[currentIndex];
 			if (currentIndex){
 				iv = cipheredBlocks[currentIndex - 1];
@@ -121,12 +130,14 @@ var blockModes = {
 			return AES.utils.xorStr(block, cipheredBlocks[currentIndex]);
 		},
 		decrypt: function(cipheredBlocks, blocks, currentIndex, expandedKey, iv){
+			/* OFB decrypt function */
 			return this.encrypt(cipheredBlocks, blocks, currentIndex, expandedKey, iv);
 		}
 	},
 	CTR: {
 		stream: true,
 		encrypt: function(blocks, cipheredBlocks, currentIndex, expandedKey, iv){
+			/* CTR encrypt function */
 			var block = blocks[currentIndex];
 			var ctr = "", bits = currentIndex;
 			while (bits){
@@ -145,6 +156,7 @@ var blockModes = {
 			);
 		},
 		decrypt: function(cipheredBlocks, blocks, currentIndex, expandedKey, iv){
+			/* CTR decrypt function */
 			return this.encrypt(cipheredBlocks, blocks, currentIndex, expandedKey, iv);
 		}
 	}

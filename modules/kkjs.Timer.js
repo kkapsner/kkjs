@@ -36,7 +36,7 @@ var cancelAnimationFrame =
 
 var NodeRepresentator = require("kkjs.NodeRepresentator");
 var knode = require("kkjs.node");
-//var sprintf = require("kkjs.sprintf");
+var sprintf = require("kkjs.sprintf");
 
 var Timer = NodeRepresentator.extend(function Timer(time){
 	this.countdown = !!time;
@@ -51,7 +51,17 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 	time: null,
 	countdown: true,
 	animation: false,
-	getTime: function(elapsed){
+	getTime: function getTime(elapsed){
+		/**
+		 * Function Timer.getTime
+		 * @name: Timer.getTime
+		 * @author: Korbinian Kapsner
+		 * @description: returns the time of the timer.
+		 * @parameter:
+		 *	elapsed: if the elapsed time should be returned
+		 * @return value: the time of the timer
+		 */
+		
 		if (!this.countdown || elapsed){
 			return this.getElapsedTime();
 		}
@@ -59,7 +69,15 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 			return this.time - this.getElapsedTime();
 		}
 	},
-	getElapsedTime: function(){
+	getElapsedTime: function getElapsedTime(){
+		/**
+		 * Function Timer.getElapsedTime
+		 * @name: Timer.getElapsedTime
+		 * @author: Korbinian Kapsner
+		 * @description: returns the elapsed time of the timer
+		 * @return value: the elapsed time
+		 */
+		
 		if (this.isRunning()){
 			return (new Date() - this.startTime);
 		}
@@ -73,7 +91,15 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 			return 0;
 		}
 	},
-	getTimeString: function(){
+	getTimeString: function getTimeString(){
+		/**
+		 * Function Timer.getTimeString
+		 * @name: Timer.getTimeString
+		 * @author: Korbinian Kapsner
+		 * @description: returns the time of the timer as a mm:ss string
+		 * @return value: the formated time string
+		 */
+		
 		var time = this.getTime() / 1000;
 		var sign = "";
 		if (time < 0){
@@ -85,17 +111,40 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 				sign = "-";
 			}
 		}
-		return sign + require("kkjs.sprintf")("%02d:%02d", Math.floor(time / 60), Math.round(time % 60));
-		//return sprintf("%02d:%02d", Math.floor(time / 60), Math.round(time % 60));
+		return sign + sprintf("%02d:%02d", Math.floor(time / 60), Math.round(time % 60));
 	},
 	
-	isRunning: function(){
+	isRunning: function isRunning(){
+		/**
+		 * Function Timer.isRunning
+		 * @name: Timer.isRunning
+		 * @author: Korbinian Kapsner
+		 * @description: checks if the timer is currently running
+		 * @return value: if the timer is running
+		 */
+		
 		return !!this.timeout;
 	},
-	isPaused: function(){
+	isPaused: function isPaused(){
+		/**
+		 * Function Timer.isPaused
+		 * @name: Timer.isPaused
+		 * @author: Korbinian Kapsner
+		 * @description: checks if the timer is currently paused
+		 * @return value: if the timer is paused
+		 */
+		
 		return !!this.pauseTime;
 	},
-	isStopped: function(){
+	isStopped: function isStopped(){
+		/**
+		 * Function Timer.isStopped
+		 * @name: Timer.isStopped
+		 * @author: Korbinian Kapsner
+		 * @description: checks if the timer is currently stopped
+		 * @return value: if the timer is stopped
+		 */
+		
 		return !!this.stopTime;
 	},
 	
@@ -108,7 +157,14 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 	interval: null,
 	animationFrame: null,
 	
-	start: function(){
+	start: function start(){
+		/**
+		 * Function Timer.start
+		 * @name: Timer.start
+		 * @author: Korbinian Kapsner
+		 * @description: starts the timer
+		 */
+		
 		if (!this.isRunning()){
 			this.stopTime = null;
 			if (this.isPaused()){
@@ -124,14 +180,28 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 			this.emit("run");
 		}
 	},
-	pause: function(){
+	pause: function pause(){
+		/**
+		 * Function Timer.pause
+		 * @name: Timer.pause
+		 * @author: Korbinian Kapsner
+		 * @description: pauses the timer
+		 */
+		
 		if (this.isRunning()){
 			this.pauseTime = new Date();
 			this._clearTicking();
 			this.emit("pause");
 		}
 	},
-	stop: function(){
+	stop: function stop(){
+		/**
+		 * Function Timer.stop
+		 * @name: Timer.stop
+		 * @author: Korbinian Kapsner
+		 * @description: stops the timer
+		 */
+		
 		if (this.isRunning()){
 			this.stopTime = new Date();
 			this._clearTicking();
@@ -146,7 +216,15 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		}
 	},
 	
-	tick: function(){
+	tick: function tick(){
+		/**
+		 * Function Timer.tick
+		 * @name: Timer.tick
+		 * @author: Korbinian Kapsner
+		 * @description: tick function that is called in every timer tick.
+		 *	Should only be used in Timer._setTicking().
+		 */
+		
 		this.update();
 		this.emit("tick");
 		if (this.getTime() <= 0){
@@ -162,6 +240,13 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 	
 	// "private" functions
 	_setTicking: function(){
+		/**
+		 * Function Timer._setTicking
+		 * @name: Timer._setTicking
+		 * @author: Korbinian Kapsner
+		 * @description: starts the ticking of the timer.
+		 */
+		
 		this.timeout = window.setTimeout(this.tick, this.getTime());
 		if (this.animation){
 			this.animationFrame = requestAnimationFrame(this.tick);
@@ -171,6 +256,13 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		}
 	},
 	_clearTicking: function(){
+		/**
+		 * Function Timer._clearTicking
+		 * @name: Timer._clearTicking
+		 * @author: Korbinian Kapsner
+		 * @description: clears the ticking of the timer.
+		 */
+		
 		window.clearTimeout(this.timeout);
 		this.timeout = null;
 		cancelAnimationFrame(this.animationFrame);
@@ -181,6 +273,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 	
 	// NodeRepresentator required functions
 	_createNode: function(){
+		/* NodeRepresentator interface implementation */
 		return knode.create({
 			tag: "span",
 			className: "timer",
@@ -188,6 +281,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		});
 	},
 	_updateNode: function(node){
+		/* NodeRepresentator interface implementation */
 		node.innerHTML = this.getTimeString().encodeHTMLEntities();
 	}
 });

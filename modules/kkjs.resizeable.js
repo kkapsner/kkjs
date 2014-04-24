@@ -1,28 +1,30 @@
 (function(){
 "use strict";
 
-/**
- * Function resizeable
- * @name: resizeable
- * @author: Korbinian Kapsner
- * @version: 1.0
- * @description: makes a node freely resizeable
- * @parameter:
- *	att: the configuration-object (must have the attibute node and borderNodes (array with the direction-Nodes - identification over the cursor-style))
- * @return value: the moveable node
- */
-
 var selection = require("kkjs.selection");
 var css = require("kkjs.css");
 var event = require("kkjs.event");
 var node = require("kkjs.node");
 
 var resizeable = function makeResizeable(att){
+	/**
+	 * Function resizeable
+	 * @name: resizeable
+	 * @author: Korbinian Kapsner
+	 * @version: 1.0
+	 * @description: makes a node freely resizeable
+	 * @parameter:
+	 *	att: the configuration-object (must have the attibute node and borderNodes (array with the direction-Nodes - identification over the cursor-style))
+	 * @return value: the moveable node
+	 */
+	
 	var storage = makeResizeable;
 	if (!storage.isInit){
 		storage.activeNode = false;
 		storage.startPosition = {left: 0, top: 0};
 		storage.stop = function(ev){
+			/* Stops the resizing */
+			
 			if (storage.activeNode){
 				if (typeof storage.activeNode.onresizestop === "function"){
 					storage.activeNode.onresizestop(ev, storage.activeNode);
@@ -32,6 +34,7 @@ var resizeable = function makeResizeable(att){
 			}
 		};
 		storage.start =  function(ev, node, att){
+			/* Starts the resizing */
 			if (!att){
 				return;
 			}
@@ -52,7 +55,7 @@ var resizeable = function makeResizeable(att){
 		};
 		event.add(document, "mousemove", function(ev){
 			if (!ev.which){
-				storage.stop();
+				storage.stop(ev);
 			}
 			if (storage.activeNode){
 				var mPos = event.getMousePosition(ev);
