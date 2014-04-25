@@ -375,14 +375,23 @@ var css = {
 		}
 		else {
 			for (var i in styles){
-				if (styles.hasOwnProperty(i)){
-					css.setSingle(node, i, styles[i]);
+				if (/^\D/.test(i) && styles.hasOwnProperty(i)){
+					try {
+						css.setSingle(node, i, styles[i]);
+					}
+					catch (e){
+						console.error(kkjs.sprintf(
+							"Error setting style \"%s\": %s",
+							i,
+							e.message
+						));
+					}
 				}
 			}
 		}
 		return node;
 	}.makeArrayCallable([0], {arrayLike: true}),
-	setSingle: function setSingelStyle(node, name, value){
+	setSingle: function setSingleStyle(node, name, value){
 		try{
 			if (typeof value === "function"){
 				value = value.call(node, name);
