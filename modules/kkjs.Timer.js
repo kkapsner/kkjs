@@ -39,6 +39,17 @@ var knode = require("kkjs.node");
 var sprintf = require("kkjs.sprintf");
 
 var Timer = NodeRepresentator.extend(function Timer(time){
+	/**
+	 * Constructor Timer
+	 * @name: Timer
+	 * @author: Korbinian Kapsner
+	 * @description: creates a timer instance
+	 * @parameter:
+	 *	time (optional): if provided the countdown time. If not provided
+	 *		a "countup" timer is created.
+	 * @return value: the timer instance
+	 */
+	
 	this.countdown = !!time;
 	if (this.countdown){
 		this.time = time;

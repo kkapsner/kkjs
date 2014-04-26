@@ -9,19 +9,19 @@
 
 var utf16 = require("./kkjs.utf16");
 
-/**
- * Function String.prototype.firstToUpperCase
- * @name: String.prototype.firstToUpperCase
- * @version: 1.0
- * @author: Korbinian Kapsner
- * @last modify: 12.04.2012
- * @description: Macht den ersten Buchstaben zu einem Großbuchstaben
- * @parameter:
- *	restToLowerCase: Boolean, ob der Rest in Kleinbuchstaben umgewandelt werden soll
- *
- */
-
 String.prototype.firstToUpperCase = function firstToUpperCase(restToLowerCase){
+	/**
+	 * Function String.prototype.firstToUpperCase
+	 * @name: String.prototype.firstToUpperCase
+	 * @version: 1.0
+	 * @author: Korbinian Kapsner
+	 * @last modify: 12.04.2012
+	 * @description: Macht den ersten Buchstaben zu einem Großbuchstaben
+	 * @parameter:
+	 *	restToLowerCase: Boolean, ob der Rest in Kleinbuchstaben umgewandelt werden soll
+	 *
+	 */
+	
 	var str;
 	if (restToLowerCase){
 		str = this.toLowerCase();
@@ -32,20 +32,19 @@ String.prototype.firstToUpperCase = function firstToUpperCase(restToLowerCase){
 	return str.charAt(0).toUpperCase() + str.substring(1);
 };
 
-
-/**
- * Function String.prototype.reverse
- * @name: String.prototype.reverse
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description: dreht den String um
- * @parameter:
- *	block: Größe der "Umdrehblöcke" z.B. ("hilfe").reverse(2) == "feilh"
- *
- */
-
 String.prototype.reverse = function reverse(block){
+	/**
+	 * Function String.prototype.reverse
+	 * @name: String.prototype.reverse
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 04.08.2009
+	 * @description: dreht den String um
+	 * @parameter:
+	 *	block: Größe der "Umdrehblöcke" z.B. ("hilfe").reverse(2) == "feilh"
+	 *
+	 */
+	
 	if (!block){
 		block = 1;
 	}
@@ -59,20 +58,20 @@ String.prototype.reverse = function reverse(block){
 	return ret;
 };
 
-/**
- * Function String.prototype.translate
- * @name: String.prototype.translate
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 11.04.2012
- * @description: This function returns a copy of the string , translating all occurrences of each character in from to the corresponding character in to .
- * @parameter:
- *	from:
- *	to:
- *
- */
-
 String.prototype.translate = function translate(from, to){
+	/**
+	 * Function String.prototype.translate
+	 * @name: String.prototype.translate
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 11.04.2012
+	 * @description: This function returns a copy of the string , translating all occurrences of each character in from to the corresponding character in to .
+	 * @parameter:
+	 *	from:
+	 *	to:
+	 *
+	 */
+	
 	var ret = "";
 	for (var i = 0; i < this.length; i++){
 		var chr = this.charAt(i);
@@ -84,44 +83,37 @@ String.prototype.translate = function translate(from, to){
 	return ret;
 };
 
-/**
- *
- */
-
 String.prototype.quoteRegExp = function quoteRegExp(){
+	/**
+	 * Function String.prototype.quoteRegExp
+	 * @name: String.prototype.quoteRegExp
+	 * @author: Korbinian Kapsner
+	 * @description: escapes all special characters for a RegExp.
+	 * @return value: the quoted string
+	 */
+	
 	return this.replace(/[\\\+\*\?\[\^\]\$\(\)\{\}\=\!\|\.]/g, "\\$1");
 };
 
-/**
- * Function String.prototype.repeat
- * @name: String.prototype.repeat
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description: returns a string x times the original string
- * @parameter:
- *	x:
- *
- */
-
 String.prototype.repeat = function repeat(x){
+	/**
+	 * Function String.prototype.repeat
+	 * @name: String.prototype.repeat
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 04.08.2009
+	 * @description: returns a string x times the original string
+	 * @parameter:
+	 *	x:
+	 *
+	 */
+	
 	var ret = "";
 	for (var i = 0; i < x; i++){
 		ret += this;
 	}
 	return ret;
 };
-
-/**
- * Function String.prototype.decodeHTMLentities
- * @name: String.prototype.decodeHTMLentities
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 04.08.2009
- * @description: replaces all HTML-entities by there normal characters
- * @parameter:
- *
- */
 
 String.prototype.decodeHTMLentities = String.prototype.decodeHTMLEntities = (function(){
 	var HTMLentities =  {
@@ -170,6 +162,17 @@ String.prototype.decodeHTMLentities = String.prototype.decodeHTMLEntities = (fun
 		Zeta: 918, zeta: 950, zwj: 8205, zwnj: 8204
 	};
 	return function decodeHTMLentities(){
+		/**
+		 * Function String.prototype.decodeHTMLentities
+		 * @name: String.prototype.decodeHTMLentities
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description: replaces all HTML-entities by there normal characters
+		 * @parameter:
+		 *
+		 */
+		
 		return this.replace(/&([^;]+);/g, function(m, c){
 			if (HTMLentities.hasOwnProperty(c)){
 				return utf16.fromCharCode(HTMLentities[c]);
@@ -185,18 +188,18 @@ String.prototype.decodeHTMLentities = String.prototype.decodeHTMLEntities = (fun
 	};
 }());
 
-/**
- * Function String.prototype.encodeHTMLentities
- * @name: String.prototype.encodeHTMLentities
- * @version: 0.9
- * @author: Korbinian Kapsner
- * @last modify: 11.04.2012
- * @description: replaces all special characters by there HTML-entities
- * @parameter:
- *
- */
-
 String.prototype.encodeHTMLentities = String.prototype.encodeHTMLEntities = function encodeHTMLentities(){
+	/**
+	 * Function String.prototype.encodeHTMLentities
+	 * @name: String.prototype.encodeHTMLentities
+	 * @version: 0.9
+	 * @author: Korbinian Kapsner
+	 * @last modify: 11.04.2012
+	 * @description: replaces all special characters by there HTML-entities
+	 * @parameter:
+	 *
+	 */
+	
 	return this.replace(/((?:[^\t\n\r\x21-\x7E]|["'<>&])+)/ig, function(m, c){
 		return utf16.toCharCodeArray(c).reduce(function(str, code){
 			return str + "&#" + code + ";";

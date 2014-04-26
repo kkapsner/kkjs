@@ -21,19 +21,19 @@ var form = {
 	 */
 	
 	ajax: {
-		/**
-		 * Function form.ajax.send
-		 * @name: form.ajax.send
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description:
-		 * @parameter:
-		 *	form:
-		 *	att:
-		 * @return value:
-		 */
-		
 		send: function sendForm(formNode, att){
+			/**
+			 * Function form.ajax.send
+			 * @name: form.ajax.send
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description:
+			 * @parameter:
+			 *	form:
+			 *	att:
+			 * @return value:
+			 */
+			
 			if (!att.url){
 				att.url = formNode.getAttribute("action");
 			}
@@ -51,34 +51,34 @@ var form = {
 			return ajax.advanced(att);
 		}.setDefaultParameter(null, new Function.DefaultParameter({asynch: false}),
 		
-		/**
-		 * Function form.ajax.simpleSend
-		 * @name: form.ajax.simpleSend
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description:
-		 * @parameter:
-		 *	form:
-		 *	funktion:
-		 * @return value:
-		 */
-		
 		simpleSend: function simpleSendForm(formNode, funktion){
+			/**
+			 * Function form.ajax.simpleSend
+			 * @name: form.ajax.simpleSend
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description:
+			 * @parameter:
+			 *	form:
+			 *	funktion:
+			 * @return value:
+			 */
+			
 			return form.ajax.send(formNode, {onload: funktion});
 		},
 		
-		/**
-		 * Function form.ajax.getElementsQueryObject
-		 * @name: form.ajax.getElementsQueryObject
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: traverses all Elements of the formular and creates a query-object
-		 * @parameter:
-		 *	form
-		 * @return value: the query-object
-		 */
-		
 		getElementsQueryObject: function getFormElementsQueryObject(form, clickedButton){
+			/**
+			 * Function form.ajax.getElementsQueryObject
+			 * @name: form.ajax.getElementsQueryObject
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: traverses all Elements of the formular and creates a query-object
+			 * @parameter:
+			 *	form
+			 * @return value: the query-object
+			 */
+			
 			var el = form.elements, e;
 			var query = {};
 			for (var i = 0; i < el.length; i++){
@@ -115,18 +115,18 @@ var form = {
 			return query;
 		},
 		
-		/**
-		 * Function form.ajax.getElementsQueryString
-		 * @name: form.ajax.getElementsQueryString
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: traverses all Elements of the formular and creates a query-string
-		 * @parameter:
-		 *	form
-		 * @return value: the query-string
-		 */
-		
 		getElementsQueryString: function getFormElementsQueryString(formNode, clickedButton){
+			/**
+			 * Function form.ajax.getElementsQueryString
+			 * @name: form.ajax.getElementsQueryString
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: traverses all Elements of the formular and creates a query-string
+			 * @parameter:
+			 *	form
+			 * @return value: the query-string
+			 */
+			
 			var qObject = form.ajax.getElementsQueryObject(formNode, clickedButton);
 			var query = [];
 			for (var i in qObject){
@@ -146,6 +146,16 @@ var form = {
 	},
 	
 	submit: function(att){
+		/**
+		 * Function form.submit
+		 * @name: form.submit
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: submits data via a <form>.
+		 * @parameter:
+		 *	att:
+		 */
+		
 		var children = [];
 		for (var name in att.values){
 			if (att.values.hasOwnProperty(name)){
@@ -171,6 +181,8 @@ var form = {
 		var form = kkjs.node.create({
 			tag: "form",
 			onsubmit: function(){
+				/* Remove <form> onsubmit */
+				
 				if (this.parentNode){
 					this.parentNode.removeChild(this);
 				}

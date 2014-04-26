@@ -17,21 +17,22 @@
 	
 	var EventEmitter = oo.Base.extend().implement({
 		
-		/**
-		 * Function EventEmitter.emit
-		 * @name: EventEmitter.emit
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: Emits an event on the instance. If the instance has a eventParent-Attribut
-		 *	that is also an EventEmitter the event bubbles.
-		 * @parameter:
-		 *	eventType: the specific fired event type
-		 *	argument1: additional arguments passed to the event listener
-		 *	arugment2: ...
-		 *	...
-		 * @return value: The instance of the EventEmitter.
-		 */
 		emit: function(eventType){
+			/**
+			 * Function EventEmitter.emit
+			 * @name: EventEmitter.emit
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: Emits an event on the instance. If the instance has a eventParent-Attribut
+			 *	that is also an EventEmitter the event bubbles.
+			 * @parameter:
+			 *	eventType: the specific fired event type
+			 *	argument1: additional arguments passed to the event listener
+			 *	arugment2: ...
+			 *	...
+			 * @return value: The instance of the EventEmitter.
+			 */
+			
 			if (this.eventParent && this.eventParent instanceof EventEmitter){
 				this.eventParent.emit.apply(this.eventParent, arguments);
 			}
@@ -55,28 +56,29 @@
 			return this;
 		}.makeArrayCallable([0], {mapReturnValues: false}),
 		
-		/**
-		 * Function EventEmitter.on
-		 * @name: EventEmitter.on
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: Registers an event listener on the instance. Every time a
-		 *	listener is registered the "newListener"-event is fired.
-		 *	
-		 *	Both parameter can be arrays. Then the .on() method will be called for
-		 *	every element in the arrays. E.g.:
-		 *		INSTANCE.on(["change", "undo"], [func1, func2]);
-		 *			<-->
-		 *		INSTANCE.on("change", func1);
-		 *		INSTANCE.on("change", func2);
-		 *		INSTANCE.on("undo", func1);
-		 *		INSTANCE.on("undo", func2]);
-		 * @parameter:
-		 *	eventType: The specific event type the listener is registered to.
-		 *	eventListener: The listener function to be registered
-		 * @return value: The instance of the EventEmitter.
-		 */
 		on: function(eventType, eventListener){
+			/**
+			 * Function EventEmitter.on
+			 * @name: EventEmitter.on
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: Registers an event listener on the instance. Every time a
+			 *	listener is registered the "newListener"-event is fired.
+			 *	
+			 *	Both parameter can be arrays. Then the .on() method will be called for
+			 *	every element in the arrays. E.g.:
+			 *		INSTANCE.on(["change", "undo"], [func1, func2]);
+			 *			<-->
+			 *		INSTANCE.on("change", func1);
+			 *		INSTANCE.on("change", func2);
+			 *		INSTANCE.on("undo", func1);
+			 *		INSTANCE.on("undo", func2]);
+			 * @parameter:
+			 *	eventType: The specific event type the listener is registered to.
+			 *	eventListener: The listener function to be registered
+			 * @return value: The instance of the EventEmitter.
+			 */
+			
 			if (!(
 				typeof eventListener === "function" ||
 				eventListener instanceof Function
@@ -95,48 +97,50 @@
 			return this;
 		}.makeArrayCallable([0, 1], {mapReturnValues: false}),
 		
-		/**
-		 * Function EventEmitter.onOnce
-		 * @name: EventEmitter.onOnce
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: Registers a one time event listener on the instance. 
-		 *	
-		 *	Both parameter can be arrays. Then the .on() method will be called for
-		 *	every element in the arrays. E.g.:
-		 *		INSTANCE.on(["change", "undo"], [func1, func2]);
-		 *			<-->
-		 *		INSTANCE.on("change", func1);
-		 *		INSTANCE.on("change", func2);
-		 *		INSTANCE.on("undo", func1);
-		 *		INSTANCE.on("undo", func2]);
-		 * @parameter:
-		 *	eventType: The specific event type the listener is registered to.
-		 *	eventListener: The listener function to be registered
-		 * @return value: The instance of the EventEmitter.
-		 */
 		onOnce: function(eventType, eventListener){
+			/**
+			 * Function EventEmitter.onOnce
+			 * @name: EventEmitter.onOnce
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: Registers a one time event listener on the instance. 
+			 *	
+			 *	Both parameter can be arrays. Then the .on() method will be called for
+			 *	every element in the arrays. E.g.:
+			 *		INSTANCE.on(["change", "undo"], [func1, func2]);
+			 *			<-->
+			 *		INSTANCE.on("change", func1);
+			 *		INSTANCE.on("change", func2);
+			 *		INSTANCE.on("undo", func1);
+			 *		INSTANCE.on("undo", func2]);
+			 * @parameter:
+			 *	eventType: The specific event type the listener is registered to.
+			 *	eventListener: The listener function to be registered
+			 * @return value: The instance of the EventEmitter.
+			 */
+			
 			this.on(eventType, function wrapper(){
+				/* wrapper function that removes the listener before first call */
 				this.removeListener(eventType, wrapper);
 				eventListener.apply(this, arguments);
 			});
 			return this;
 		}.makeArrayCallable([0, 1], {mapReturnValues: false}),
 		
-		
-		/**
-		 * Function EventEmitter.listeners
-		 * @name: EventEmitter.listeners
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: Returns all listeners for a specific event type.
-		 *	By modifying the returned array the actual listener queue is modified.
-		 * @parameter:
-		 *	eventType: The specific event type for that all listeners should be
-		 *		returned
-		 * @return value: Array containing all listeners.
-		 */
 		listeners: function(eventType){
+			/**
+			 * Function EventEmitter.listeners
+			 * @name: EventEmitter.listeners
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: Returns all listeners for a specific event type.
+			 *	By modifying the returned array the actual listener queue is modified.
+			 * @parameter:
+			 *	eventType: The specific event type for that all listeners should be
+			 *		returned
+			 * @return value: Array containing all listeners.
+			 */
+			
 			if (!this._events){
 				this._events = {};
 			}
@@ -146,18 +150,19 @@
 			return this._events[eventType];
 		},
 		
-		/**
-		 * Function EventEmitter.hasListenerFor
-		 * @name: EventEmitter.hasListenerFor
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: Checks if the instance has a registered listener for the
-		 *	specified event type.
-		 * @parameter:
-		 *	eventType: The specific event type that is checked
-		 * @return value: Boolean if a listener is registered.
-		 */
 		hasListenerFor: function(eventType){
+			/**
+			 * Function EventEmitter.hasListenerFor
+			 * @name: EventEmitter.hasListenerFor
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: Checks if the instance has a registered listener for the
+			 *	specified event type.
+			 * @parameter:
+			 *	eventType: The specific event type that is checked
+			 * @return value: Boolean if a listener is registered.
+			 */
+			
 			return !!(
 				this._events &&
 				this._events[eventType] &&
@@ -165,18 +170,19 @@
 			);
 		},
 		
-		/**
-		 * Function EventEmitter.removeListener
-		 * @name: EventEmitter.removeListener
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: A specific event listener.
-		 * @parameter:
-		 *	eventType: The specific event type in which the listener is searched.
-		 *	eventListener: The specific listener to be removed.
-		 * @return value: The instance of the EventEmitter.
-		 */
 		removeListener: function(eventType, eventListener){
+			/**
+			 * Function EventEmitter.removeListener
+			 * @name: EventEmitter.removeListener
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: A specific event listener.
+			 * @parameter:
+			 *	eventType: The specific event type in which the listener is searched.
+			 *	eventListener: The specific listener to be removed.
+			 * @return value: The instance of the EventEmitter.
+			 */
+			
 			if (this._events && this._events[eventType]){
 				var eventList = this._events[eventType];
 				for (var i = 0; i < eventList.length; i++){
@@ -192,19 +198,20 @@
 			return this;
 		},
 		
-		/**
-		 * Function EventEmitter.removeAllListeners
-		 * @name: EventEmitter.removeAllListeners
-		 * @author: Korbinian Kapsner
-		 * @version: 1.0
-		 * @description: Removes all event listener
-		 * @parameter:
-		 *	[eventType: The specific event type for that all listeners should be
-		 *		removed. If this parameter is not provided or falsy all listeners
-		 *		for all event types will get removed.]
-		 * @return value: The instance of the EventEmitter.
-		 */
 		removeAllListeners: function(eventType){
+			/**
+			 * Function EventEmitter.removeAllListeners
+			 * @name: EventEmitter.removeAllListeners
+			 * @author: Korbinian Kapsner
+			 * @version: 1.0
+			 * @description: Removes all event listener
+			 * @parameter:
+			 *	[eventType: The specific event type for that all listeners should be
+			 *		removed. If this parameter is not provided or falsy all listeners
+			 *		for all event types will get removed.]
+			 * @return value: The instance of the EventEmitter.
+			 */
+			
 			if (!eventType){
 				delete this._events;
 			}
