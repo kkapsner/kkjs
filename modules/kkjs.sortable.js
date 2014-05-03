@@ -28,7 +28,7 @@ kkjs.sortable = {
 			 */
 			
 			att = att || {};
-			if (kkjs.is.array(node)){
+			if (Array.isArray(node)){
 				for (var i = 0; i < node.length; i++){
 					set(node[i]);
 				}
@@ -70,7 +70,7 @@ kkjs.sortable = {
 			 *		handleSelector: CSS-selector for the handle to be sensitive
 			 */
 			att = att || {};
-			if (kkjs.is.array(node)){
+			if (Array.isArray(node)){
 				for (var i = 0; i < node.length; i++){
 					unset(node[i]);
 				}

@@ -4,7 +4,6 @@
 /* @name: kkjs.TextareaManager
  * @version: 0.9.1
  * @author: Korbinian Kapsner
- * @last modify: 21.12.2010
  * @description:
  * @parameter:
  *	node:
@@ -19,6 +18,14 @@ function preventDefault(ev){
 }
 
 kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
+	/**
+	 * Constructor TextareaManager
+	 * @name: TextareaManager
+	 * @author: Korbinian Kapsner
+	 * @parameter:
+	 *	node: the <textarea> to be managed.
+	 */
+	
 	if (!node || node.nodeName !== "TEXTAREA"){
 		throw new ReferenceError("First parameter must be a textarea.");
 	}

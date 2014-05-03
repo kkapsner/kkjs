@@ -238,7 +238,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		
 		this.update();
 		this.emit("tick");
-		if (this.getTime() <= 0){
+		if (this.countdown && this.getTime() <= 0){
 			this.stop();
 			this.emit("timeOver");
 		}
@@ -258,7 +258,9 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		 * @description: starts the ticking of the timer.
 		 */
 		
-		this.timeout = window.setTimeout(this.tick, this.getTime());
+		if (this.countdown){
+			this.timeout = window.setTimeout(this.tick, this.getTime());
+		}
 		if (this.animation){
 			this.animationFrame = requestAnimationFrame(this.tick);
 		}
