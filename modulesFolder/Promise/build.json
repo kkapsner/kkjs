@@ -1,0 +1,10 @@
+{
+	"name": "kkjs.Promise.js",
+	"strict": true,
+	"commonScope": true,
+	"description": "Parent class for other classes that want to make/fulfill/deny promises.",
+	"order": [
+		"Promise.js"
+	],
+	"exports": "Promise"
+}
