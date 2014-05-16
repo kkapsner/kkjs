@@ -9,16 +9,17 @@
 		 * @description: Setter function to Date.prototype.getDay().
 		 * @parameter:
 		 *	day: day of the week to be set
-		 *	splitDay (optional): day where the week should be splitted. Default is
-		 *		the current week day.
-		 *		E.g.: If the current day is Wednesday and you want to set the day to
-		 *			Sunday. If you set splitDay to Friday the new date will be last
-		 *			Sunday. But if you set it to Monday it will be next Sunday.
+		 *	splitDay (optional): day where the week should be splitted. Default
+		 *		is monday.
+		 *		E.g.: If the current day is Wednesday and you want to set the
+		 *			day to Sunday. If you set splitDay to Friday the new date
+		 *			will be last Sunday. But if you set it to Monday it will be
+		 *			next Sunday.
 		 */
 		
 		var currDay = this.getDay();
 		if (typeof splitDay === "undefined"){
-			splitDay = currDay;
+			splitDay = 1;
 		}
 		else {
 			splitDay = ((splitDay % 7) + 7 ) % 7;

@@ -31,7 +31,7 @@ unitTest.add = function addTest(test){
 	 */
 	
 	if (typeof test === "function"){
-		test = new unitTest.Test(test);
+		test = new unitTest.Test(test, arguments[1]);
 	}
 	tests.push(test);
 	
@@ -50,13 +50,13 @@ unitTest.run = function runTests(){
 	
 	tests.forEach(function(test){
 		test.onOnce("success", function(){
-			results.push(true);
+			results.push({status: "success"});
 		});
-		test.onOnce("fail", function(){
-			results.push(false);
+		test.onOnce("fail", function(wrongValue){
+			results.push({status: "fail", value: wrongValue, expectedValue: this.expectedValue});
 		});
 		test.onOnce("error", function(e){
-			results.push(e);
+			results.push({status: "error", error: e});
 		});
 		
 		test.run();
@@ -65,23 +65,30 @@ unitTest.run = function runTests(){
 	return results;
 };
 
-unitTest.Test = require("kkjs.EventEmitter").extend(function(testFunction){
+unitTest.Test = require("kkjs.EventEmitter").extend(function(testFunction, expectedValue){
 	/**
 	 * Constructor unitTest.Test
 	 * @name: unitTest.Test
 	 * @author: Korbinian Kapsner
 	 * @description: one test
 	 * @parameter:
-	 *	testFunction: the function to be called in testing. If the return value
-	 *		is false the test is seen as failed.
+	 *	testFunction: the function to be called in testing.
+	 *	expectedValue: the expected value that should be returned by the test
+	 *		function. If this parameter is omitted true is taken.
 	 * @return value: the instance
 	 */
 	 
 	 this.testFunction = testFunction;
+	 
+	 if (typeof expectedValue === "undefined"){
+		expectedValue = true;
+	 }
+	 this.expectedValue = expectedValue;
 }).implement({
 	run: function(){
 		try {
-			this.emit(this.testFunction()? "success": "fail");
+			var value = this.testFunction();
+			this.emit(value === this.expectedValue? "success": "fail", value);
 		}
 		catch (e){
 			this.emit("error", e);
