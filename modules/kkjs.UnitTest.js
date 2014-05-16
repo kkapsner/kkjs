@@ -29,6 +29,10 @@ unitTest.add = function addTest(test){
 	 *	test: the test to be added. Should be an instance of unitTest.Test
 	 * @return value: this
 	 */
+	
+	if (typeof test === "function"){
+		test = new unitTest.Test(test);
+	}
 	tests.push(test);
 	
 	return this;
@@ -49,10 +53,10 @@ unitTest.run = function runTests(){
 			results.push(true);
 		});
 		test.onOnce("fail", function(){
-			result.push(false);
+			results.push(false);
 		});
 		test.onOnce("error", function(e){
-			result.push(e);
+			results.push(e);
 		});
 		
 		test.run();
@@ -77,7 +81,7 @@ unitTest.Test = require("kkjs.EventEmitter").extend(function(testFunction){
 }).implement({
 	run: function(){
 		try {
-			this.emit(his.testFunction()? "success", "fail");
+			this.emit(this.testFunction()? "success": "fail");
 		}
 		catch (e){
 			this.emit("error", e);
