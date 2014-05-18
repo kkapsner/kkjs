@@ -18,7 +18,7 @@ function isObject(obj){
 }
 
 var QueryString = oo.Base.extend(function(str){
-	this.readData(str);
+	this.readData(str || "");
 }).implement({
 	
 	put: function(key, value){
