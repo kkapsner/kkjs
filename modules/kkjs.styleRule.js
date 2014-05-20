@@ -49,7 +49,7 @@ var styleRule = {
 		}
 		
 		if (style.addRule){
-			style.addRule(bezeichner, regel, index);
+			style.addRule(bezeichner, regel || "zoom: 1;", index);
 		}
 		else if (style.insertRule){
 			style.insertRule(rule, index);
