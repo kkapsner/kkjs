@@ -71,6 +71,9 @@ var css = {
 				else if(/\^$/.test(attName)){
 					value = new RegExp("^" + value);
 				}
+				else if(/\*$/.test(attName)){
+					value = new RegExp(value);
+				}
 				else{
 					value = new RegExp("^" + value + "$");
 				}
