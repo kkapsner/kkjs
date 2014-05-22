@@ -208,6 +208,10 @@ var Node = {
 		}
 		var parent = att.parentNode;
 		delete att.parentNode;
+		var nextSibling = att.nextSibling;
+		delete att.nextSibling;
+		var previousSibling = att.previousSibling;
+		delete att.previousSibling;
 		for (var i in att){
 			if (att.hasOwnProperty(i)){
 				try{
@@ -218,6 +222,12 @@ var Node = {
 		}
 		if (parent){
 			parent.appendChild(node);
+		}
+		else if (nextSibling){
+			nextSibling.parentNode.insertBefore(node, nextSibling);
+		}
+		else if (previousSibling){
+			previousSibling.parentNode.insertBefore(node, previousSibling);
 		}
 		return  node;
 	},
