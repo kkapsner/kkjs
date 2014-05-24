@@ -136,7 +136,24 @@ var Node = {
 	 * @version: 1.0
 	 * @description: node creation
 	 * @parameter:
-	 *	att:
+	 *	att: attributes for the node to be created. Usually the value is just
+	 *		assigned to the node:
+	 *			node.className = att.className
+	 *		Any errors during the assigment will be ignored.
+	 *		But there are some special cases:
+	 *			tag: required and used to create the node. If the tag starts
+	 *				with "fragment" a documentFragement is created.
+	 *			parentNode: the new node will be placed in that node
+	 *			nextSibling: the new node will be placed before that node
+	 *			previousSibling: the new node will be placed after that node
+	 *			style: has to be an object that is than passed to stlye.set()
+	 *			events: has to be an object that is than passed to event.add()
+	 *			data: has to be an object that is than passed to dataset.set()
+	 *			childNodes: has to be an array of either nodes (directly
+	 *				inserted in the node), a string (inserted as textnode) or
+	 *				an object (passed to node.create() and the returned node is
+	 *				inserted).
+	 * @return value: the created node.
 	 */
 
 	create: function createNode(att){
