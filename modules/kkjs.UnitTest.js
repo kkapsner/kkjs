@@ -65,6 +65,26 @@ unitTest.run = function runTests(){
 	return results;
 };
 
+function checkValue(gotValue, expectedValue){
+	/* check function if the result is correct */
+	if (Array.isArray(expectedValue)){
+		return Array.isArray(gotValue) &&
+			expectedValue.every(function(value, i){
+				return checkValue(gotValue[i], value);
+			}
+		);
+	}
+	else if (typeof expectedValue === "object"){
+		return (typeof gotValue === "object") &&
+			Object.keys(expectedValue).every(function(key){
+				return checkValue(gotValue[key], expectedValue[key]);
+			});
+	}
+	else {
+		return gotValue === expectedValue;
+	}
+}
+
 unitTest.Test = require("kkjs.EventEmitter").extend(function(testFunction, expectedValue){
 	/**
 	 * Constructor unitTest.Test
@@ -88,7 +108,7 @@ unitTest.Test = require("kkjs.EventEmitter").extend(function(testFunction, expec
 	run: function(){
 		try {
 			var value = this.testFunction();
-			this.emit(value === this.expectedValue? "success": "fail", value);
+			this.emit(checkValue(value, this.expectedValue)? "success": "fail", value);
 		}
 		catch (e){
 			this.emit("error", e);
