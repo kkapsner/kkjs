@@ -115,7 +115,85 @@ var parser = {
 		catch (e){
 			return null;
 		}
-	}
+	},
+	
+	csv: function(csv, att){
+		/**
+		 * Function parser.csv
+		 * @name: parser.csv
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: parses a CSV-string to an array
+		 * @parameter:
+		 *	csv: the CSV-string
+		 * @return: the array is returned on success and null on failure.
+		 */
+		
+		var enclosedStrings = [];
+		var enclose = att.enclose.quoteRegExp();
+		csv = csv.replace(
+			new RegExp(
+				enclose + "((?:[^" + enclose + "]*|(?:" + enclose + "){2})*)" + "(?:" + enclose + "|$)",
+				"g"
+			),
+			function (m, encloseMatch){
+				enclosedStrings.push(encloseMatch.replace(new RegExp("(?:" + enclose + "){2}", "g"), att.enclose));
+				return att.enclose + enclosedStrings.length;
+			}
+		);
+		
+		if (att.skipEmptyLines){
+			csv = csv.replace(
+				new RegExp("(^|\\r?\\n|\\r)(?:" + att.separator.quoteRegExp() + ")(?=\\r?\\n|\\r|$)+", "g"),
+				""
+			);
+			if (csv.length === 0){
+				return [];
+			}
+		}
+		
+		function splitLine(line, columnNames){
+			/**
+			 * splits a line and returns the row object
+			 */
+			
+			var cells = line.split(att.separator);
+			cells.forEach(function(cell, i){
+				cells[i] = cell.replace(
+					new RegExp(enclose + "(\\d+)", "g"),
+					function(m, encloseNumber){
+						return enclosedStrings[encloseNumber];
+					}
+				);
+			});
+			if (columnNames){
+				cells.forEach(function(cell, i){
+					if (columnNames[i]){
+						cells[columnNames[i]] = cell;
+					}
+				});
+			}
+			return cells;
+		}
+		
+		var lines = csv.split(/\r?\n|\r/g);
+		if (att.header){
+			var headerLine = lines.shift();
+			att.columnNames = splitLine(headerLine);
+		}
+		lines.forEach(function(line, i){
+			lines[i] = splitLine(line, att.columnNames);
+		});
+		return lines;
+	}.setDefaultParameter(null, new Function.DefaultParameter(
+		{
+			separator: ",",
+			enclose: "\"",
+			columnNames: null,
+			header: false,
+			skipEmptyLines: true,
+		}
+	))
 };
 
 if (typeof exports !== "undefined"){
