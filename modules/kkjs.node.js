@@ -130,6 +130,77 @@ var Node = {
 	},
 	
 	/**
+	 * Function node.set
+	 * @name: node.set
+	 * @author: Korbinian Kapsner
+	 * @version: 1.0
+	 * @description: sets attributes of a node. Usually the value is just
+	 *		assigned to the node:
+	 *			node[key] = value
+	 *		Any errors during the assigment will be ignored.
+	 *		But there are some special cases:
+	 *			parentNode: the node will be placed in that node
+	 *			nextSibling: the node will be placed before that node
+	 *			previousSibling: the node will be placed after that node
+	 *			style: has to be an object that is than passed to stlye.set()
+	 *			events: has to be an object that is than passed to event.add()
+	 *			data: has to be an object that is than passed to dataset.set()
+	 *			childNodes: has to be an array of either nodes (directly
+	 *				inserted in the node), a string (inserted as textnode) or
+	 *				an object (passed to node.create() and the returned node is
+	 *				inserted). Before the new child nodes are inserted the node
+	 *				is cleared.
+	 *		This function is array callable on the first argument and object
+	 *		callable on the second.
+	 * @parameter:
+	 *	node: the node where the attributes should be set
+	 *	key: attribute name.
+	 *	value: attribute value.
+	 * @return value: the node.
+	 */
+	
+	set: function set(node, key, value){
+		switch (key){
+			case "parentNode":
+				value.appendChild(node);
+				break;
+			case "nextSibling":
+				value.parentNode.insertBefore(node, value);
+				break;
+			case "previousSibling":
+				value.parentNode.insertBefore(node, value.nextSibling);
+				break;
+			case "style":
+				require("kkjs.css").set(node, value);
+				break;
+			case "events":
+				require("kkjs.event").add(node, value);
+				break;
+			case "dataset":
+				require("kkjs.dataset").set(node, value);
+				break;
+			case "childNodes":
+				Node.clear(node);
+				for (var i = 0; i < value.length; i += 1){
+					var child = (value[i] instanceof window.Node)? value[i]: Node.create(value[i]);
+					node.appendChild(child);
+				}
+				break;
+			default:
+				try {
+					node[key] = value;
+				}
+				catch(e){
+					
+				}
+				
+		}
+		return node;
+	}.makeArrayCallable(0, {arrayLike: true}).makeObjectCallable(1, 1, 2),
+	
+
+	
+	/**
 	 * Function node.create
 	 * @name: node.create
 	 * @author: Korbinian Kapsner
@@ -244,9 +315,9 @@ var Node = {
 			nextSibling.parentNode.insertBefore(node, nextSibling);
 		}
 		else if (previousSibling){
-			previousSibling.parentNode.insertBefore(node, previousSibling);
+			previousSibling.parentNode.insertBefore(node, previousSibling.nextSibling);
 		}
-		return  node;
+		return node;
 	},
 	
 	/**
