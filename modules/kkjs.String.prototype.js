@@ -32,6 +32,21 @@ String.prototype.firstToUpperCase = function firstToUpperCase(restToLowerCase){
 	return str.charAt(0).toUpperCase() + str.substring(1);
 };
 
+String.prototype.firstToLowerCase = function firstToLowerCase(){
+	/**
+	 * Function String.prototype.firstToLowerCase
+	 * @name: String.prototype.firstToLowerCase
+	 * @version: 1.0
+	 * @author: Korbinian Kapsner
+	 * @last modify: 12.04.2012
+	 * @description: Macht den ersten Buchstaben zu einem Kleinbuchstaben
+	 * @parameter:
+	 *
+	 */
+	
+	return this.charAt(0).toLowerCase() + this.substring(1);
+};
+
 String.prototype.reverse = function reverse(block){
 	/**
 	 * Function String.prototype.reverse

@@ -30,7 +30,7 @@ function uniqueArray(arr){
 }
 
 var directions = ["Top", "Right", "Bottom", "Left"];
-var browserPre = ["Moz", "O", "Webkit", "Ms"];
+var browserPre = ["", "Moz", "O", "Webkit", "Ms"];
 
 var css = {
 	/**
@@ -624,7 +624,7 @@ var css = {
 			if (start.charAt(0) === "#" && end.charAt(0) === "#"){
 				return color.mix(start, end, pos, att.rgb? "rgb": "hsl");
 			}
-			var units = ["px", "pt", "%", "em"];
+			var units = ["px", "pt", "%", "em", "deg"];
 			for (var i = 0; i < units.length; i++){
 				var re = (new RegExp(units[i] + "$"));
 				if (re.test(start) && ((typeof end === "number") || re.test(end))){
@@ -807,6 +807,7 @@ css.set.rotation = function(node, value){
 	}
 	if ("transform" in node.style){
 		applyToTransform("transform");
+		return true;
 	}
 	if (!browserPre.some(function(pre){
 		var name = pre + "Transform";
@@ -894,12 +895,12 @@ css.get.opacity = function(node, style, pseudo){
 css.get.rotation = function(node, style, pseudo){
 	var angle = 0;
 	if (!browserPre.some(function(pre){
-		var name = pre + "Transform";
-		if (name in node.style){
-			var oldValue = node.style[name]; //css.get(node, prae[n] + "Transform");
+		var name = (pre + "Transform").firstToLowerCase();
+		if (name in style){
+			var oldValue = style[name]; //css.get(node, prae[n] + "Transform");
 			oldValue = (typeof oldValue === "string")? oldValue: "";
-			oldValue.replace(/\s*rotate\(\d+(?:\.\d*)?deg\)/, function(m, d){
-				
+			oldValue.replace(/\s*rotate\((\d+(?:\.\d*)?)deg\)/, function(m, d){
+				angle += parseFloat(d);
 			});
 			return true;
 		}
@@ -927,7 +928,7 @@ css.get.rotation = function(node, style, pseudo){
 		}
 	}
 	else {
-		return true;
+		return (angle % 360) + "deg";
 	}
 };
 css.get.border = function(node, style, pseudo){

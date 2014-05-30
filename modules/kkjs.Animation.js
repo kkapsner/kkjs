@@ -43,6 +43,7 @@ var Animation = EventEmitter.extend(function Animation(node, property, tween, du
 		 */
 		window.clearTimeout(this.timeout);
 		this.timer.stop();
+		this.timer.removeAllListeners();
 	},
 	
 	runCSSTo: function(toValue){
@@ -109,8 +110,8 @@ var Animation = EventEmitter.extend(function Animation(node, property, tween, du
 			}
 			This.emit("finish");
 		});
-		timer.on("stop", function(){
-			this.removeAllListeners();
+		timer.onOnce("stop", function(){
+			this.removeAllListeners("tick");
 		});
 		if (this.delay){
 			this.timeout = window.setTimeout(function(){
