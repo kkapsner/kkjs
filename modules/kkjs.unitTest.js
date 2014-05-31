@@ -106,6 +106,15 @@ unitTest.Test = require("kkjs.EventEmitter").extend(function(testFunction, expec
 	 this.expectedValue = expectedValue;
 }).implement({
 	run: function(){
+		/**
+		 * Function unitTest.Test.run
+		 * @name: unitTest.Test.run
+		 * @author: Korbinian Kapsner
+		 * @description: runs the test. Emits a "success"-event if everything
+		 *	worked as intended and a "fail"-event otherwise. The return value
+		 *	of the test function is passed as parameter to the events.
+		 */
+		
 		try {
 			var value = this.testFunction();
 			this.emit(checkValue(value, this.expectedValue)? "success": "fail", value);
