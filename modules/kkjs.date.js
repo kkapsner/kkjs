@@ -10,6 +10,7 @@
  */
 
 function diggits(nr, z){
+	/* formats a number with leading zeros */
 	nr = nr.toString(10);
 	while (nr.length < z){
 		nr = "0" + nr;
@@ -18,18 +19,19 @@ function diggits(nr, z){
 }
 
 var date = {
-	/**
-	 * Function date.fromMySQLFormat
-	 * @name: date.fromMySQLFormat
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 04.08.2009
-	 * @description: creates a date-object from an MySQL Date string
-	 * @parameter:
-	 *	mySQLDateString:
-	 */
 	
 	fromMySQLFormat: function dateFromMySQLFormat(mySQLDateString){
+		/**
+		 * Function date.fromMySQLFormat
+		 * @name: date.fromMySQLFormat
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description: creates a date-object from an MySQL Date string
+		 * @parameter:
+		 *	mySQLDateString:
+		 */
+		
 		var portions = mySQLDateString.split(/[\- :]/);
 		return new Date(
 			portions[0],
@@ -41,20 +43,19 @@ var date = {
 		);
 	},
 	
-	/**
-	 * Function date.convert
-	 * @name: date.convert
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 04.08.2009
-	 * @description: Convertiert Datumsformate ineinander um (à la YYYY-MM-DD -> DD.MM.YYYY)
-	 * @parameter:
-	 *	date:
-	 *	von:
-	 *	zu:
-	 */
-
 	convert: function convertDate(date, von, zu){
+		/**
+		 * Function date.convert
+		 * @name: date.convert
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description: Convertiert Datumsformate ineinander um (à la YYYY-MM-DD -> DD.MM.YYYY)
+		 * @parameter:
+		 *	date:
+		 *	von:
+		 *	zu:
+		 */
 
 		var jahr = 0;
 		var monat = 0;
@@ -130,18 +131,18 @@ var date = {
 		return erg;
 	},
 	
-	/**
-	 * Function date.addZeros
-	 *@name: date.addZeros
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 04.08.2009
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 */
-
 	addZeros: function datumErgaenzen(str){
+		/**
+		 * Function date.addZeros
+		 * @name: date.addZeros
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 */
+		
 		var m, tag, monat, jahr;
 		if ((m = str.exec(/^(\d+)\.(\d+)\.(\d*)$/)) !== null){
 			jahr = parseInt(m[3], 10) || (new Date()).getFullYear();
@@ -165,22 +166,25 @@ var date = {
 		}
 	},
 	
-	/**
-	 * Function date.format
-	 *@name: date.format
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 04.08.2009
-	 * @description:
-	 * @parameter:
-	 *	date:
-	 *	str:
-	 * @return value: the formated date-representation
-	 */
-	
 	format: (function(){
-		var formatDate;
+		var formatDate = function(format, date){
+			/**
+			 * Function date.format
+			 * @name: date.format
+			 * @version: 0.9
+			 * @author: Korbinian Kapsner
+			 * @last modify: 04.08.2009
+			 * @description:
+			 * @parameter:
+			 *	date:
+			 *	str:
+			 * @return value: the formated date-representation
+			 */
+			return format.replace(/%(.)/g, function(m, f){return abbr(m, f, date);});
+		};
+		
 		function abbr(m, f, _date){
+			/* replace function that translates the abbrevations in numbers */
 			switch (f){
 				case "a": return date.localeStrings[date.locale].weekDays.s[_date.getDay()];
 				case "A": return date.localeStrings[date.locale].weekDays.l[_date.getDay()];
@@ -236,14 +240,21 @@ var date = {
 				default: return f;
 			}
 		}
-		formatDate = function(format, date){
-			return format.replace(/%(.)/g, function(m, f){return abbr(m, f, date);});
-		};
+		
 		return formatDate;
 	})(),
 	
 	locale: "en",
 	setLocale: function(locale){
+		/**
+		 * Function date.setLocale
+		 * @name: date.setLocale
+		 * @author: Korbinian Kapsner
+		 * @description: sets the locale setting if it is known.
+		 * @parameter:
+		 *	locale:
+		 */
+		
 		if (date.localeStrings.hasOwnProperty(locale)){
 			date.locale = locale;
 		}
