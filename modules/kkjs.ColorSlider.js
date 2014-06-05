@@ -277,7 +277,10 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 				slider.dragTimeout = window.setTimeout(function(){
 					kkjs.css.set(slider.colorDrag, {backgroundColor: slider.getColor(), top: mousePos.top + "px", left: mousePos.left + "px"});
 					document.body.appendChild(slider.colorDrag);
-					kkjs.moveable.startByScript(mousePos, {node: slider.colorDrag, onstop: function(ev){slider.colorDrag.onmovestop(ev);}});
+					kkjs.moveable.start(
+						ev,
+						{node: slider.colorDrag, onstop: function(ev){slider.colorDrag.onmovestop(ev);}}
+					);
 					slider.dragTimeout = false;
 				}, 100);
 				return ev.preventDefault();
