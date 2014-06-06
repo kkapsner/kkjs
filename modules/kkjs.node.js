@@ -17,17 +17,17 @@ var scroll = require("./kkjs.scroll");
 //var dataset = require("./kkjs.dataset");
 
 var Node = {
-	/**
-	 * Function node.next
-	 * @name: node.next
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: returns the next node in the DOM-Structure
-	 * @parameter:
-	 *	node
-	 */
-
 	next: function nextNode(node, noChildren){
+		/**
+		 * Function node.next
+		 * @name: node.next
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: returns the next node in the DOM-Structure
+		 * @parameter:
+		 *	node
+		 */
+
 		if (typeof node === "undefined" && this !== Node){
 			node = this;
 		}
@@ -43,17 +43,17 @@ var Node = {
 		return null;
 	},
 	
-	/**
-	 * Function node.previous
-	 * @name: node.previous
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: returns the previous node in the DOM-Structure
-	 * @parameter:
-	 *	node
-	 */
-
 	previous: function previousNode(node, noChildren){
+		/**
+		 * Function node.previous
+		 * @name: node.previous
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: returns the previous node in the DOM-Structure
+		 * @parameter:
+		 *	node
+		 */
+
 		if (typeof node === "undefined" && this !== Node){
 			node = this;
 		}
@@ -71,18 +71,18 @@ var Node = {
 		return null;
 	},
 
-	/**
-	 * Function node.clear
-	 * @name: node.clear
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: removes all childnodes from the given node
-	 * @parameter:
-	 *	node:
-	 * @return value: a documentFragment with the deleted Nodes
-	 */
-	
 	clear: function clearNode(node){
+		/**
+		 * Function node.clear
+		 * @name: node.clear
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: removes all childnodes from the given node
+		 * @parameter:
+		 *	node:
+		 * @return value: a documentFragment with the deleted Nodes
+		 */
+		
 		var df = DOM.getDocument(node).createDocumentFragment();
 		while (node.firstChild){
 			df.appendChild(node.firstChild);
@@ -90,37 +90,37 @@ var Node = {
 		return df;
 	},
 	
-	/**
-	 * Function node.insertAfter
-	 * @name: node.insertAfter
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: inserts a node AFTER a given childnode
-	 * @parameter:
-	 *	node:
-	 *	toInsert:
-	 *	childnode:
-	 * @return value: node
-	 */
-	
 	insertAfter: function insertAfter(node, toInsert, childnode){
+		/**
+		 * Function node.insertAfter
+		 * @name: node.insertAfter
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: inserts a node AFTER a given childnode
+		 * @parameter:
+		 *	node:
+		 *	toInsert:
+		 *	childnode:
+		 * @return value: node
+		 */
+		
 		node.insertBefore(toInsert, childnode.nextSibling);
 		return node;
 	},
 	
-	/**
-	 * Function node.appendHTML
-	 * @name: node.appendHTML
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: appends HTML to node without effecting the existing childNodes
-	 * @parameter:
-	 *	node:
-	 *	html:
-	 * @return value: node
-	 */
-	
 	appendHTML: function appendHTML(node, html){
+		/**
+		 * Function node.appendHTML
+		 * @name: node.appendHTML
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: appends HTML to node without effecting the existing childNodes
+		 * @parameter:
+		 *	node:
+		 *	html:
+		 * @return value: node
+		 */
+		
 		var help = node.cloneNode(false);
 		help.innerHTML = html;
 		while (help.firstChild){
@@ -129,37 +129,37 @@ var Node = {
 		return node;
 	},
 	
-	/**
-	 * Function node.set
-	 * @name: node.set
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: sets attributes of a node. Usually the value is just
-	 *		assigned to the node:
-	 *			node[key] = value
-	 *		Any errors during the assigment will be ignored.
-	 *		But there are some special cases:
-	 *			parentNode: the node will be placed in that node
-	 *			nextSibling: the node will be placed before that node
-	 *			previousSibling: the node will be placed after that node
-	 *			style: has to be an object that is than passed to stlye.set()
-	 *			events: has to be an object that is than passed to event.add()
-	 *			data: has to be an object that is than passed to dataset.set()
-	 *			childNodes: has to be an array of either nodes (directly
-	 *				inserted in the node), a string (inserted as textnode) or
-	 *				an object (passed to node.create() and the returned node is
-	 *				inserted). Before the new child nodes are inserted the node
-	 *				is cleared.
-	 *		This function is array callable on the first argument and object
-	 *		callable on the second.
-	 * @parameter:
-	 *	node: the node where the attributes should be set
-	 *	key: attribute name.
-	 *	value: attribute value.
-	 * @return value: the node.
-	 */
-	
 	set: function set(node, key, value){
+		/**
+		 * Function node.set
+		 * @name: node.set
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: sets attributes of a node. Usually the value is just
+		 *		assigned to the node:
+		 *			node[key] = value
+		 *		Any errors during the assigment will be ignored.
+		 *		But there are some special cases:
+		 *			parentNode: the node will be placed in that node
+		 *			nextSibling: the node will be placed before that node
+		 *			previousSibling: the node will be placed after that node
+		 *			style: has to be an object that is than passed to stlye.set()
+		 *			events: has to be an object that is than passed to event.add()
+		 *			data: has to be an object that is than passed to dataset.set()
+		 *			childNodes: has to be an array of either nodes (directly
+		 *				inserted in the node), a string (inserted as textnode) or
+		 *				an object (passed to node.create() and the returned node is
+		 *				inserted). Before the new child nodes are inserted the node
+		 *				is cleared.
+		 *		This function is array callable on the first argument and object
+		 *		callable on the second.
+		 * @parameter:
+		 *	node: the node where the attributes should be set
+		 *	key: attribute name.
+		 *	value: attribute value.
+		 * @return value: the node.
+		 */
+		
 		switch (key){
 			case "parentNode":
 				value.appendChild(node);
@@ -198,36 +198,34 @@ var Node = {
 		return node;
 	}.makeArrayCallable(0, {arrayLike: true}).makeObjectCallable(1, 1, 2),
 	
-
-	
-	/**
-	 * Function node.create
-	 * @name: node.create
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: node creation
-	 * @parameter:
-	 *	att: attributes for the node to be created. Usually the value is just
-	 *		assigned to the node:
-	 *			node.className = att.className
-	 *		Any errors during the assigment will be ignored.
-	 *		But there are some special cases:
-	 *			tag: required and used to create the node. If the tag starts
-	 *				with "fragment" a documentFragement is created.
-	 *			parentNode: the new node will be placed in that node
-	 *			nextSibling: the new node will be placed before that node
-	 *			previousSibling: the new node will be placed after that node
-	 *			style: has to be an object that is than passed to stlye.set()
-	 *			events: has to be an object that is than passed to event.add()
-	 *			data: has to be an object that is than passed to dataset.set()
-	 *			childNodes: has to be an array of either nodes (directly
-	 *				inserted in the node), a string (inserted as textnode) or
-	 *				an object (passed to node.create() and the returned node is
-	 *				inserted).
-	 * @return value: the created node.
-	 */
-
 	create: function createNode(att){
+		/**
+		 * Function node.create
+		 * @name: node.create
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: node creation
+		 * @parameter:
+		 *	att: attributes for the node to be created. Usually the value is just
+		 *		assigned to the node:
+		 *			node.className = att.className
+		 *		Any errors during the assigment will be ignored.
+		 *		But there are some special cases:
+		 *			tag: required and used to create the node. If the tag starts
+		 *				with "fragment" a documentFragement is created.
+		 *			parentNode: the new node will be placed in that node
+		 *			nextSibling: the new node will be placed before that node
+		 *			previousSibling: the new node will be placed after that node
+		 *			style: has to be an object that is than passed to stlye.set()
+		 *			events: has to be an object that is than passed to event.add()
+		 *			data: has to be an object that is than passed to dataset.set()
+		 *			childNodes: has to be an array of either nodes (directly
+		 *				inserted in the node), a string (inserted as textnode) or
+		 *				an object (passed to node.create() and the returned node is
+		 *				inserted).
+		 * @return value: the created node.
+		 */
+
 		if (typeof att === "string"){
 			return document.createTextNode(att);
 		}
@@ -320,36 +318,36 @@ var Node = {
 		return node;
 	},
 	
-	/**
-	 * Function node.remove
-	 * @name: node.remove
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: removes the given node from the DOMTree
-	 * @parameter:
-	 *	node:
-	 * @return value: the node
-	 */
-	
 	remove: function removeNode(node){
+		/**
+		 * Function node.remove
+		 * @name: node.remove
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: removes the given node from the DOMTree
+		 * @parameter:
+		 *	node:
+		 * @return value: the node
+		 */
+		
 		if (node.parentNode){
 			node.parentNode.removeChild(node);
 		}
 		return node;
 	},
 	
-	/**
-	 * Function node.getIndex
-	 * @name: node.getIndex
-	 * @author: Korbinian Kapsner
-	 * @version; 1.0
-	 * @description: returns the index of the node in node.parentNode.childNodes
-	 * @parameter:
-	 *	node:
-	 * @return value: the index
-	 */
-	
 	getIndex: function getNodeIndex(node, ancestor){
+		/**
+		 * Function node.getIndex
+		 * @name: node.getIndex
+		 * @author: Korbinian Kapsner
+		 * @version; 1.0
+		 * @description: returns the index of the node in node.parentNode.childNodes
+		 * @parameter:
+		 *	node:
+		 * @return value: the index
+		 */
+		
 		if (!ancestor){
 			ancestor = node.parentNode;
 		}
@@ -368,19 +366,19 @@ var Node = {
 		return c;
 	},
 	
-	/**
-	 * Function node.getCommonAncestor
-	 * @name: node.getCommonAncestor
-	 * @author: Korbinian Kapsner
-	 * @version: 1.0
-	 * @description: returns the common ancestor of two nodes (if they are equal this node is returned - no matter which type it is)
-	 * @parameter:
-	 *	node1:
-	 *	node2:
-	 * @return value: the common ancestor on success, false on error
-	 */
-	
 	getCommonAncestor: function getCommonAncestor(node1, node2){
+		/**
+		 * Function node.getCommonAncestor
+		 * @name: node.getCommonAncestor
+		 * @author: Korbinian Kapsner
+		 * @version: 1.0
+		 * @description: returns the common ancestor of two nodes (if they are equal this node is returned - no matter which type it is)
+		 * @parameter:
+		 *	node1:
+		 *	node2:
+		 * @return value: the common ancestor on success, false on error
+		 */
+		
 		if (Node.contains(node1, node2)){
 			return node1;
 		}
@@ -394,19 +392,19 @@ var Node = {
 		return false;
 	},
 	
-	/**
-	 * Function node.contains
-	 * @name: node.contains
-	 * @author: Korbinian Kapsner
-	 * @version. 1.0
-	 * @description: returns whether node1 contains node2
-	 * @parameter:
-	 *	node1:
-	 *	node2:
-	 * @return value: a boolean
-	 */
-	
 	contains: function contains(node1, node2){
+		/**
+		 * Function node.contains
+		 * @name: node.contains
+		 * @author: Korbinian Kapsner
+		 * @version. 1.0
+		 * @description: returns whether node1 contains node2
+		 * @parameter:
+		 *	node1:
+		 *	node2:
+		 * @return value: a boolean
+		 */
+		
 		if (DOM.getDocument(node1) === DOM.getDocument(node2)){
 			if (node1 === node2){
 				return true;
@@ -424,35 +422,35 @@ var Node = {
 		return false;
 	},
 	
-	/**
-	 * Function node.getAttribute
-	 * @name: node.getAttribute
-	 * @version: 1.0
-	 * @author: Korbinian Kapsner
-	 * @description: returns the nodes attribute
-	 * @parameter:
-	 *	node:
-	 *	att:
-	 */
-	
 	getAttribute: function getAttribute(node, att){
+		/**
+		 * Function node.getAttribute
+		 * @name: node.getAttribute
+		 * @version: 1.0
+		 * @author: Korbinian Kapsner
+		 * @description: returns the nodes attribute
+		 * @parameter:
+		 *	node:
+		 *	att:
+		 */
+		
 		if (att in node){
 			return node[att];
 		}
 		return node.getAttribute(att);
 	},
 	
-	/**
-	 * Function node.getPosition
-	 * @name: node.getPosition
-	 * @version: 1.0
-	 * @author: Korbinian Kapsner
-	 * @description: returns the nodes x- and y-position
-	 * @parameter:
-	 *	node:
-	 */
-	
 	getPosition: function getPosition(node){
+		/**
+		 * Function node.getPosition
+		 * @name: node.getPosition
+		 * @version: 1.0
+		 * @author: Korbinian Kapsner
+		 * @description: returns the nodes x- and y-position
+		 * @parameter:
+		 *	node:
+		 */
+		
 		var v = new Math.Position(0, 0);
 		
 		if (node.getBoundingClientRect){
@@ -482,17 +480,17 @@ var Node = {
 		return v;
 	},
 	
-	/**
-	 * Function node.getRange
-	 * @name: node.getRange
-	 * @version: 1.0
-	 * @author: Korbinian Kapsner
-	 * @description: returns the range that is ocupied by the node
-	 * @parameter:
-	 *	node:
-	 */
-	
 	getRange: function getRange(node){
+		/**
+		 * Function node.getRange
+		 * @name: node.getRange
+		 * @version: 1.0
+		 * @author: Korbinian Kapsner
+		 * @description: returns the range that is ocupied by the node
+		 * @parameter:
+		 *	node:
+		 */
+		
 		var posTopLeft = Node.getPosition(node);
 		var posBottomRight = posTopLeft.clone().add(new Math.Vector2D(node.offsetWidth, node.offsetHeight));
 		return Math.Range2D.createFromVectors(posTopLeft, posBottomRight);
@@ -500,6 +498,17 @@ var Node = {
 };
 
 Node.next.byTagName = function nextNodeByTagName(node, tagName, noChildren){
+	/**
+	 * Function node.next.byTagName
+	 * @name: node.next.byTagname
+	 * @author: Korbinian Kapsner
+	 * @description: returns the next node that has a specific tag name.
+	 * @parameter:
+	 *	node: the node to start the search
+	 *	tagName: the specific tag name
+	 *	noChildren (optional): if child nodes should be inspected.
+	 */
+	
 	tagName = tagName.toLowerCase();
 	do {
 		node = Node.next(node, noChildren);
@@ -509,6 +518,16 @@ Node.next.byTagName = function nextNodeByTagName(node, tagName, noChildren){
 	return node;
 };
 Node.next.siblingByTagName = function nextSiblingByTagName(node, tagName){
+	/**
+	 * Function node.next.siblingByTagName
+	 * @name: node.next.siblingByTagName
+	 * @author: Korbinian Kapsner
+	 * @description: returns the next sibling that has a specific tag name.
+	 * @parameter:
+	 *	node: the node to start the search
+	 *	tagName: the specific tag name.
+	 */
+	
 	tagName = tagName.toLowerCase();
 	do {
 		node = node.nextSibling;
@@ -518,6 +537,16 @@ Node.next.siblingByTagName = function nextSiblingByTagName(node, tagName){
 	return node;
 };
 Node.next.element = function nextElement(node, noChildren){
+	/**
+	 * Function node.next.element
+	 * @name: node.next.element
+	 * @author: Korbinian Kapsner
+	 * @description: return the next element
+	 * @parameter:
+	 *	node: the node to start the search
+	 *	noChildren (optional): if child nodes should be inspected
+	 */
+	
 	do {
 		node = Node.next(node, noChildren);
 	}
@@ -527,6 +556,16 @@ Node.next.element = function nextElement(node, noChildren){
 };
 
 Node.previous.element = function previousElement(node, noChildren){
+	/**
+	 * Function node.previous.element
+	 * @name: node.previous.element
+	 * @author: Korbinian Kapsner
+	 * @description: return the previous element
+	 * @parameter:
+	 *	node: the node to start the search
+	 *	noChildren (optional): if child nodes should be inspected
+	 */
+	
 	do {
 		node = Node.previous(node, noChildren);
 	}
