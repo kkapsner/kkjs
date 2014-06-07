@@ -12,20 +12,23 @@
  */
 
 function int32(n){
-	// Nur die ersten 32 Bit stehen lassen und das Problem mit den negativen Zahlen umgehen (0xFFFFFFFF >> 1 === -1; 0xFFFFFFFF >>> 1 === 0x7FFFFFFF und -1 >>> 0 === 0xFFFFFFFF)
+	/* Nur die ersten 32 Bit stehen lassen und das Problem mit den negativen Zahlen umgehen (0xFFFFFFFF >> 1 === -1; 0xFFFFFFFF >>> 1 === 0x7FFFFFFF und -1 >>> 0 === 0xFFFFFFFF) */
 	return ((n & 0xFFFFFFFF) >>> 0);
 }
 
 function leftRotate(a, n){
+	/* rotates a by n bit left */
 	a = int32(a);
 	return int32(int32(a<<n) | int32(a>>>(32-n)));
 }
 
 function rightRotate(a, n){
+	/* rotates a by n bit right */
 	return leftRotate(a, 32 - n);
 }
 
 function toHex(n, anzahl){
+	/* hex representation of a number */
 	var ret = n.toString(16);
 	while (ret.length < anzahl){
 		ret = "0" + ret;
@@ -34,6 +37,7 @@ function toHex(n, anzahl){
 }
 
 function reverse(str, block){
+	/* reverses the string */
 	if (!block){
 		block = 1;
 	}
@@ -47,16 +51,18 @@ function reverse(str, block){
 	return ret;
 }
 
-/* function toBigEndian(nr){
-	return String.fromCharCode(
-		(0xFF000000 & nr) >>> 24,
-		(0x00FF0000 & nr) >>> 16,
-		(0x0000FF00 & nr) >>> 8,
-		(0x000000FF & nr) >>> 0
-	);
-} */
+// function toBigEndian(nr){
+	/* generate the big endien byte representation of the number */
+	// return String.fromCharCode(
+		// (0xFF000000 & nr) >>> 24,
+		// (0x00FF0000 & nr) >>> 16,
+		// (0x0000FF00 & nr) >>> 8,
+		// (0x000000FF & nr) >>> 0
+	// );
+// }
 
 function toLittleEndian(nr){
+	/* generate the little endien byte representation of the number */
 	return String.fromCharCode(
 		(0x000000FF & nr) >>> 0,
 		(0x0000FF00 & nr) >>> 8,
@@ -66,20 +72,18 @@ function toLittleEndian(nr){
 }
 
 var crypt = {
-	
-	/**
-	 * Function crypt.do
-	 * @name: crypt.do
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 04.08.2009
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 *	salt:
-	 */
-
 	"do": function doCrypt(str, salt){
+		/**
+		 * Function crypt.do
+		 * @name: crypt.do
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 *	salt:
+		 */
 	
 		if (!salt){
 			salt = "$1$" + crypt.md5((new Date()).toGMTString() + Math.random).substring(0, 8) + "$";
@@ -95,19 +99,19 @@ var crypt = {
 		}
 	},
 	
-	/**
-	 * Function crypt.sha1
-	 * @name: crypt.sha1
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 04.08.2009
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 *
-	 */
-
 	sha1: function sha1(str){
+		/**
+		 * Function crypt.sha1
+		 * @name: crypt.sha1
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 *
+		 */
+
 
 		// Algorithmus aus http://de.wikipedia.org/wiki/Secure_Hash_Algorithm
 		
@@ -209,20 +213,19 @@ var crypt = {
 		return toHex(h0, 8) + toHex(h1, 8) + toHex(h2, 8) + toHex(h3, 8) + toHex(h4, 8);
 	},
 	
-	/**
-	 * Function crypt.md5
-	 * @name: crypt.md5
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 04.08.2009
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 *
-	 */
-
 	md5: function md5(str, rawOutput){
-
+		/**
+		 * Function crypt.md5
+		 * @name: crypt.md5
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 *
+		 */
+		
 		// Algorithmus aus http://de.wikipedia.org/wiki/Message-Digest_Algorithm_5
 		
 		var btes;
@@ -359,18 +362,18 @@ var crypt = {
 		}
 	},
 	
-	/**
-	 * Function crypt.sha256
-	 * @name: crypt.sha256
-	 * @version: 0.9
-	 * @author: Korbinian Kapsner
-	 * @last modify: 04.08.2009
-	 * @description:
-	 * @parameter:
-	 *	str:
-	 */
-	
 	sha256: function sha256(str){
+		/**
+		 * Function crypt.sha256
+		 * @name: crypt.sha256
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description:
+		 * @parameter:
+		 *	str:
+		 */
+		
 
 		// Algorithmus aus http://en.wikipedia.org/wiki/SHA_hash_functions#SHA-256_.28a_SHA-2_variant.29_pseudocode
 		
