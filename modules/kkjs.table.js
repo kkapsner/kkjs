@@ -30,6 +30,124 @@ function eachRow(table, callback){
 	});
 }
 
+function eachCellInColumn(table, columnIndex, callback, includeSpanning, includeHeadAndFoot){
+	/**
+	 * Function eachCellInColumn
+	 * @name: eachCellInColumn
+	 * @author: Korbinian Kapsner
+	 * @description: calls a function on every cell in all specific column of a
+	 *	<table>.
+	 * @parameter:
+	 *	table: the <table>
+	 *	columnIndex: the column index
+	 *	callback: the function to be called.
+	 *	includeSpanning: if spanning cells should be processed.
+	 *	includeHeadAndFoot: if cells in the <thead> or <tfoot> should also be
+	 *		processed.
+	 */
+	
+	if (includeHeadAndFoot){
+		var col = getIthCol(table, columnIndex, includeSpanning);
+		if (col){
+			callback(col, -1);
+		}
+	}
+	var rowIndexOffset = 0;
+	if (includeHeadAndFoot && table.tHead){
+		[].forEach.call(table.tHead.rows, function(row, rowIndex){
+			var cell = getIthColumn(row, columnIndex, includeSpanning);
+			if (cell){
+				callback(cell, rowIndex);
+			}
+		});
+		rowIndexOffset += table.tHead.rows.length;
+	}
+	
+	[].forEach.call(table.tBodies, function(body){
+		[].forEach.call(body.rows, function(row, rowIndex){
+			var cell = getIthColumn(row, columnIndex, includeSpanning);
+			if (cell){
+				callback(cell, rowIndexOffset + rowIndex);
+			}
+		});
+		rowIndexOffset += body.rows.length;
+	});
+	
+	if (includeHeadAndFoot && table.tFoot){
+		[].forEach.call(table.tFoot.rows, function(row, rowIndex){
+			var cell = getIthColumn(row, columnIndex, includeSpanning);
+			if (cell){
+				callback(cell, rowIndexOffset + rowIndex);
+			}
+		});
+	}
+}
+
+function getIthCol(table, columnIndex, returnSpanning){
+	/**
+	 * Function getIthCol
+	 * @name: getIthCol
+	 * @author: Korbinian Kapsner
+	 * @description: returns the <col> at the specific column index.
+	 * @parameter:
+	 *	table: the <table>
+	 *	columnIndex: the index of the column
+	 *	returnSpanning: if a cell that spans over the column should be returned
+	 */
+	
+	var cells = css.$("col", {node: table});
+	for (var i = 0; i < cells.length; i += 1){
+		if (columnIndex === 0){
+			return cells[i];
+		}
+		columnIndex -= cells[i].realColSpan || cells[i].colSpan;
+		if (columnIndex < 0){
+			return returnSpanning? cells[i]: null;
+		}
+	}
+}
+function getIthColumn(row, columnIndex, returnSpanning){
+	/**
+	 * Function getIthColumn
+	 * @name: getIthColumn
+	 * @author: Korbinian Kapsner
+	 * @description: returns the cell at the specific column index.
+	 * @parameter:
+	 *	row: the <tr>
+	 *	columnIndex: the index of the column
+	 *	returnSpanning: if a cell that spans over the column should be returned
+	 */
+	
+	var cells = row.cells;
+	for (var i = 0; i < cells.length; i += 1){
+		if (columnIndex === 0){
+			return cells[i];
+		}
+		columnIndex -= cells[i].realColSpan || cells[i].colSpan;
+		if (columnIndex < 0){
+			return returnSpanning? cells[i]: null;
+		}
+	}
+}
+
+function getColumnIndex(cell){
+	/**
+	 * Function getColumnIndex
+	 * @name: getColumnIndex
+	 * @author: Korbinian Kapsner
+	 * @description: returns the cells column index.
+	 * @parameter:
+	 *	cel: the <td> or <th>
+	 */
+	
+	var columnIndex = 0;
+	var cells = cell.parentNode.cells;
+	for (var i = 0; i < cell.cellIndex; i += 1){
+		columnIndex += cells[i].realColSpan || cells[i].colSpan;
+	}
+	return columnIndex;
+}
+
 var table = {
 	sortable: function sortable(table){
 		/**
@@ -39,15 +157,15 @@ var table = {
 		 * @description: makes a table sortable. Therefore the <thead> is
 		 *	inspected for <th>s which have the data-sortable-attribute set.
 		 *	In these <th>s a <span class="sortNode"> with controls is injected.
-		 *	The value of each row is taken from the ith cells
-		 *	data-value-attribute (there should be no colspan-attributes) and is
-		 *	convernted to a number if possible.
+		 *	The value of each row is taken from the data-value-attribute of the
+		 *	cells in the ith column and is convernted to a number if possible.
 		 * @parameter:
 		 *	table: the <table> to make sortable
 		 */
 		
-		css.$("th", {node: table.tHead}).forEach(function(th, i){
+		css.$("th", {node: table.tHead}).forEach(function(th){
 			if (dataset.get(th, "sortable")){
+				var i = getColumnIndex(th);
 				node.create({
 					tag: "span",
 					parentNode: th,
@@ -125,7 +243,7 @@ var table = {
 					if (typeof r.originalPosition === "undefined"){
 						r.originalPosition = idx;
 					}
-					var value = dataset.get(r.cells[i], "value") || "";
+					var value = dataset.get(getIthColumn(r, i), "value") || "";
 					if (value.match(/^\d+(?:\.\d+)?(?:e[+-]?\d+)?$/i)){
 						value = parseFloat(value);
 					}
@@ -154,14 +272,15 @@ var table = {
 		 * @description: makes a table filterable. Therefore the <thead> is
 		 *	inspected for <th>s which have the data-filterable-attribute set.
 		 *	In these <th>s a <input> for the filter is injected.
-		 *	The value of each row is taken from the ith cells
-		 *	data-value-attribute (there should be no colspan-attributes).
+		 *	The value of each row is taken from the data-value-attribute of the
+		 *	cell in the ith column.
 		 * @parameter:
 		 *	table: the <table> to make filterable
 		 */
 		
-		css.$("th", {node: table.tHead}).forEach(function(th, i){
+		css.$("th", {node: table.tHead}).forEach(function(th){
 			if (dataset.get(th, "filterable")){
+				var i = getColumnIndex(th);
 				node.create({
 					tag: "input",
 					parentNode: th,
@@ -189,7 +308,7 @@ var table = {
 					css.set(
 						r,
 						"display",
-						(dataset.get(r.cells[i], "value") || "").match(regExp)?
+						(dataset.get(getIthColumn(r, i), "value") || "").match(regExp)?
 							"":
 							"none"
 					);
@@ -206,26 +325,28 @@ var table = {
 		 * @description: makes a table selectable. Therefore the <thead> is
 		 *	inspected for <th>s which have the data-selectable-attribute set.
 		 *	In these <th>s a <select> for the selection is injected.
-		 *	The value of each row is taken from the ith cells
-		 *	data-value-attribute (there should be no colspan-attributes).
+		 *	The value of each row is taken from the data-value-attribute of the
+		 *	cell in the ith column.
 		 * @parameter:
 		 *	table: the <table> to make selectable
 		 */
 		
 		// iterate through all <th>-Nodes in the <thead>
-		css.$("th", {node: table.tHead}).forEach(function(th, i){
+		css.$("th", {node: table.tHead}).forEach(function(th){
 			// if the <th> is marked as selectable by data-selectable
 			if (dataset.get(th, "selectable")){
+				var i = getColumnIndex(th);
 				// create the options list
 				var options = [new Option("---", "", true, true)];
 				var names = {};
 				// iterate through all rows in <tbody>s in the table to get all
 				// different values (stored in data-value in the <td>s)
 				eachRow(table, function(r){
-					var value = dataset.get(r.cells[i], "value");
+					var cell = getIthColumn(r, i);
+					var value = dataset.get(cell, "value");
 					if (value && !names[value]){
 						names[value] = true;
-						var name = dataset.get(r.cells[i], "text") || value;
+						var name = dataset.get(cell, "text") || value;
 						options.push(new Option(name, value, false, false));
 					}
 				});
@@ -259,7 +380,7 @@ var table = {
 					css.set(
 						r,
 						"display",
-						(!value || dataset.get(r.cells[i], "value") === value)?
+						(!value || dataset.get(getIthColumn(r, i), "value") === value)?
 							"":
 							"none"
 					);
@@ -267,6 +388,121 @@ var table = {
 			};
 		}
 	}.makeArrayCallable([0]),
+	
+	hideable: function hideable(table, controlsContainer){
+		/**
+		 * Function table.hideable
+		 * @name: table.hideable
+		 * @author: Korbinian Kapsner
+		 * @description: makes a table hideable. Therefore the <thead> is
+		 *	inspected for <th>s which have the data-hideable-attribute set.
+		 *	For these <th>s a <input type="checkbox"> for the selection is
+	`	 *	injected in the controlsContainer.
+		 * @parameter:
+		 *	table: the <table> to make selectable
+		 *	controlsContainer: a DOM-node that should hold the controls
+		 */
+		
+		css.$("th", {node: table.tHead}).forEach(function(th){
+			var hideableStatus = dataset.get(th, "hideable")
+			if (hideableStatus){
+				hideableStatus = hideableStatus !== "hidden";
+				var i = getColumnIndex(th);
+				var hideEventListener = createHideEventListener(i, th.colSpan);
+				if (!hideableStatus){
+					hideEventListener.call({checked: hideableStatus});
+				}
+				node.create({
+					tag: "label",
+					parentNode: controlsContainer,
+					childNodes: [
+						{
+							tag: "input",
+							type: "checkbox",
+							checked: hideableStatus,
+							events: {
+								change: hideEventListener
+							}
+						},
+						{tag: "span", innerHTML: th.innerHTML}
+					],
+				});
+			}
+		});
+		
+		function createHideEventListener(columnIndex, colSpan){
+			/**
+			 * Function createHideEventListener
+			 * @name: createHideEventListener
+			 * @author: Korbinian Kapsner
+			 * @description: creates the hide event listener
+			 * @parameter:
+			 *	columnIndex: the columns index
+			 *	colSpan: width of the span to hide
+			 * @return value: the hide event listener
+			 */
+			
+			return function(){
+				var hidden = !this.checked;
+				for (var i = 0; i < colSpan; i += 1){
+					eachCellInColumn(
+						table,
+						columnIndex + i,
+						function(cell){
+							if ((cell.realColSpan || cell.colSpan || cell.span) === 1){
+								css.set(cell, "display", hidden? "none": "");
+							}
+							else {
+								if (typeof cell.realColSpan === "undefined"){
+									cell.realColSpan = cell.colSpan || cell.span;
+								}
+								if (typeof cell.hiddenSpans === "undefined"){
+									cell.hiddenSpans = {};
+									for (var j = 0; j < (cell.colSpan || cell.span); j += 1){
+										cell.hiddenSpans[j] = false;
+									}
+								}
+								if (cell.hiddenSpans[columnIndex + i] !== hidden){
+									cell.hiddenSpans[columnIndex + i] = hidden;
+									
+									if (hidden){
+										var span = (cell.colSpan || cell.span) - 1;
+										if (span === 0){
+											css.set(cell, "display", "none");
+										}
+										else {
+											if (cell.colSpan){
+												cell.colSpan -= 1;
+											}
+											else {
+												cell.span -= 1;
+											}
+										}
+									}
+									else {
+										if (css.get(cell, "display") === "none"){
+											css.set(cell, "display", "");
+										}
+										else {
+											if (cell.colSpan){
+												cell.colSpan += 1;
+											}
+											else {
+												cell.span += 1;
+											}
+										}
+									}
+								}
+								
+							}
+						},
+						true,
+						true
+					);
+				}
+			};
+		}
+	}.makeArrayCallable([0])
 };
 
 if (typeof exports !== "undefined"){
