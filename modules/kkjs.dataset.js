@@ -52,12 +52,15 @@ var dataset = {
 		 * @description: wrapper for getting a dataset value (native value = NODE.dataset.key;)
 		 */
 		
-		if (node.dataset){
+		var undef;
+		if (!node){
+			return undef;
+		}
+		else if (node.dataset){
 			return node.dataset[key];
 		}
 		else {
 			var attName = camelCaseToAttributeName(key);
-			var undef;
 			if (node.hasAttribute){
 				if (node.hasAttribute(attName)){
 					return node.getAttribute(attName);
