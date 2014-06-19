@@ -118,7 +118,7 @@ kkjs.ColorSlider = kkjs.oo.Base.extend(function ColorSlider(att){
 	});
 	this.hideSliders();
 	
-})
+}.setDefaultParameter(new Function.DefaultParameter({value: "#000000"})))
 .implement({
 	value: {red: 0, green: 0, blue: 0},
 	changeTimeout: false,
