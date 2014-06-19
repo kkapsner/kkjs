@@ -100,7 +100,7 @@ function getIthCol(table, columnIndex, returnSpanning){
 		if (columnIndex === 0){
 			return cells[i];
 		}
-		columnIndex -= cells[i].realColSpan || cells[i].colSpan;
+		columnIndex -= cells[i].realColSpan || cells[i].span;
 		if (columnIndex < 0){
 			return returnSpanning? cells[i]: null;
 		}
@@ -156,7 +156,7 @@ var table = {
 		 * @author: Korbinian Kapsner
 		 * @description: makes a table sortable. Therefore the <thead> is
 		 *	inspected for <th>s which have the data-sortable-attribute set.
-		 *	In these <th>s a <span class="sortNode"> with controls is injected.
+		 *	In these <th>s a <span class="kkjs-table-sortControls"> with controls is injected.
 		 *	The value of each row is taken from the data-value-attribute of the
 		 *	cells in the ith column and is convernted to a number if possible.
 		 * @parameter:
@@ -169,7 +169,7 @@ var table = {
 				node.create({
 					tag: "span",
 					parentNode: th,
-					className: "sortNode",
+					className: "kkjs-table-sortControls",
 					childNodes: [
 						{
 							tag: "span",
@@ -271,7 +271,7 @@ var table = {
 		 * @author: Korbinian Kapsner
 		 * @description: makes a table filterable. Therefore the <thead> is
 		 *	inspected for <th>s which have the data-filterable-attribute set.
-		 *	In these <th>s a <input> for the filter is injected.
+		 *	In these <th>s a <input class="kkjs-table-filter"> for the filter is injected.
 		 *	The value of each row is taken from the data-value-attribute of the
 		 *	cell in the ith column.
 		 * @parameter:
@@ -283,6 +283,7 @@ var table = {
 				var i = getColumnIndex(th);
 				node.create({
 					tag: "input",
+					className: "kkjs-table-filter",
 					parentNode: th,
 					events: {
 						advancedChange: createFilterEventListener(i)
@@ -324,7 +325,7 @@ var table = {
 		 * @author: Korbinian Kapsner
 		 * @description: makes a table selectable. Therefore the <thead> is
 		 *	inspected for <th>s which have the data-selectable-attribute set.
-		 *	In these <th>s a <select> for the selection is injected.
+		 *	In these <th>s a <select class="kkjs-table-select"> for the selection is injected.
 		 *	The value of each row is taken from the data-value-attribute of the
 		 *	cell in the ith column.
 		 * @parameter:
@@ -353,6 +354,7 @@ var table = {
 				// create the <select> and insert into the DOM
 				node.create({
 					tag: "select",
+					className: "kkjs-table-select",
 					parentNode: th,
 					childNodes: options,
 					events: {
@@ -396,8 +398,9 @@ var table = {
 		 * @author: Korbinian Kapsner
 		 * @description: makes a table hideable. Therefore the <thead> is
 		 *	inspected for <th>s which have the data-hideable-attribute set.
-		 *	For these <th>s a <input type="checkbox"> for the selection is
-	`	 *	injected in the controlsContainer.
+		 *	For these <th>s a
+		 *	<label class="kkjs-table-hide"><input type="checkbox"></label>
+		 *	for the selection is injected in the controlsContainer.
 		 * @parameter:
 		 *	table: the <table> to make selectable
 		 *	controlsContainer: a DOM-node that should hold the controls
@@ -414,6 +417,7 @@ var table = {
 				}
 				node.create({
 					tag: "label",
+					className: "kkjs-table-hide",
 					parentNode: controlsContainer,
 					childNodes: [
 						{
