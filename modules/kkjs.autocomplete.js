@@ -286,12 +286,15 @@ var autocomplete = {
 		
 		event.add(input, "focus", function(){
 			var p = kkjsNode.getPosition(input);
-			p.sub(kkjsNode.getPosition(node.parentNode));
+			p.sub(kkjsNode.getPosition(node.offsetParent || document.documentElement));
 			css.set(node, {
 				left: p.left,
 				top: p.top + input.offsetHeight,
 				minWidth: input.offsetWidth
 			});
+			if (att.keepOpen){
+				l.activate();
+			}
 		});
 		event.add.key(input, ["UP", "DOWN"], "down", function(){
 			l.activate();
@@ -301,7 +304,7 @@ var autocomplete = {
 				l.deactivate();
 			}
 			else {
-			this.focus();
+				this.focus();
 				ev.preventDefault();
 			}
 		});
@@ -323,7 +326,9 @@ var autocomplete = {
 		l.on("mark", function(op){
 			input.value = op.value;
 			input.focus();
-			l.deactivate();
+			if (!att.keepOpen){
+				l.deactivate();
+			}
 		});
 		
 		return l;
