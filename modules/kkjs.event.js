@@ -247,7 +247,7 @@ var event = {
 			return true;
 		}
 		return false;
-	},
+	}.makeArrayCallable([0, 1]),
 	
 	/**
 	 * Function event.fireOwn
