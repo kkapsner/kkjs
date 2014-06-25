@@ -7,11 +7,12 @@ var kkjsNode = require("kkjs.node");
 var css = require("kkjs.css");
 var event = require("kkjs.event");
 
-/*
- * Class Option
- * @description: representation of one option in the autocomplete select list
- */
 var Option = NodeRepresentator.extend(function(value, text){
+	/*
+	 * Class Option
+	 * @description: representation of one option in the autocomplete select list
+	 */
+
 	this.value = value;
 	this.text = value || text;
 }).implement({
@@ -39,7 +40,7 @@ var Option = NodeRepresentator.extend(function(value, text){
 		}
 	},
 	
-	// NodeRepresntator Interface
+	// NodeRepresentator Interface
 	_createNode: function(){
 		var This = this;
 		return kkjsNode.create({
@@ -65,11 +66,12 @@ var Option = NodeRepresentator.extend(function(value, text){
 	}
 });
 
-/*
- * Class List
- * @description: representation of a autocomplete select list. Returned by the autocomplete.set-function.
- */
 var List = NodeRepresentator.extend(function(){
+	/*
+	 * Class List
+	 * @description: representation of a autocomplete select list. Returned by the autocomplete.set-function.
+	 */
+
 	this.options = [];
 	var This = this;
 	event.add.key(document, "DOWN", "down", function(){
@@ -112,12 +114,14 @@ var List = NodeRepresentator.extend(function(){
 		if (!this.active){
 			this.setCurrentIndex(-1);
 			this.active = true;
+			this.emit("activate");
 			this.update();
 		}
 	},
 	deactivate: function(){
 		if (this.active){
 			this.active = false;
+			this.emit("deactivate");
 			this.update();
 		}
 	},
@@ -273,7 +277,6 @@ var List = NodeRepresentator.extend(function(){
 
 var autocomplete = {
 	set: function(input, options, att){
-		att = att || {};
 		input.autocomplete = "off";
 		if (input.setAttribute){
 			input.setAttribute("autocomplete", "off");
@@ -282,9 +285,9 @@ var autocomplete = {
 		var l = new List();
 		l.addOption(options);
 		var node = l.createNode();
-		document.body.appendChild(node);
+		input.parentNode.insertBefore(node, input.nextSibling);
 		
-		event.add(input, "focus", function(){
+		l.on("activate", function(){
 			var p = kkjsNode.getPosition(input);
 			p.sub(kkjsNode.getPosition(node.offsetParent || document.documentElement));
 			css.set(node, {
@@ -292,7 +295,9 @@ var autocomplete = {
 				top: p.top + input.offsetHeight,
 				minWidth: input.offsetWidth
 			});
-			if (att.keepOpen){
+		});
+		event.add(input, "focus", function(){
+			if (att.openOnFocus){
 				l.activate();
 			}
 		});
@@ -326,13 +331,24 @@ var autocomplete = {
 		l.on("mark", function(op){
 			input.value = op.value;
 			input.focus();
-			if (!att.keepOpen){
+			if (att.closeOnMark){
 				l.deactivate();
 			}
 		});
 		
 		return l;
-	}
+	}.setDefaultParameter(
+		null,
+		null,
+		new Function.DefaultParameter({
+			filter: {
+				startAnywhere: false,
+				caseSensitive: false
+			},
+			closeOnMark: true,
+			openOnFocus: false
+		})
+	)
 };
 
 if (typeof exports !== "undefined"){
