@@ -199,8 +199,10 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 		var m = this.kkjsManager? this.kkjsManager: this;
 		window.setTimeout(
 			function(){
+				m.textarea.style.marginBottom = m.textarea.offsetHeight + "px";
 				m.textarea.style.height = "0px";
 				m.textarea.style.height = m.textarea.scrollHeight + m.autoHeightGap + "px";
+				m.textarea.style.marginBottom = "";
 			},
 			0.1
 		);
