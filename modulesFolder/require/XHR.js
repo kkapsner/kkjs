@@ -2,6 +2,7 @@
 	var XHR = (function(){
 		var useableXHRObjects = [];
 		function createXHR(){
+			/* creates and returns a native XHR object*/
 			var req;
 			if (typeof XMLHttpRequest !== "undefined"){
 				req = new XMLHttpRequest();
@@ -22,6 +23,7 @@
 			return req;
 		}
 		function getXHR(){
+			/* returns a recycled XHR or creates a new one */
 			if (useableXHRObjects.length){
 				return useableXHRObjects.pop();
 			}
@@ -30,9 +32,11 @@
 			}
 		}
 		function depositXHR(xhr){
+			/* stores the XHR for recycling */
 			useableXHRObjects.push(xhr);
 		}
 		function createCallback(callback, successCallback, failCallback){
+			/* creates the onreadystatechange event callback */
 			return function(){
 				/*jshint validthis: true*/
 				if (this.readyState === 4){
@@ -56,6 +60,7 @@
 		
 		return {
 			read: function(url, asynch, successCallback, failCallback){
+				/* reads the URL and executes the appropriate callback */
 				var xhr = getXHR();
 				var callback = createCallback(
 					function(){

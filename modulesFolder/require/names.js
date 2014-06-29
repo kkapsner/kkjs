@@ -1,7 +1,8 @@
 	// name resolution package
 	var names = (function(){
-		// function to bring urls in a canonical form
+		
 		function canonicalise(url){
+			/* function to bring urls in a canonical form*/
 			var protocol, host, path, search;
 			var separatorIndex = url.indexOf("//");
 			if (separatorIndex === -1){
@@ -65,6 +66,7 @@
 		var root = window.location.protocol + "//" + window.location.host;
 		
 		function getPath(){
+			/* returns the current path to look for the scripts */
 			if (pathStack.length){
 				return pathStack[pathStack.length - 1];
 			}
@@ -73,23 +75,30 @@
 			}
 		}
 		function getRoot(){
+			/* returns the root directory */
 			return root;
 		}
 		function getModuleBase(){
+			/* returns the base directory for modules */
 			return moduleBase;
 		}
 		
 		return {
 			resetPath: function(){
+				/* resets the path stack */
 				pathStack = [];
 			},
 			pushPath: function(path){
+				/* add a directory to the path stack */
 				pathStack.push(canonicalise(path));
 			},
 			popPath: function(){
+				/* removes the last entry in the path stack */
 				return pathStack.pop();
 			},
 			resolve: function(modulePath){
+				/* resolve a module path to the complete path */
+				
 				// if we do not have a .js
 				if (!modulePath.match(/\.js$/)){
 					modulePath += ".js";

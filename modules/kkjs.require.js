@@ -30,6 +30,7 @@
 		var XHR = (function(){
 			var useableXHRObjects = [];
 			function createXHR(){
+				/* creates and returns a native XHR object*/
 				var req;
 				if (typeof XMLHttpRequest !== "undefined"){
 					req = new XMLHttpRequest();
@@ -50,6 +51,7 @@
 				return req;
 			}
 			function getXHR(){
+				/* returns a recycled XHR or creates a new one */
 				if (useableXHRObjects.length){
 					return useableXHRObjects.pop();
 				}
@@ -58,9 +60,11 @@
 				}
 			}
 			function depositXHR(xhr){
+				/* stores the XHR for recycling */
 				useableXHRObjects.push(xhr);
 			}
 			function createCallback(callback, successCallback, failCallback){
+				/* creates the onreadystatechange event callback */
 				return function(){
 					/*jshint validthis: true*/
 					if (this.readyState === 4){
@@ -84,6 +88,7 @@
 			
 			return {
 				read: function(url, asynch, successCallback, failCallback){
+					/* reads the URL and executes the appropriate callback */
 					var xhr = getXHR();
 					var callback = createCallback(
 						function(){
@@ -106,8 +111,9 @@
 	
 		// name resolution package
 		var names = (function(){
-			// function to bring urls in a canonical form
+			
 			function canonicalise(url){
+				/* function to bring urls in a canonical form*/
 				var protocol, host, path, search;
 				var separatorIndex = url.indexOf("//");
 				if (separatorIndex === -1){
@@ -171,6 +177,7 @@
 			var root = window.location.protocol + "//" + window.location.host;
 			
 			function getPath(){
+				/* returns the current path to look for the scripts */
 				if (pathStack.length){
 					return pathStack[pathStack.length - 1];
 				}
@@ -179,23 +186,30 @@
 				}
 			}
 			function getRoot(){
+				/* returns the root directory */
 				return root;
 			}
 			function getModuleBase(){
+				/* returns the base directory for modules */
 				return moduleBase;
 			}
 			
 			return {
 				resetPath: function(){
+					/* resets the path stack */
 					pathStack = [];
 				},
 				pushPath: function(path){
+					/* add a directory to the path stack */
 					pathStack.push(canonicalise(path));
 				},
 				popPath: function(){
+					/* removes the last entry in the path stack */
 					return pathStack.pop();
 				},
 				resolve: function(modulePath){
+					/* resolve a module path to the complete path */
+					
 					// if we do not have a .js
 					if (!modulePath.match(/\.js$/)){
 						modulePath += ".js";
@@ -226,6 +240,7 @@
 			var searchFunctions = [];
 			
 			function getModule(modulePath){
+				/* returns desired module */
 				for (var i = 0; i < searchFunctions.length; i += 1){
 					var module = searchFunctions[i](modulePath);
 					if (module){
@@ -236,10 +251,12 @@
 			}
 			
 			function storeModule(modulePath, module){
+				/* stores the module in the module cache */
 				modules[modulePath] = module;
 			}
 			
 			function addSearchFunction(func){
+				/* adds a search function to the cache */
 				searchFunctions.push(func);
 			}
 			
@@ -252,6 +269,7 @@
 			return {
 				addSearchFunction: addSearchFunction,
 				get: function(modulePath){
+					/* returns the module if it is in the cache */
 					return getModule(modulePath);
 				},
 				store: storeModule
@@ -263,12 +281,14 @@
 			var callbacks = {};
 			
 			function addCallback(moduleName, callback){
+				/* registers a callback for a specific module */
 				if (!Object.prototype.hasOwnProperty.call(callbacks, moduleName)){
 					callbacks[moduleName] = [];
 				}
 				callbacks[moduleName].push(callback);
 			}
 			function fireCallback(moduleName){
+				/* fires all registered callbacks for a module */
 				if (callbacks[moduleName]){
 					callbacks[moduleName].forEach(function(callback){
 						try {
@@ -284,6 +304,7 @@
 				}
 			}
 			function createModule(moduleName){
+				/* creates and returns the module object */
 				return {
 					exports: {},
 					filename: moduleName,

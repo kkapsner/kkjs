@@ -6,6 +6,7 @@
 		var searchFunctions = [];
 		
 		function getModule(modulePath){
+			/* returns desired module */
 			for (var i = 0; i < searchFunctions.length; i += 1){
 				var module = searchFunctions[i](modulePath);
 				if (module){
@@ -16,10 +17,12 @@
 		}
 		
 		function storeModule(modulePath, module){
+			/* stores the module in the module cache */
 			modules[modulePath] = module;
 		}
 		
 		function addSearchFunction(func){
+			/* adds a search function to the cache */
 			searchFunctions.push(func);
 		}
 		
@@ -32,6 +35,7 @@
 		return {
 			addSearchFunction: addSearchFunction,
 			get: function(modulePath){
+				/* returns the module if it is in the cache */
 				return getModule(modulePath);
 			},
 			store: storeModule
