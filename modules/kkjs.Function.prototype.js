@@ -141,6 +141,106 @@ Function.prototype.makeObjectCallable = function(argNumber, keyIndex, valueIndex
 	return objFunc;
 };
 
+Function.prototype.makePartiallyCallable = Function.prototype.autoCurry = function(numberOfArguments){
+	/**
+	 * Function Function.prototype.makePartiallyCallable
+	 * @name: Function.prototype.makePartiallyCallable
+	 * @alias: Function.prototype.autoCurry
+	 * @version: 1.0
+	 * @author: Korbinian Kapsner
+	 * @description: returns a function reference that is partially callable.
+	 *	So if you call it with to less parameter it will return a function
+	 *	reference that will store the provided parameter and expects the
+	 *	remaining.
+	 *		var fun = function(a, b){alert(a + b);};
+	 *		var parFun = fun.makePartiallyCallable();
+	 *		var sayHello = parFun("Hello ");
+	 *		sayHello("Bob"); //will call fun("Hello ", "Bob")
+	 *		sayHello("Alice"); //will call fun("Hello ", "Alice")
+	 * @parameter:
+	 *	[numberOfArguments: the number of expected parameters. Default is
+	 *		this.length
+	 */
+	
+	var func = this;
+	var requiredArguments = numberOfArguments || this.length;
+	
+	var partialFunc = function partialCallWrapper(){
+		if (arguments.length < requiredArguments){
+			return func.callPartially
+				.apply(func, arguments)
+				.makePartiallyCallable(requiredArguments - arguments.length);
+		}
+		else {
+			return func.apply(this, arguments);
+		}
+	};
+	
+	partialFunc.toString = func.toString.bind(func);
+	partialFunc.valueOf = func.valueOf.bind(func);
+	//arrFunc.length = func.length;
+	return partialFunc;
+}
+
+Function.prototype.callPartially = Function.prototype.curry = function(){
+	/**
+	 * Function Function.prototype.callPartially
+	 * @name: Function.prototype.callPartially
+	 * @alias: Function.prototype.curry
+	 * @version: 1.0
+	 * @author: Korbinian Kapsner
+	 * @description: returns a function reference that will store the provided
+	 *	parameters and expects the remaining.
+	 *		var fun = function(a, b){alert(a + b);};
+	 *		var sayHello = fun.callPartially("Hello ");
+	 *		sayHello("Bob"); //will call fun("Hello ", "Bob")
+	 *		sayHello("Alice"); //will call fun("Hello ", "Alice")
+	 * @parameter: the parameters to be stored
+	 */
+	var args = Array.prototype.slice.call(arguments);
+	var func = this;
+	
+	var partialFunc = function partialCalledWrapper(){
+		var currentArgs = args.concat(Array.prototype.slice.call(arguments));
+		return func.apply(this, currentArgs);
+	};
+	
+	partialFunc.toString = func.toString.bind(func);
+	partialFunc.valueOf = func.valueOf.bind(func);
+	//arrFunc.length = func.length;
+	return partialFunc;
+};
+
+Function.prototype.callPartiallyAtPosition = Function.prototype.curryAt = function(argValue, argPosition){
+	/**
+	 * Function Function.prototype.callPartiallyAtPosition
+	 * @name: Function.prototype.callPartiallyAtPosition
+	 * @alias: Function.prototype.curryAt
+	 * @version: 1.0
+	 * @author: Korbinian Kapsner
+	 * @description: returns a function reference that will store the provided
+	 *	parameter value and expects the remaining.
+	 *		var fun = function(a, b){alert(a + b);};
+	 *		var talkToBob = fun.callPartiallyAtPosition(" Bob", 1);
+	 *		talkToBob("Hello"); //will call fun("Hello", " Bob")
+	 *		talkToBob("Goodbye"); //will call fun("Goodbye", " Bob")
+	 * @parameter:
+	 *	argValue: the value of the parameter
+	 *	argPosition: the argument position
+	 */
+	var func = this;
+	
+	var partialFunc = function partialCalledWrapper(){
+		var currentArgs = Array.prototype.slice.call(arguments);
+		currentArgs.splice(argPosition, 0, argValue);
+		return func.apply(this, currentArgs);
+	};
+	
+	partialFunc.toString = func.toString.bind(func);
+	partialFunc.valueOf = func.valueOf.bind(func);
+	//arrFunc.length = func.length;
+	return partialFunc;
+};
 
 Function.prototype.setDefaultParameter = function(){
 	/**
