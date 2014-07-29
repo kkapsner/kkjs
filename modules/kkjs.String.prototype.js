@@ -107,7 +107,7 @@ String.prototype.quoteRegExp = function quoteRegExp(){
 	 * @return value: the quoted string
 	 */
 	
-	return this.replace(/[\\\+\*\?\[\^\]\$\(\)\{\}\=\!\|\.]/g, "\\$1");
+	return this.replace(/([\\\+\*\?\[\^\]\$\(\)\{\}\=\!\|\.])/g, "\\$1");
 };
 
 String.prototype.repeat = function repeat(x){
