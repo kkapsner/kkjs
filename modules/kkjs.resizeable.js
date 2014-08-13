@@ -1,6 +1,7 @@
 (function(){
 "use strict";
 
+var EventEmitter = require("kkjs.EventEmitter");
 var selection = require("kkjs.selection");
 var css = require("kkjs.css");
 var event = require("kkjs.event");
@@ -31,6 +32,7 @@ var resizeable = function makeResizeable(att){
 				}
 				storage.activeNode = false;
 				selection.empty();
+				storage.eventEmitter.emit("stopResizing");
 			}
 		};
 		storage.start =  function(ev, node, att){
@@ -45,12 +47,14 @@ var resizeable = function makeResizeable(att){
 			storage.restrictions = att.restrictions || {};
 			storage.activeNode = att.node;
 			storage.startPosition = event.getMousePosition(ev);
+			storage.eventEmitter = att.eventEmitter;
 			storage.startDimension = {
 				left: parseFloat(css.get(storage.activeNode, "left")) || 0,
 				top: parseFloat(css.get(storage.activeNode, "top")) || 0,
 				width: parseFloat(css.get(storage.activeNode, "width")) || 0,
 				height: parseFloat(css.get(storage.activeNode, "height")) || 0
 			};
+			storage.eventEmitter.emit("startResizing");
 			ev.preventDefault();
 		};
 		event.add(document, "mousemove", function(ev){
@@ -118,13 +122,24 @@ var resizeable = function makeResizeable(att){
 						storage.activeNode.style[i] = change[i] + "px";
 					}
 				}
+				
+				storage.eventEmitter.emit("resize");
+				ev.preventDefault();
 			}
-			ev.preventDefault();
 		});
 		event.add(document, "mouseup", storage.stop);
 		storage.isInit = true;
 	}
 	
+	
+	if (!att.eventEmitter){
+		att.eventEmitter = new EventEmitter();
+		for (var i in att){
+			if (att.hasOwnProperty(i) && i.substr(0, 2) === "on"){
+				att.eventEmitter.on(i.substr(2), att[i]);
+			}
+		}
+	}
 	if (att.borderNodes){
 		for (var i = 0; i < att.borderNodes.length; i++){
 			if (/resize/i.test(css.get(att.borderNodes[i], "cursor"))){
@@ -139,7 +154,7 @@ var resizeable = function makeResizeable(att){
 	if (!css.get(att.node, "position").match(/absolute|fixed/i)){
 		att.node.style.position = "relative";
 	}
-	else if(att.node.offsetParent){
+	else if (att.node.offsetParent){
 		var pos = node.getPosition(att.node);
 		att.node.style.left = pos.left + "px";
 		att.node.style.top = pos.top + "px";
