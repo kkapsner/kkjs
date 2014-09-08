@@ -91,13 +91,41 @@ var html5 = {
 			}
 		},
 		autofocus: {
+			nativeSupport: (function(){
+				return "autofocus" in document.createElement("input");
+			})(),
 			enable: function(){
-				var inputs = document.getElementsByTagName("input");
-				Array.prototype.forEach.call(inputs, function(input){
-					if (input.getAttribute("autofocus") !== null && !("autofocus" in input)){
-						input.focus();
+				function getAutoFocusNode(first, node){
+					if (!first && node.hasAttribute("autofocus")){
+						return node;
 					}
-				});
+					else {
+						return first;
+					}
+				};
+				var inputs = document.getElementsByTagName("input");
+				var firstInput = Array.prototype.reduce.call(inputs, getAutoFocusNode, null);
+				var textareas = document.getElementsByTagName("textarea");
+				var firstTextarea = Array.prototype.reduce.call(textareas, getAutoFocusNode, null);
+				
+				var firstNode = null;
+				if (firstInput && firstTextarea){
+					var commonAnchestor = node.getCommonAncestor(firstInput, firstTextarea);
+					var inputIndex = node.getIndex(firstInput, commonAnchestor);
+					var textareaIndex = node.getIndex(firstTextarea, commonAnchestor);
+					if (inputIndex > textareaIndex){
+						firstNode = firstTextarea;
+					}
+					else {
+						firstNode = firstInput;
+					}
+				}
+				else {
+					var firstNode = firstInput || firstTextarea;
+				}
+				if (firstNode && firstNode.focus){
+					firstNode.focus();
+				}
 			}
 		},
 		datalist: {
