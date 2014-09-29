@@ -90,42 +90,20 @@ var html5 = {
 				});
 			}
 		},
-		autofocus: {
+		autofocus: { //simplified by j-l-n (https://github.com/j-l-n), 2014/09/29
 			nativeSupport: (function(){
 				return "autofocus" in document.createElement("input");
 			})(),
 			enable: function(){
-				function getAutoFocusNode(first, node){
-					if (!first && node.hasAttribute("autofocus")){
-						return node;
-					}
-					else {
-						return first;
-					}
-				};
-				var inputs = document.getElementsByTagName("input");
-				var firstInput = Array.prototype.reduce.call(inputs, getAutoFocusNode, null);
-				var textareas = document.getElementsByTagName("textarea");
-				var firstTextarea = Array.prototype.reduce.call(textareas, getAutoFocusNode, null);
-				
-				var firstNode = null;
-				if (firstInput && firstTextarea){
-					var commonAnchestor = node.getCommonAncestor(firstInput, firstTextarea);
-					var inputIndex = node.getIndex(firstInput, commonAnchestor);
-					var textareaIndex = node.getIndex(firstTextarea, commonAnchestor);
-					if (inputIndex > textareaIndex){
-						firstNode = firstTextarea;
-					}
-					else {
-						firstNode = firstInput;
-					}
-				}
-				else {
-					var firstNode = firstInput || firstTextarea;
-				}
-				if (firstNode && firstNode.focus){
-					firstNode.focus();
-				}
+				var allInputElements = document.querySelectorAll("textarea, input");
+        			for(var i = 0; i < allInputElements.length; i++){
+            				var element = allInputElements[i];
+            				var autofocus = element.hasAttribute("autofocus");
+            				if(autofocus === true){
+              					element.focus();
+              					break;
+        				}
+          			}
 			}
 		},
 		datalist: {
