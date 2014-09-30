@@ -95,36 +95,9 @@ var html5 = {
 				return "autofocus" in document.createElement("input");
 			})(),
 			enable: function(){
-				function getAutoFocusNode(first, node){
-					if (!first && node.hasAttribute("autofocus")){
-						return node;
-					}
-					else {
-						return first;
-					}
-				};
-				var inputs = document.getElementsByTagName("input");
-				var firstInput = Array.prototype.reduce.call(inputs, getAutoFocusNode, null);
-				var textareas = document.getElementsByTagName("textarea");
-				var firstTextarea = Array.prototype.reduce.call(textareas, getAutoFocusNode, null);
-				
-				var firstNode = null;
-				if (firstInput && firstTextarea){
-					var commonAnchestor = node.getCommonAncestor(firstInput, firstTextarea);
-					var inputIndex = node.getIndex(firstInput, commonAnchestor);
-					var textareaIndex = node.getIndex(firstTextarea, commonAnchestor);
-					if (inputIndex > textareaIndex){
-						firstNode = firstTextarea;
-					}
-					else {
-						firstNode = firstInput;
-					}
-				}
-				else {
-					var firstNode = firstInput || firstTextarea;
-				}
-				if (firstNode && firstNode.focus){
-					firstNode.focus();
+				var first = document.querySelectorAll("input[autofocus], textarea[autofocus]")[0];
+				if (first){
+					first.focus();
 				}
 			}
 		},
