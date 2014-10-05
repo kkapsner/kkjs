@@ -24,7 +24,7 @@ if (!document.getElementsByClassName){
 	if (document.querySelectorAll){
 		document.getElementsByClassName = Element.prototype.getElementsByClassName = function getElementsByClassName(str){
 			/* Polyfill for NODE.getElementsByClassName for IE 8 */
-			return this.querySelectorAll("." + str.replace(/^\s+/, "").replace(/\s+/, "."));
+			return this.querySelectorAll("." + str.trim().replace(/\s+/g, "."));
 		};
 	}
 }
