@@ -30,7 +30,7 @@ function uniqueArray(arr){
 }
 
 var directions = ["Top", "Right", "Bottom", "Left"];
-var browserPre = ["", "Moz", "O", "Webkit", "Ms"];
+var browserPre = ["", "Moz", "O", "Webkit", "ms"];
 
 var css = {
 	/**
