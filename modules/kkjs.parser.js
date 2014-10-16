@@ -137,8 +137,14 @@ var parser = {
 				"g"
 			),
 			function (m, encloseMatch){
-				enclosedStrings.push(encloseMatch.replace(new RegExp("(?:" + enclose + "){2}", "g"), att.enclose));
-				return att.enclose + enclosedStrings.length;
+				if (att.removeEscaping){
+					encloseMatch = encloseMatch.replace(new RegExp("(?:" + enclose + "){2}", "g"), att.enclose);
+				}
+				else {
+					encloseMatch = m;
+				}
+				enclosedStrings.push(encloseMatch);
+				return att.enclose + (enclosedStrings.length - 1);
 			}
 		);
 		
@@ -189,6 +195,7 @@ var parser = {
 		{
 			separator: ",",
 			enclose: "\"",
+			removeEscaping: true,
 			columnNames: null,
 			header: false,
 			skipEmptyLines: true,
