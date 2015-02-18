@@ -244,7 +244,7 @@ var date = {
 		return formatDate;
 	})(),
 	
-	locale: "en",
+	locale: navigator.language,
 	setLocale: function(locale){
 		/**
 		 * Function date.setLocale
@@ -282,6 +282,10 @@ var date = {
 		}
 	}
 };
+
+if (!date.localeStrings[date.locale]){
+	date.locale = "en";
+}
 
 if (typeof exports !== "undefined"){
 	for (var i in date){
