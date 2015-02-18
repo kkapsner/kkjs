@@ -244,7 +244,7 @@ var date = {
 		return formatDate;
 	})(),
 	
-	locale: navigator.language,
+	locale: "en",
 	setLocale: function(locale){
 		/**
 		 * Function date.setLocale
@@ -254,7 +254,7 @@ var date = {
 		 * @parameter:
 		 *	locale:
 		 */
-		
+		locale = locale.split("-")[0].toLowerCase();
 		if (date.localeStrings.hasOwnProperty(locale)){
 			date.locale = locale;
 		}
@@ -283,9 +283,7 @@ var date = {
 	}
 };
 
-if (!date.localeStrings[date.locale]){
-	date.locale = "en";
-}
+date.setLocale(navigator.language);
 
 if (typeof exports !== "undefined"){
 	for (var i in date){
