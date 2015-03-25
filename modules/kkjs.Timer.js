@@ -51,6 +51,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 	 */
 	
 	this.countdown = !!time;
+	this.displayElapsedTime = !this.countdown;
 	if (this.countdown){
 		this.time = time;
 	}
@@ -61,6 +62,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 }).implement({
 	time: null,
 	countdown: true,
+	displayElapsedTime: true,
 	animation: false,
 	getTime: function getTime(elapsed){
 		/**
@@ -73,7 +75,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		 * @return value: the time of the timer
 		 */
 		
-		if (!this.countdown || elapsed){
+		if (elapsed){
 			return this.getElapsedTime();
 		}
 		else {
@@ -111,7 +113,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		 * @return value: the formated time string
 		 */
 		
-		var time = this.getTime() / 1000;
+		var time = this.getTime(this.displayElapsedTime) / 1000;
 		var sign = "";
 		if (time < 0){
 			time *= -1;
