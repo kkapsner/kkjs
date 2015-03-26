@@ -104,6 +104,28 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 			return 0;
 		}
 	},
+	setElapsedTime: function setElapsedTime(time){
+		/**
+		 * Function Timer.setElapsedTime
+		 * @name: Timer.setElapsedTime
+		 * @author: Korbinian Kapsner
+		 * @description: sets the elapsed time of the timer
+		 * @parameter:
+		 *	time: the elapsed time
+		 */
+		if (this.isRunning() || this.isPaused()){
+			this.startTime = this.startTime + this.getElapsedTime() - time;
+		}
+		else if (this.isStopped()){
+			throw new Error("Unable to set elapsed time of a stopped timer.");
+		}
+		else {
+			throw new Error("Unable to set elapsed time of an unused timer.");
+		}
+		this.emit("setElapsedTime", time);
+		this.emit("tick");
+		this.update();
+	},
 	getTimeString: function getTimeString(elapsed){
 		/**
 		 * Function Timer.getTimeString
@@ -265,6 +287,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		 * @description: starts the ticking of the timer.
 		 */
 		
+		this.tick();
 		if (this.countdown){
 			this.timeout = window.setTimeout(this.tick, this.getTime());
 		}
