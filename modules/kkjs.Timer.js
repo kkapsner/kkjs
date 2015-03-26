@@ -104,16 +104,21 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 			return 0;
 		}
 	},
-	getTimeString: function getTimeString(){
+	getTimeString: function getTimeString(elapsed){
 		/**
 		 * Function Timer.getTimeString
 		 * @name: Timer.getTimeString
 		 * @author: Korbinian Kapsner
 		 * @description: returns the time of the timer as a mm:ss string
+		 * @parameter:
+		 *	elapsed: if the elapsed time should be returned
 		 * @return value: the formated time string
 		 */
 		
-		var time = this.getTime(this.displayElapsedTime) / 1000;
+		if (typeof elapsed === "undefined"){
+			elapsed = this.displayElapsedTime;
+		}
+		var time = this.getTime(elapsed) / 1000;
 		var sign = "";
 		if (time < 0){
 			time *= -1;
@@ -287,17 +292,22 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 	},
 	
 	// NodeRepresentator required functions
-	_createNode: function(){
+	_createNode: function(displayRemaining){
 		/* NodeRepresentator interface implementation */
+		var className = "";
+		if (typeof displayRemaining !== "undefined"){
+			className = " " + (displayRemaining? "remaining": "elapsed");
+		}
 		return knode.create({
 			tag: "span",
-			className: "timer",
-			timer: this
+			className: "timer" + className,
+			timer: this,
+			displayRemaining: displayRemaining
 		});
 	},
 	_updateNode: function(node){
 		/* NodeRepresentator interface implementation */
-		node.innerHTML = this.getTimeString().encodeHTMLEntities();
+		node.innerHTML = this.getTimeString(node.displayRemaining).encodeHTMLEntities();
 	}
 });
 
