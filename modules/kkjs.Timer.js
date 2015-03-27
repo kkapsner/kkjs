@@ -114,7 +114,7 @@ var Timer = NodeRepresentator.extend(function Timer(time){
 		 *	time: the elapsed time
 		 */
 		if (this.isRunning() || this.isPaused()){
-			this.startTime = this.startTime + this.getElapsedTime() - time;
+			this.startTime = this.startTime - time + this.getElapsedTime();
 		}
 		else if (this.isStopped()){
 			throw new Error("Unable to set elapsed time of a stopped timer.");
