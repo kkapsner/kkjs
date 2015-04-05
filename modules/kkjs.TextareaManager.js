@@ -165,7 +165,7 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 		 * @return value: this
 		 */
 		
-		kkjs.event.add(this.textarea, ["input", "keypress", "advancedChange"], this.setAutoHeight);
+		kkjs.event.add(this.textarea, ["input", "keypress", "resize", "advancedChange"], this.setAutoHeight);
 		kkjs.css.set(this.textarea, "overflow", "hidden");
 		this.autoHeightGap = parseInt(gap, 10) || 0;
 		this.setAutoHeight();
@@ -181,7 +181,7 @@ kkjs.TextareaManager = kkjs.oo.Base.extend(function TextareaManager(node){
 		 * @return value: this
 		 */
 		
-		kkjs.event.remove(this.textarea, ["input", "keypress", "advancedChange"], this.setAutoHeight);
+		kkjs.event.remove(this.textarea, ["input", "keypress", "resize", "advancedChange"], this.setAutoHeight);
 		kkjs.css.set(this.textarea, "overflow", "");
 		
 		return this;
