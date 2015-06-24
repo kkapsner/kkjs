@@ -143,14 +143,15 @@ var Node = {
 		 *			parentNode: the node will be placed in that node
 		 *			nextSibling: the node will be placed before that node
 		 *			previousSibling: the node will be placed after that node
-		 *			style: has to be an object that is than passed to stlye.set()
-		 *			events: has to be an object that is than passed to event.add()
-		 *			data: has to be an object that is than passed to dataset.set()
+		 *			style: has to be an object that is then passed to stlye.set()
+		 *			events: has to be an object that is then passed to event.add()
+		 *			data: has to be an object that is then passed to dataset.set()
 		 *			childNodes: has to be an array of either nodes (directly
 		 *				inserted in the node), a string (inserted as textnode) or
 		 *				an object (passed to node.create() and the returned node is
 		 *				inserted). Before the new child nodes are inserted the node
-		 *				is cleared.
+		 *				is cleared. If the value is no array an array is produced
+		 *				and this array is used instead.
 		 *		This function is array callable on the first argument and object
 		 *		callable on the second.
 		 * @parameter:
@@ -181,6 +182,9 @@ var Node = {
 				break;
 			case "childNodes":
 				Node.clear(node);
+				if (!Array.isArray(value)){
+					value = [value];
+				}
 				for (var i = 0; i < value.length; i += 1){
 					var child = (value[i] instanceof window.Node)? value[i]: Node.create(value[i]);
 					node.appendChild(child);
