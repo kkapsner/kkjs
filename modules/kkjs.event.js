@@ -33,7 +33,7 @@ var event = {
 			return event.add[eventType](node, func, amAnfang);
 		}
 		return event.Handler.get(node).addEvent(eventType, func, amAnfang);
-	}.makeArrayCallable([0, 1, 2]).makeObjectCallable(1, 1, 2),
+	}.makeArrayCallable(0).makeArrayCallable([1, 2], {mapReturnValues: false}).makeObjectCallable(1, 1, 2),
 	
 	/**
 	 * Function event.remove
@@ -56,7 +56,7 @@ var event = {
 			return false;
 		}
 		return event.Handler.get(node).removeEvent(eventType, func);
-	}.makeArrayCallable([0, 1, 2]),
+	}.makeArrayCallable(0).makeArrayCallable([1, 2], {mapReturnValues: false}),
 	
 	/**
 	 * Constructor event.Handler
@@ -129,7 +129,7 @@ var event = {
 				this._events[type].unshift(func);
 			}
 			return this;
-		},
+		}.makeArrayCallable([0, 1], {mapReturnValues: false}),
 		removeEvent: function(type, func){
 			if (this._events[type]){
 				var i = this.getEventIndex(type, func);
@@ -142,7 +142,7 @@ var event = {
 				}
 			}
 			return this;
-		},
+		}.makeArrayCallable([0, 1], {mapReturnValues: false}),
 		getEventIndex: function(type, func){
 			var functs = this._events[type];
 			if (functs){
