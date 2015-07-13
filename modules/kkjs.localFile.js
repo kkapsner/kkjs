@@ -33,7 +33,7 @@ var FilePromise = EventEmitter.extend(function(){
 });
 
 var localFile = {
-	load: function loadFile(loadCallback, errorCallback){
+	load: function loadFile(loadCallback, errorCallback, opt){
 		var filePromise = new FilePromise();
 		filePromise.promise("load", loadCallback, errorCallback);
 		var input = kNode.create({
@@ -52,14 +52,14 @@ var localFile = {
 						reader.onerror = function(err){
 							filePromise.emit("error", err);
 						};
-						reader.readAsText(this.files[0]);
+						reader["readAs" + opt.loadAs.firstToUpperCase()](this.files[0]);
 					}
 				}
 			}
 		});
 		input.click();
 		return filePromise;
-	},
+	}.setDefaultParameter(null, null, new Function.DefaultParameter({loadAs: "text"})),
 	enableFileDrop: function(node, loadCallback, errorCallback){
 		var filePromise = new FilePromise();
 		filePromise.promise("load", loadCallback, errorCallback);
@@ -78,7 +78,9 @@ var localFile = {
 				filePromise.emit(ev.type, ev);
 			})
 			.addEvent("drop", function(ev){
+				filePromise.emit(ev.type, ev);
 				if (ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files.length){
+					filePromise.emit(ev.type + ".files", ev);
 					ev.preventDefault();
 					var file = ev.dataTransfer.files[0];
 					filePromise.filename = file.filename;
@@ -108,7 +110,7 @@ var localFile = {
 	bounce: {
 		use: false,
 		URL: "",
-		save: function bounceSaveFile(filename, content, mimeType){
+		save: function bounceSaveFile(filename, content, mimeType, isDataURL){
 			var form = kkjs.node.create({
 				tag: "form",
 				action: this.URL,
@@ -118,7 +120,7 @@ var localFile = {
 					{
 						tag: "input",
 						type: "hidden",
-						name: "content",
+						name: isDataURL? "dataURL": "content",
 						value: content
 					},
 					{
@@ -141,17 +143,38 @@ var localFile = {
 		}
 	},
 	save: function saveFile(filename, content, mimeType){
+		var dataURL;
 		filename = filename || "file.txt";
-		content = content || "";
-		mimeType = mimeType || "text/plain";
+		if (typeof content === "object" && content !== null){
+			if (content.dataURL){
+				dataURL = content.dataURL;
+			}
+			else if (content.raw){
+				dataURL = "data:" + (content.mimeType || "text/plain") + ";base64," + base64.encode(content.raw || "");
+			}
+			else {
+				throw new TypeError();
+			}
+		}
+		else {
+			content = content || "";
+			mimeType = mimeType || "text/plain";
+			dataURL = "data:" + mimeType + ";base64," + base64.encode(content);
+		}
+		
 		if (this.bounce.use){
-			this.bounce.save(filename, content, mimeType);
+			var isDataURL = false;
+			if (typeof content === "object" && content !== null){
+				isDataURL = true;
+				content = dataURL;
+			}
+			this.bounce.save(filename, content, mimeType, isDataURL);
 		}
 		else {
 			var a = kNode.create({
 				tag: "a",
 				download: filename ,
-				href: "data:" + mimeType + ";base64," + base64.encode(content),
+				href: dataURL,
 				target: "_blank",
 				parentNode: document.body,
 				childNodes: ["save"]
