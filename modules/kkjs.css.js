@@ -387,7 +387,7 @@ var css = {
 							"Error setting style \"%s\": %s",
 							i,
 							e.message
-						));
+						),e);
 					}
 				}
 			}
@@ -803,7 +803,7 @@ css.set.rotation = function(node, value){
 	function applyToTransform(name){
 		var oldValue = node.style[name]; //css.get(node, prae[n] + "Transform");
 		oldValue = (typeof oldValue === "string")? oldValue: "";
-		node.style[name] = oldValue.replace(/\s*rotate\(\d+(?:\.\d*)?deg\)/, "") + " rotate(" + value + ")";
+		node.style[name] = oldValue.replace(/\s*rotate\(-?\d+(?:\.\d*)?deg\)/g, "") + " rotate(" + value + ")";
 	}
 	if ("transform" in node.style){
 		applyToTransform("transform");
