@@ -1,0 +1,19 @@
+{
+	"name": "kkjs.es6.js",
+	"strict": true,
+	"commonScope": true,
+	"description": "create ECMAScript 6 methods that are not provided by the environment",
+	"order": [
+		"variablesAndFunctions.js",
+		"Array.js",
+		"Object.js",
+		"Function.js",
+		"String.js",
+		"Boolean.js",
+		"Number.js",
+		"Math.js",
+		"Date.js",
+		"Error.js",
+		"JSON.js"
+	]
+}
