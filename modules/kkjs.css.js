@@ -57,27 +57,33 @@ var css = {
 			var ret = [];
 			
 			var attribute = [];
+			var onlyExistAttribute = [];
 			var el = "";
 			while ((el = attributeRe.exec(id)) !== null){
-				el = el[1].split("=");
-				var attName = el[0];
-				var value = (el.length > 1)? el.slice(1).join("="): ".+";
-				if (/\|$/.test(attName)){
-					value = new RegExp("^" + value + "(-|$)");
+				el = el[1].split("=", 2);
+				if (el.length === 1){
+					onlyExistAttribute.push(el[0]);
 				}
-				else if(/~$/.test(attName)){
-					value = new RegExp("(^|\\s)" + value + "($|\\s)");
+				else {
+					var attName = el[0];
+					var value = el[1];
+					if (/\|$/.test(attName)){
+						value = new RegExp("^" + value + "(-|$)");
+					}
+					else if(/~$/.test(attName)){
+						value = new RegExp("(^|\\s)" + value + "($|\\s)");
+					}
+					else if(/\^$/.test(attName)){
+						value = new RegExp("^" + value);
+					}
+					else if(/\*$/.test(attName)){
+						value = new RegExp(value);
+					}
+					else{
+						value = new RegExp("^" + value + "$");
+					}
+					attribute.push({attName: attName.replace(/(\||~|\^|\*|\$)$/, ""), valueRe: value});
 				}
-				else if(/\^$/.test(attName)){
-					value = new RegExp("^" + value);
-				}
-				else if(/\*$/.test(attName)){
-					value = new RegExp(value);
-				}
-				else{
-					value = new RegExp("^" + value + "$");
-				}
-				attribute.push({attName: attName.replace(/(\||~|\^|\*|\$)$/, ""), valueRe: value});
 			}
 			var pureId = id.replace(attributeRe, "[");
 			
@@ -129,10 +135,14 @@ var css = {
 				
 				for (var m = 0; m < match.length; m++){
 					var mismatch = false;
-					for (var j = 0; j < attribute.length; j++){
+					for (var j = 0; !mismatch && j < onlyExistAttribute.length; j++){
+						if (!match[m].hasAttribute(onlyExistAttribute)){
+							mismatch = true;
+						}
+					}
+					for (var j = 0; !mismatch && j < attribute.length; j++){
 						if (!attribute[j].valueRe.test(match[m][attribute[j].attName] || match[m].getAttribute(attribute[j].attName))){
 							mismatch = true;
-							break;
 						}
 					}
 					if (mismatch || (!byClassName && !css.className.has(match[m], className))){
