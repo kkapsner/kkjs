@@ -43,6 +43,9 @@ Function.prototype.makeArrayCallable = function makeArrayCallable(argNumbers, fl
 	if (!("mapReturnValues" in flags)){
 		flags.mapReturnValues = true;
 	}
+	if (!Array.isArray(argNumbers)){
+		argNumbers = [argNumbers];
+	}
 	
 	var arrFunc = function arrayCallableWrapper(){
 		/**
