@@ -412,13 +412,14 @@ var Kightbox = EventEmitter.extend(function(){
 		 * @return value: this
 		 */
 		
-		this.emit("contentChanged", content, this.content);
+		this.emit("contentWillChange", content, this.content);
 		this.removeContent();
 		this.content = content;
 		// TODO nicer proof that it's visible
 		content.style.display = "block";
 		content.style.visibility = "visible";
 		this.contentContainer.appendChild(content);
+		this.emit("contentChanged", this.content);
 		
 		return this;
 	},
@@ -431,11 +432,12 @@ var Kightbox = EventEmitter.extend(function(){
 		 * @return value: this
 		 */
 		
-		var oldContent = this.content;
-		if (oldContent){
-			node.remove(oldContent);
+		node.clear(this.contentContainer);
+		// var oldContent = this.content;
+		// if (oldContent){
+			// node.remove(oldContent);
 			this.content = false;
-		}
+		// }
 		
 		return this;
 	},
@@ -786,6 +788,7 @@ var Kightbox = EventEmitter.extend(function(){
 		 */
 		
 		if (!this.isOpen){
+			this.emit("willOpen");
 			this.isOpen = true;
 			
 			// insert and prepare overlay
@@ -917,6 +920,7 @@ var Kightbox = EventEmitter.extend(function(){
 		 */
 		
 		if (this.isOpen){
+			this.emit("willClose");
 			this.isOpen = false;
 			css.animate(Kightbox.overlay, {opacity: 0}, {duration: 0.3, onfinish: function(){node.remove(Kightbox.overlay);}});
 			this.setSize({width: 0, height: 0}, true);
