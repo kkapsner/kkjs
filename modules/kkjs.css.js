@@ -31,7 +31,12 @@ function uniqueArray(arr){
 
 var directions = ["Top", "Right", "Bottom", "Left"];
 var browserPre = ["", "Moz", "O", "Webkit", "ms"];
-
+var lengthAttributes = ["top", "right", "bottom", "left", "width", "height", "minWidth", "minHeight", "maxWidth", "maxHeight", "margin", "padding", "borderRadius"];
+function isLengthAttribute(name){
+	return lengthAttributes.some(function(attr){
+		return attr === name.substring(0, attr.length); 
+	});
+}
 var css = {
 	/**
 	 * Function css.$
@@ -415,7 +420,7 @@ var css = {
 		}
 		name = name.replace(/-([a-z])/g, function(match, hit){ return hit.toUpperCase();});
 		
-		if (typeof value === "number" && ["top", "right", "bottom", "left", "width", "height", "minWidth", "minHeight", "maxWidth", "maxHeight"].indexOf(name) !== -1){
+		if (typeof value === "number" && isLengthAttribute(name)){
 			var valueStr = value.toString(10);
 			if (/e/i.test(valueStr)){
 				if (Math.abs(value) < 1){
