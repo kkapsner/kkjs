@@ -427,4 +427,94 @@ kMath.Range2D = oo.Base.extend(function Range(minX, maxX, minY, maxY){
 	}
 });
 
+/**
+ * Object Math.Prime
+ * @name: Math.Prime
+ * @author: Korbinian Kapsner
+ * @version: 1.0
+ * @description: provides some prime functionality
+ */
+kMath.Prime = (function(){
+	var primes = [2, 3, 5, 7];
+	var maxPrimeCheck = 9;
+	function calculatePrimesUpTo(number){
+		for (;maxPrimeCheck <= number; maxPrimeCheck += 2){
+			var sqrt = Math.sqrt(maxPrimeCheck);
+			var isPrime = true;
+			for (var i = 0, l = primes.length; i < l && primes[i] <= sqrt; i += 1){
+				if (maxPrimeCheck % primes[i] === 0){
+					isPrime = false;
+					break;
+				}
+			}
+			if (isPrime){
+				primes.push(maxPrimeCheck);
+			}
+		}
+	};
+	return {
+		is: function(number){
+			if (number <= maxPrimeCheck){
+				for (var i = 0, l = primes.length; i < l; i += 1){
+					if (number === primes[i]){
+						return true;
+					}
+				}
+				return false;
+			}
+			else {
+				 var sqrt = Math.sqrt(number);
+				 calculatePrimesUpTo(sqrt);
+				 
+				for (var i = 0, l = primes.length; i < l && primes[i] < sqrt; i += 1){
+					if (number % primes[i] === 0){
+						return false;
+					}
+				}
+				return true;
+			}
+		},
+		getFactorisation: function getFactorisation(number){
+			var factors = [];
+			var sqrt = Math.sqrt(number);
+			for (var i = 0, l = primes.length; i < l && primes[i] < sqrt; i += 1){
+				while (number % primes[i] === 0){
+					factors.push(primes[i]);
+					number /= primes[i];
+					
+				}
+				if (number === 1){
+					break;
+				}
+			}
+			if (number !== 1){
+				if (i < l){
+					factors.push(number);
+				}
+				else {
+					calculatePrimesUpTo(number);
+					factors.push.apply(factors, getFactorisation(number));
+				}
+				
+			}
+			return factors;
+		},
+		get: function(count){
+			while (primes.length < count){
+				calculatePrimesUpTo(maxPrimeCheck + (count - primes.length) * 2); 
+			}
+			return primes.slice(0, count);
+		},
+		getUpTo: function(number){
+			calculatePrimesUpTo(number);
+			for (var i = primes.length - 1; i >= 0; i -= 1){
+				if (primes[i] <= number){
+					break;
+				}
+			}
+			return primes.slice(0, i + 1);
+		}
+	};
+}());
+
 })();
