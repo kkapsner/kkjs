@@ -7,6 +7,7 @@
 		"variablesAndFunctions.js",
 		"Array.js",
 		"Object.js",
+		"Promise.js",
 		"Function.js",
 		"String.js",
 		"Boolean.js",

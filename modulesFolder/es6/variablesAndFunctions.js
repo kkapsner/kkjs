@@ -20,3 +20,13 @@
 			});
 		}
 	}
+	
+	function assert(expr, msg){
+		if (!expr){
+			throw new Error(msg);
+		}
+	}
+	
+	function todo(str){
+		throw new Error(str || "There is something to do...");
+	}
