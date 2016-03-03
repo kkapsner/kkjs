@@ -13,7 +13,10 @@
 var dataset = require("kkjs.dataset");
 var node = require("kkjs.node");
 var css = require("kkjs.css");
+var event = require("kkjs.event");
+var scroll = require("kkjs.scroll");
 var styleRule = require("kkjs.styleRule");
+var kMath = require("kkjs.Math");
 
 function eachRow(table, callback){
 	/**
@@ -151,11 +154,45 @@ function getColumnIndex(cell){
 
 function createHideStyle(){
 	var name = "kkjsTableHide_" + Date.now().toString(36) + (Math.floor(Math.random() * 1296)).toString(36)
-	console.log(styleRule.create("." + name + "{display: none;}"));
+	styleRule.create("." + name + "{display: none !important;}");
 	return name;
 }
 
 var table = {
+	scrollableHead: function scrollableHead(table){
+		/**
+		 * Function table.scrollableHead
+		 * @name: table.scrollableHead
+		 * @author: Korbinian Kapsner
+		 * @description: makes a table's head scrollable. This means that the
+		 *	head will follow scroll movement to be visible all the time.
+		 * @parameter:
+		 *	table: the <table> to make the head scrollable
+		 */
+		
+		var head = table.tHead;
+		if (head){
+			css.set(head, "position", "relative");
+			if (css.get(head, "backgroundColor") === "transparent"){
+				css.set(head, "backgroundColor", "white");
+			}
+			event.add(window, ["scroll", "resize"], function(){
+				var nodePos = node.getPosition(table);
+				var scrollPos = scroll.getPosition();
+				var offset = scrollPos.top - nodePos.top;
+				var range = new kMath.Range(
+					0,
+					table.offsetHeight -
+					head.offsetHeight -
+					Array.prototype.slice.call(table.rows).reduceRight(function(v, row){
+						return v? v: row.offsetHeight;
+					}, 0)
+				);	
+				css.set(head, "top", range.restrict(offset));
+			}).fire("scroll");
+		}
+	}.makeArrayCallable([0]),
+	
 	sortable: function sortable(table){
 		/**
 		 * Function table.sortable
