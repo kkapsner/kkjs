@@ -77,7 +77,7 @@ var NodeRepresentatorContainer = NodeRepresentator.extend().implement({
 					className: "remove",
 					events: {click: function(){This.removeItem(item);}}
 				},
-				item.createNode()
+				item.createNode("list")
 			]
 		});
 	},
