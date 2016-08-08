@@ -38,7 +38,7 @@ Function.prototype.makeArrayCallable = function makeArrayCallable(argNumbers, fl
 		flags = {
 			arrayLike: false,
 			mapReturnValues: true
-		}
+		};
 	}
 	if (!("mapReturnValues" in flags)){
 		flags.mapReturnValues = true;
@@ -183,7 +183,7 @@ Function.prototype.makePartiallyCallable = Function.prototype.autoCurry = functi
 	partialFunc.valueOf = func.valueOf.bind(func);
 	//arrFunc.length = func.length;
 	return partialFunc;
-}
+};
 
 Function.prototype.callPartially = Function.prototype.curry = function(){
 	/**

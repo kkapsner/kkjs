@@ -26,7 +26,7 @@
 					logger.apply(This, args);
 				});
 			}
-			return EventEmitter.prototype.emit.apply(this, arguments);;
+			return EventEmitter.prototype.emit.apply(this, arguments);
 		}.makeArrayCallable([0], {mapReturnValues: false}),
 		
 		onEvent: function(eventListener){
