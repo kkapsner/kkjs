@@ -1,7 +1,4 @@
 var ajax = function ajax(att){
-	var req = new Request();
-	
-	
 	if (att.preventCaching){
 		att.url = att.url.replace(/#.*$/, "");
 		att.url = att.url + ((att.url.indexOf("?") + 1)? "&": "?") + ((new Date()).getTime() + Math.random());
@@ -12,9 +9,9 @@ var ajax = function ajax(att){
 	//Request initialisieren
 	var req = ajax._getRequest(att.xDomain);
 	
-	//request öffnen
+	//request Ã¶ffnen
 	req.open(att.type, att.url, att.asynch, att.user, att.password);
-	//Beim abschliessen des request wird diese Funktion ausgeführt
+	//Beim abschliessen des request wird diese Funktion ausgefÃ¼hrt
 	var onready = ajax._getOnreadystatechange(att.onrequestfinished, att.onload, att.onerror, att.onfunctionerror).bind(req);
 	if (att.asynch){
 		req.onreadystatechange = onready;

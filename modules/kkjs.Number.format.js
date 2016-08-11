@@ -59,7 +59,7 @@ var europeanFormats = {
 	"DE-de": [",", "."],
 	"EN-us": [".", ","],
 	"EN-gb": [".", ","],
-}
+};
 Object.keys(europeanFormats).forEach(function(key){
 	predefinedFormats[key] = {
 		name: key,
@@ -85,7 +85,7 @@ var predefinedGroupings = {
 					repeatCount: Number.POSITIVE_INFINITY
 				}
 			]
-		}
+		};
 	}
 };
 
@@ -182,7 +182,7 @@ Number.prototype.format = function format(formatDefinition){
 			):
 			""
 		);
-}
+};
 
 Number.prototype.format.getFormat = function getFormat(name){
 	/**
@@ -195,7 +195,7 @@ Number.prototype.format.getFormat = function getFormat(name){
 	 *    format. If the name is not known undefined is returned.
 	 */
 	return Object.create(predefinedFormats[name]);
-}
+};
 Number.prototype.format.getGrouping = function getGrouping(name, format){
 	/**
 	 * Function Number.prototype.format.getGrouping
@@ -219,7 +219,7 @@ Number.prototype.format.getGrouping = function getGrouping(name, format){
 		grouping = Object.create(grouping);
 	}
 	return grouping;
-}
+};
 
 Number.prototype.format.group = function group(inputStr, grouping){
 	/**
@@ -327,7 +327,7 @@ Number.prototype.format.group = function group(inputStr, grouping){
 		output = output.reverse();
 	}
 	return output.join("");
-}
+};
 
 
 })();

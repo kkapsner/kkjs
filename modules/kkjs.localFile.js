@@ -73,6 +73,14 @@ var localFile = {
 			node = document;
 		}
 		
+		function dragenter(ev){
+			if ([].indexOf.call(ev.dataTransfer.types, "Files") + 1){
+				ev.preventDefault();
+				ev.stopPropagation();
+				ev.dataTransfer.dropEffect = "copy";
+			}
+		}
+		
 		kkjs.event.add(node, ["dragenter", "dragover"], dragenter)
 			.addEvent(["dragenter", "dragover", "dragleave"], function(ev){
 				filePromise.emit(ev.type, ev);
@@ -98,13 +106,6 @@ var localFile = {
 			});
 		
 		return filePromise;
-		function dragenter(ev){
-			if ([].indexOf.call(ev.dataTransfer.types, 'Files') + 1){
-				ev.preventDefault();
-				ev.stopPropagation();
-				ev.dataTransfer.dropEffect = "copy";
-			}
-		}
 	}.makeArrayCallable(0, {arrayLike: true}),
 	
 	bounce: {
