@@ -19,155 +19,99 @@ function diggits(nr, z){
 }
 
 var date = {
-	
-	fromMySQLFormat: function dateFromMySQLFormat(mySQLDateString){
+	parse: function parseDate(format, str){
 		/**
-		 * Function date.fromMySQLFormat
-		 * @name: date.fromMySQLFormat
-		 * @version: 0.9
+		 * Function date.parse
+		 * @name: date.parse
+		 * @version: 1.0
 		 * @author: Korbinian Kapsner
-		 * @last modify: 04.08.2009
-		 * @description: creates a date-object from an MySQL Date string
+		 * @description:
 		 * @parameter:
-		 *	mySQLDateString:
+		 *	format:
+		 *	str:
+		 * @return value: the date object
 		 */
 		
-		var portions = mySQLDateString.split(/[\- :]/);
+		var data = Object.create(null);
+		function set(pos, amount){
+			if (!data.hasOwnProperty(pos)){
+				data[pos] = amount;
+			}
+			else if (data[pos] !== amount){
+				throw new Error("Inconsistent input string.");
+			}
+		}
+		
+		var formatLength = format.length;
+		var strLength = str.length;
+		for (var formatI = 0, strI = 0; formatI < formatLength; formatI += 1){
+			if (strI >= strLength){
+				throw new Error("String does not match format.");
+			}
+			if (format.charAt(formatI) === "%" && format.charAt(++formatI) !== "%"){
+				var diggitsMatch = /^\d+/.exec(str.substring(strI));
+				if (!diggitsMatch){
+					throw new Error("String does not match format.");
+				}
+				else {
+					strI += diggitsMatch[0].length;
+					var diggits = parseInt(diggitsMatch[0], 10);
+					switch (format.charAt(formatI)){
+						case "Y": set("year", diggits); break;
+						case "y": set("year", 1900 + diggits); break;
+						case "m": set("month", diggits - 1); break;
+						case "d": set("date", diggits); break;
+						case "H": set("hours", diggits); break;
+						case "M": set("minutes", diggits); break;
+						case "S": set("seconds", diggits); break;
+						case "L": set("milliSeconds", diggits); break;
+						default:
+							throw new Error("Unknown format.");
+					}
+				}
+			}
+			else {
+				if (format.charAt(formatI) !== str.charAt(strI)){
+					throw new Error("String does not match format.");
+				}
+				else {
+					strI += 1;
+				}
+			}
+		}
+		
+		var now = new Date();
+		function get(pos){
+			if (!data.hasOwnProperty(pos)){
+				switch (pos){
+					case "year": return now.getFullYear();
+					case "month": return now.getMonth();
+					case "date": return now.getDate();
+					case "hours": return 12;
+					case "minutes": return 0;
+					case "seconds": return 0;
+					case "milliSeconds": return 0;
+				}
+			}
+			else {
+				return data[pos];
+			}
+		}
+		
 		return new Date(
-			portions[0],
-			portions[1] - 1,
-			portions[2],
-			portions[3],
-			portions[4],
-			portions[5]
+			get("year"),
+			get("month"),
+			get("date"),
+			get("hours"),
+			get("minutes"),
+			get("seconds"),
+			get("milliSeconds")
 		);
 	},
 	
-	convert: function convertDate(date, von, zu){
-		/**
-		 * Function date.convert
-		 * @name: date.convert
-		 * @version: 0.9
-		 * @author: Korbinian Kapsner
-		 * @last modify: 04.08.2009
-		 * @description: Convertiert Datumsformate ineinander um (à la YYYY-MM-DD -> DD.MM.YYYY)
-		 * @parameter:
-		 *	date:
-		 *	von:
-		 *	zu:
-		 */
-
-		var jahr = 0;
-		var monat = 0;
-		var tag = 0;
-		
-		if (von !== Date){
-			for (var i = 0; i < date.length; i++){
-				if (von.substr(i,1).match(/y|j/i)){jahr += date.substr(i,1);}
-				if (von.substr(i,1).match(/m/i)){monat += date.substr(i,1);}
-				if (von.substr(i,1).match(/d|t/i)){tag += date.substr(i,1);}
-			}
-			
-			jahr = parseInt(jahr, 10) || 0;
-			monat = parseInt(monat, 10) || 0;
-			tag = parseInt(tag, 10) || 0;
-		}
-		else{
-			jahr = date.getFullYear();
-			monat = date.getMonth() + 1;
-			tag = date.getDate();
-		}
-		
-		if (zu === Date){
-			return new Date(jahr, monat - 1, tag);
-		}
-		
-		
-		var j = 0;
-		var zj = 0;
-		while (zu.substring(zj,zu.length).search(/y|j/ig) >= 0){
-			zj = zj+zu.substring(zj,zu.length).search(/y|j/ig)+1;
-			j++;
-		}
-		
-		var m = 0;
-		var zm = 0;
-		while (zu.substring(zm,zu.length).search(/m/ig) >= 0){
-			zm = zm+zu.substring(zm,zu.length).search(/m/ig)+1;
-			m++;
-		}
-		
-		var t = 0;
-		var zt = 0;
-		while (zu.substring(zt,zu.length).search(/d|t/ig) >= 0){
-			zt = zt+zu.substring(zt,zu.length).search(/d|t/ig)+1;
-			t++;
-		}
-		
-		jahr = diggits(jahr, j);
-		monat = diggits(monat, m);
-		tag = diggits(tag, t);
-		
-		var erg = "";
-		
-		for (var i = zu.length-1; i>=0; i--){
-			if (zu.substr(i,1).match(/y|j/i)){
-				erg = jahr.substr(jahr.length-1,1)+erg;
-				jahr = jahr.substring(0,jahr.length-1);
-			}
-			else if( zu.substr(i,1).match(/m/i)){
-				erg = monat.substr(monat.length-1,1)+erg;
-				monat = monat.substring(0,monat.length-1);
-			}
-			else if( zu.substr(i,1).match(/d|t/i)){
-				erg = tag.substr(tag.length-1,1)+erg;
-				tag = tag.substring(0,tag.length-1);
-			}
-			else{
-				erg = zu.substr(i,1)+erg;
-			}
-		}
-		
-		return erg;
-	},
-	
-	addZeros: function datumErgaenzen(str){
-		/**
-		 * Function date.addZeros
-		 * @name: date.addZeros
-		 * @version: 0.9
-		 * @author: Korbinian Kapsner
-		 * @last modify: 04.08.2009
-		 * @description:
-		 * @parameter:
-		 *	str:
-		 */
-		
-		var m, tag, monat, jahr;
-		if ((m = str.exec(/^(\d+)\.(\d+)\.(\d*)$/)) !== null){
-			jahr = parseInt(m[3], 10) || (new Date()).getFullYear();
-			monat = parseInt(m[2], 10) || 1;
-			tag = parseInt(m[1], 10) || 1;
-			
-			var datum = new Date(jahr, monat - 1, tag);
-			
-			if (datum.getDate() !== parseInt(m[1], 10)){
-				return false;
-			}
-			
-			tag = diggits(datum.getDate(), 2);
-			monat = diggits((datum.getMonth() + 1), 2);
-			jahr = diggits(datum.getFullYear(), 4);
-			
-			return tag+"."+monat+"."+jahr;
-		}
-		else{
-			return false;
-		}
-	},
-	
 	format: (function(){
-		var formatDate = function(format, date){
+		var abbr;
+		function formatDate(format, date){
 			/**
 			 * Function date.format
 			 * @name: date.format
@@ -176,14 +120,14 @@ var date = {
 			 * @last modify: 04.08.2009
 			 * @description:
 			 * @parameter:
+			 *	format:
 			 *	date:
-			 *	str:
 			 * @return value: the formated date-representation
 			 */
 			return format.replace(/%(.)/g, function(m, f){return abbr(m, f, date);});
-		};
+		}
 		
-		function abbr(m, f, _date){
+		abbr = function abbr(m, f, _date){
 			/* replace function that translates the abbrevations in numbers */
 			switch (f){
 				case "a": return date.localeStrings[date.locale].weekDays.s[_date.getDay()];
@@ -239,7 +183,7 @@ var date = {
 				case "%": return "%";
 				default: return f;
 			}
-		}
+		};
 		
 		return formatDate;
 	})(),
@@ -283,7 +227,9 @@ var date = {
 	}
 };
 
-date.setLocale(navigator.language);
+if (typeof window !== "undefined" && window.nagivator && window.navigator.language){
+	date.setLocale(navigator.language);
+}
 
 if (typeof exports !== "undefined"){
 	for (var i in date){
