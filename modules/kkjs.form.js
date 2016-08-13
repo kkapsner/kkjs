@@ -1,3 +1,4 @@
+/* global kkjs, require, document */
 (function(){
 "use strict";
 
@@ -49,7 +50,7 @@ var form = {
 			}
 			
 			return ajax.advanced(att);
-		}.setDefaultParameter(null, new Function.DefaultParameter({asynch: false}),
+		}.setDefaultParameter(null, new Function.DefaultParameter({asynch: false})),
 		
 		simpleSend: function simpleSendForm(formNode, funktion){
 			/**
@@ -97,6 +98,7 @@ var form = {
 							if (!e.checked && e !== clickedButton){
 								break;
 							}
+							/* falls through */
 						default:
 							if (query[e.name]){
 								if (Array.isArray(query[e.name])){

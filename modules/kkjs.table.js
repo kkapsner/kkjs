@@ -13,6 +13,10 @@
 var dataset = require("kkjs.dataset");
 var node = require("kkjs.node");
 var css = require("kkjs.css");
+var event = require("kkjs.event");
+var scroll = require("kkjs.scroll");
+var styleRule = require("kkjs.styleRule");
+var kMath = require("kkjs.Math");
 
 function eachRow(table, callback){
 	/**
@@ -148,7 +152,47 @@ function getColumnIndex(cell){
 	return columnIndex;
 }
 
+function createHideStyle(){
+	var name = "kkjsTableHide_" + Date.now().toString(36) + (Math.floor(Math.random() * 1296)).toString(36)
+	styleRule.create("." + name + "{display: none !important;}");
+	return name;
+}
+
 var table = {
+	scrollableHead: function scrollableHead(table){
+		/**
+		 * Function table.scrollableHead
+		 * @name: table.scrollableHead
+		 * @author: Korbinian Kapsner
+		 * @description: makes a table's head scrollable. This means that the
+		 *	head will follow scroll movement to be visible all the time.
+		 * @parameter:
+		 *	table: the <table> to make the head scrollable
+		 */
+		
+		var head = table.tHead;
+		if (head){
+			css.set(head, "position", "relative");
+			if (css.get(head, "backgroundColor") === "transparent"){
+				css.set(head, "backgroundColor", "white");
+			}
+			event.add(window, ["scroll", "resize"], function(){
+				var nodePos = node.getPosition(table);
+				var scrollPos = scroll.getPosition();
+				var offset = scrollPos.top - nodePos.top;
+				var range = new kMath.Range(
+					0,
+					table.offsetHeight -
+					head.offsetHeight -
+					Array.prototype.slice.call(table.rows).reduceRight(function(v, row){
+						return v? v: row.offsetHeight;
+					}, 0)
+				);	
+				css.set(head, "top", range.restrict(offset));
+			}).fire("scroll");
+		}
+	}.makeArrayCallable([0]),
+	
 	sortable: function sortable(table){
 		/**
 		 * Function table.sortable
@@ -281,18 +325,19 @@ var table = {
 		css.$("th", {node: table.tHead}).forEach(function(th){
 			if (dataset.get(th, "filterable")){
 				var i = getColumnIndex(th);
+				var hideClassName = createHideStyle();
 				node.create({
 					tag: "input",
 					className: "kkjs-table-filter",
 					parentNode: th,
 					events: {
-						advancedChange: createFilterEventListener(i)
+						advancedChange: createFilterEventListener(i, hideClassName)
 					}
 				});
 			}
 		});
 		
-		function createFilterEventListener(i){
+		function createFilterEventListener(i, hideClassName){
 			/**
 			 * Function createFilterEventListener
 			 * @name: createFilterEventListener
@@ -306,13 +351,11 @@ var table = {
 			return function(){
 				var regExp = new RegExp(this.value.quoteRegExp(), "i");
 				eachRow(table, function(r){
-					css.set(
-						r,
-						"display",
+					css.className[
 						(dataset.get(getIthColumn(r, i), "value") || "").match(regExp)?
-							"":
-							"none"
-					);
+						"remove":
+						"add"
+					](r, hideClassName);
 				});
 			};
 		}
@@ -336,10 +379,29 @@ var table = {
 		css.$("th", {node: table.tHead}).forEach(function(th){
 			// if the <th> is marked as selectable by data-selectable
 			if (dataset.get(th, "selectable")){
+				var multiselect = !!dataset.get(th, "multiselect");
 				var i = getColumnIndex(th);
 				// create the options list
-				var options = [new Option("---", "", true, true)];
+				var options = [];
+				if (!multiselect){
+					options.push(new Option("---", "", true, true));
+				}
 				var names = {};
+				
+				var predefinedNames = dataset.get(th, "names");
+				if (predefinedNames){
+					try {
+						var predefinedNamesObj = JSON.parse(predefinedNames);
+						Object.keys(predefinedNamesObj).forEach(function(key){
+							names[key] = true;
+							options.push(new Option(predefinedNamesObj[key], key, false, false));
+						});
+					}
+					catch (e){
+						console.warn("Invalid predefined names: \n" + predefinedNames);
+					}
+				}
+				
 				// iterate through all rows in <tbody>s in the table to get all
 				// different values (stored in data-value in the <td>s)
 				eachRow(table, function(r){
@@ -352,19 +414,23 @@ var table = {
 					}
 				});
 				// create the <select> and insert into the DOM
+				var hideClassName = createHideStyle();
+				var changeListener = createSelectEventListener(i, multiselect, hideClassName);
 				node.create({
 					tag: "select",
 					className: "kkjs-table-select",
 					parentNode: th,
 					childNodes: options,
+					selectedIndex: multiselect? -1: 0,
+					multiple: !!multiselect,
 					events: {
-						change: createSelectEventListener(i)
+						change: changeListener
 					}
 				});
 			}
 		});
 		
-		function createSelectEventListener(i){
+		function createSelectEventListener(i, multiselect, hideClassName){
 			/**
 			 * Function createSelectEventListener
 			 * @name: createSelectEventListener
@@ -374,20 +440,32 @@ var table = {
 			 *	i: the columns index
 			 * @return value: the selection event listener
 			 */
-			
-			return function(){
-				var value = this.value;
-				eachRow(table, function(r){
-					// hide all rows that don't have the right value
-					css.set(
-						r,
-						"display",
-						(!value || dataset.get(getIthColumn(r, i), "value") === value)?
-							"":
-							"none"
-					);
-				});
-			};
+			if (multiselect){
+				return function(){
+					var values = Array.prototype.map.call(this.selectedOptions, function(o){return o.value;});
+					eachRow(table, function(r){
+						// hide all rows that don't have the right 
+						css.className[
+							(!values.length || values.indexOf(dataset.get(getIthColumn(r, i), "value")) !== -1)?
+							"remove":
+							"add"
+						](r, hideClassName);
+					});
+				};
+			}
+			else {
+				return function(){
+					var value = this.value;
+					eachRow(table, function(r){
+						// hide all rows that don't have the right value
+						css.className[
+							(!value || dataset.get(getIthColumn(r, i), "value") === value)?
+							"remove":
+							"add"
+						](r, hideClassName);
+					});
+				};
+			}
 		}
 	}.makeArrayCallable([0]),
 	

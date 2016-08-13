@@ -1,0 +1,4 @@
+/modules/old/*
+/modulesFolder/**/oldFiles/*
+/modules/funcDat/*
+/test/*

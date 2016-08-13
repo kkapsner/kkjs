@@ -171,8 +171,17 @@ var parser = {
 						return enclosedStrings[encloseNumber];
 					}
 				);
+				if (att.trimValues){
+					cells[i] = cells[i].trim();
+				}
 			});
 			if (columnNames){
+				if (att.returnObjects){
+					return columnNames.reduce(function(o, name, i){
+						o[name] = cells[i];
+						return o;
+					}, {});
+				}
 				cells.forEach(function(cell, i){
 					if (columnNames[i]){
 						cells[columnNames[i]] = cell;
@@ -198,7 +207,9 @@ var parser = {
 			removeEscaping: true,
 			columnNames: null,
 			header: false,
+			returnObjects: false,
 			skipEmptyLines: true,
+			trimValues: false
 		}
 	))
 };

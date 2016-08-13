@@ -1,0 +1,17 @@
+{
+	"trailing": true,
+	"quotmark": "double",
+	"camelcase": true,
+	"immed": true,
+	"latedef": true,
+	"newcap": true,
+	"latedef": true,
+	"regexp": false,
+	"smarttabs": true,
+	"globals": {
+		"kkjs": true,
+		"require": true,
+		"module": true,
+		"exports": true
+	}
+}
