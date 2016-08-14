@@ -1,3 +1,5 @@
+/* globals navigator */
+
 (function(){
 "use strict";
 
@@ -11,12 +13,35 @@
 
 function diggits(nr, z){
 	/* formats a number with leading zeros */
-	nr = nr.toString(10);
+	nr = Math.round(nr).toString(10);
 	while (nr.length < z){
 		nr = "0" + nr;
 	}
 	return nr;
 }
+
+var localeStrings = {
+	en: {
+		weekDays: {
+			l: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+			s: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+		},
+		months: {
+			l: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			s: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+		}
+	},
+	de: {
+		weekDays: {
+			l: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+			s: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
+		},
+		months: {
+			l: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+			s: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+		}
+	}
+};
 
 var date = {
 	parse: function parseDate(format, str){
@@ -32,7 +57,7 @@ var date = {
 		 * @return value: the date object
 		 */
 		
-		var data = Object.create(null);
+		var data = {};
 		function set(pos, amount){
 			if (!data.hasOwnProperty(pos)){
 				data[pos] = amount;
@@ -130,8 +155,8 @@ var date = {
 		abbr = function abbr(m, f, _date){
 			/* replace function that translates the abbrevations in numbers */
 			switch (f){
-				case "a": return date.localeStrings[date.locale].weekDays.s[_date.getDay()];
-				case "A": return date.localeStrings[date.locale].weekDays.l[_date.getDay()];
+				case "a": return localeStrings[date.locale].weekDays.s[_date.getDay()];
+				case "A": return localeStrings[date.locale].weekDays.l[_date.getDay()];
 				case "w": return _date.getDay();
 				case "u": return (_date.getDay() + 6) % 7 + 1;
 				case "d": return diggits(_date.getDate(), 2);
@@ -146,8 +171,8 @@ var date = {
 				case "V": return diggits(_date.getWeek(), 2);
 				case "W": return "";
 				
-				case "b": case "h": return date.localeStrings[date.locale].months.s[_date.getMonth()];
-				case "B": return date.localeStrings[date.locale].months.l[_date.getMonth()];
+				case "b": case "h": return localeStrings[date.locale].months.s[_date.getMonth()];
+				case "B": return localeStrings[date.locale].months.l[_date.getMonth()];
 				case "m": return diggits(_date.getMonth() + 1,2);
 				
 				case "C": return Math.floor(_date.getFullYear() / 100);
@@ -199,35 +224,38 @@ var date = {
 		 *	locale:
 		 */
 		locale = locale.split("-")[0].toLowerCase();
-		if (date.localeStrings.hasOwnProperty(locale)){
+		if (localeStrings.hasOwnProperty(locale)){
 			date.locale = locale;
 		}
 	},
-	localeStrings: {
-		en: {
-			weekDays: {
-				l: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-				s: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
-			},
-			months: {
-				l: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-				s: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-			}
-		},
-		de: {
-			weekDays: {
-				l: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
-				s: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
-			},
-			months: {
-				l: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
-				s: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
-			}
+	registerLocale: function registerLocale(name, weekDays, months){
+		/**
+		 * Function date.registerLocale
+		 * @name: date.registerLocale
+		 * @author: Korbinian Kapsner
+		 * @description: registeres a new locale to be used.
+		 * @parameter:
+		 *	name: the name of the locale
+		 *  weekDays: the information for the week days.
+		 *  months: the information for the months.
+		 */
+		if (localeStrings.hasOwnProperty(name)){
+			throw new Error("Local already registered.");
 		}
+		if (!weekDays.l || !weekDays.s || weekDays.l.length !== 7 || weekDays.s.length !== 7){
+			throw new Error("Invalid week days information.");
+		}
+		if (!months.l || !months.s || months.l.length !== 7 || months.s.length !== 7){
+			throw new Error("Invalid months information.");
+		}
+		localeStrings[name] = {
+			weekDays: weekDays,
+			months: months
+		};
 	}
 };
 
-if (typeof window !== "undefined" && window.nagivator && window.navigator.language){
+if (typeof nagivator !== "undefined" && navigator.language){
 	date.setLocale(navigator.language);
 }
 
