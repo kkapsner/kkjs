@@ -42,6 +42,186 @@ var localeStrings = {
 		}
 	}
 };
+var locale = "en";
+
+var formatting = {
+	a: {
+		format: function(date){
+			return localeStrings[locale].weekDays.s[date.getDay()];
+		}
+	},
+	A: {
+		format: function(date){
+			return localeStrings[locale].weekDays.l[date.getDay()];
+		}
+	},
+	w: {
+		format: function(date){
+			return date.getDay();
+		}
+	},
+	u: {
+		format: function(date){
+			return (date.getDay() + 6) % 7 + 1;
+		}
+	},
+	d: {
+		format: function(date){
+			return diggits(date.getDate(), 2);
+		}
+	},
+	e: {
+		format: function(date){
+			return date.getDate();
+		}
+	},
+	j: {
+		format: function(date){
+			var helpDate = new Date(date.getTime());
+			helpDate.setDate(1);
+			helpDate.setMonth(0);
+			return diggits((date - helpDate) / (1000 * 3600 * 24) + 1, 3);
+		}
+	},
+	U: {
+		format: function(date){
+			return "";
+		}
+	},
+	V: {
+		format: function(date){
+			return diggits(date.getWeek(), 2);
+		}
+	},
+	W: {
+		format: function(date){
+			return "";
+		}
+	},
+
+	b: {
+		format: function(date){
+			return localeStrings[locale].months.s[date.getMonth()];
+		}
+	},
+	h: {
+		format: function(date){
+			return localeStrings[locale].months.s[date.getMonth()];
+		}
+	},
+	B: {
+		format: function(date){
+			return localeStrings[locale].months.l[date.getMonth()];
+		}
+	},
+	m: {
+		format: function(date){
+			return diggits(date.getMonth() + 1, 2);
+		}
+	},
+
+	C: {
+		format: function(date){
+			return Math.floor(date.getFullYear() / 100);
+		}
+	},
+
+	g: {
+		format: function(date){
+			return diggits(date.getWeekYear() % 100, 2);
+		}
+	},
+	G: {
+		format: function(date){
+			return diggits(date.getWeekYear(), 4);
+		}
+	},
+
+	y: {
+		format: function(date){
+			return diggits(date.getFullYear(), 4).substr(2);
+		}
+	},
+	Y: {
+		parse: {
+			match: /^\d{1,4}/,
+
+		},
+		format: function(date){
+			return diggits(date.getFullYear(), 4);
+		}
+	},
+
+	H: {
+		format: function(date){
+			return diggits(date.getHours(), 2);
+		}
+	},
+	I: {
+		format: function(date){
+			return diggits((date.getHours() + 11) % 12 + 1, 2);
+		}
+	},
+	i: {
+		format: function(date){
+			return (date.getHours() + 11) % 12 + 1;
+		}
+	},
+	M: {
+		format: function(date){
+			return diggits(date.getMinutes(), 2);
+		}
+	},
+	p: {
+		format: function(date){
+			return (date.getHours() < 12)? "AM": "PM";
+		}
+	},
+	P: {
+		format: function(date){
+			return (date.getHours() < 12)? "am": "pm";
+		}
+	},
+	S: {
+		format: function(date){
+			return diggits(date.getSeconds(), 2);
+		}
+	},
+	L: {
+		format: function(date){
+			return diggits(date.getMilliseconds(), 3);
+		}
+	},
+	z: {
+		format: function(date){
+			return diggits(date.getTimezoneOffset() / 60, 2);
+		}
+	},
+
+	s: {
+		format: function(date){
+			return Math.floor(date.getTime() / 1000);
+		}
+	},
+
+	n: {
+		format: function(date){
+			return "\n";
+		}
+	},
+	t: {
+		format: function(date){
+			return "\t";
+		}
+	},
+};
+var combinedFormatting = {
+	r: "%I:%M:%S %p",
+	R: "%H:%M",
+	T: "%H:%M:%S",
+	D: "%m/%d/%y",
+	F: "%Y-%m-%d"
+};
 
 var date = {
 	parse: function parseDate(format, str){
@@ -56,7 +236,7 @@ var date = {
 		 *	str:
 		 * @return value: the date object
 		 */
-		
+
 		var data = {};
 		function set(pos, amount){
 			if (!data.hasOwnProperty(pos)){
@@ -66,7 +246,7 @@ var date = {
 				throw new Error("Inconsistent input string.");
 			}
 		}
-		
+
 		var formatLength = format.length;
 		var strLength = str.length;
 		for (var formatI = 0, strI = 0; formatI < formatLength; formatI += 1){
@@ -104,7 +284,7 @@ var date = {
 				}
 			}
 		}
-		
+
 		var now = new Date();
 		function get(pos){
 			if (!data.hasOwnProperty(pos)){
@@ -122,7 +302,7 @@ var date = {
 				return data[pos];
 			}
 		}
-		
+
 		return new Date(
 			get("year"),
 			get("month"),
@@ -133,88 +313,38 @@ var date = {
 			get("milliSeconds")
 		);
 	},
-	
-	format: (function(){
-		var abbr;
-		function formatDate(format, date){
-			/**
-			 * Function date.format
-			 * @name: date.format
-			 * @version: 0.9
-			 * @author: Korbinian Kapsner
-			 * @last modify: 04.08.2009
-			 * @description:
-			 * @parameter:
-			 *	format:
-			 *	date:
-			 * @return value: the formated date-representation
-			 */
-			return format.replace(/%(.)/g, function(m, f){return abbr(m, f, date);});
-		}
-		
-		abbr = function abbr(m, f, _date){
-			/* replace function that translates the abbrevations in numbers */
-			switch (f){
-				case "a": return localeStrings[date.locale].weekDays.s[_date.getDay()];
-				case "A": return localeStrings[date.locale].weekDays.l[_date.getDay()];
-				case "w": return _date.getDay();
-				case "u": return (_date.getDay() + 6) % 7 + 1;
-				case "d": return diggits(_date.getDate(), 2);
-				case "e": return _date.getDate();
-				case "j":
-					var helpDate = new Date(_date.getTime());
-					helpDate.setDate(1);
-					helpDate.setMonth(0);
-					return diggits((_date - helpDate) / (1000 * 3600 * 24) + 1, 3);
-				
-				case "U": return "";
-				case "V": return diggits(_date.getWeek(), 2);
-				case "W": return "";
-				
-				case "b": case "h": return localeStrings[date.locale].months.s[_date.getMonth()];
-				case "B": return localeStrings[date.locale].months.l[_date.getMonth()];
-				case "m": return diggits(_date.getMonth() + 1,2);
-				
-				case "C": return Math.floor(_date.getFullYear() / 100);
-				
-				case "g": return diggits(_date.getWeekYear() % 100, 2);
-				case "G": return diggits(_date.getWeekYear(), 4);
-				
-				case "y": return _date.getFullYear().toString().substr(2);
-				case "Y": return diggits(_date.getFullYear(), 4);
-				
-				case "H": return diggits(_date.getHours(), 2);
-				case "I": return diggits((_date.getHours() + 11) % 12 + 1, 2);
-				case "i": return (_date.getHours() + 11) % 12 + 1;
-				case "M": return diggits(_date.getMinutes(), 2);
-				case "p": return (_date.getHours() < 12)? "AM": "PM";
-				case "P": return (_date.getHours() < 12)? "am": "pm";
-				case "r": return formatDate("%I:%M:%S %p", _date);
-				case "R": return formatDate("%H:%M", _date);
-				case "S": return diggits(_date.getSeconds(), 2);
-				case "L": return diggits(_date.getMilliseconds(), 3);
-				case "T": return formatDate("%H:%M:%S", _date);
-				
-				case "X": case "c": case "x": return "";
-				case "z": case "Z": return diggits(_date.getTimezoneOffset() / 60, 2);
-				
-				case "D": return formatDate("%m/%d/%y", _date);
-				case "F": return formatDate("%Y-%m-%d", _date);
-				case "s": return Math.floor(_date.getTime() / 1000);
-				
-				
-				case "n": return "\n";
-				case "t": return "\t";
-				case "%": return "%";
-				default: return f;
+
+	format: function formatDate(format, date){
+		/**
+		 * Function date.format
+		 * @name: date.format
+		 * @version: 0.9
+		 * @author: Korbinian Kapsner
+		 * @last modify: 04.08.2009
+		 * @description:
+		 * @parameter:
+		 *	format:
+		 *	date:
+		 * @return value: the formated date-representation
+		 */
+		return format.replace(/%(.)/g, function(m, f){
+			var combinedFormat = combinedFormatting[f];
+			if (combinedFormat){
+				return formatDate(combinedFormat, date);
 			}
-		};
-		
-		return formatDate;
-	})(),
-	
-	locale: "en",
-	setLocale: function(locale){
+			else {
+				var format = formatting[f];
+				if (format && format.format){
+					return format.format(date);
+				}
+				else {
+					return f;
+				}
+			}
+		});
+	},
+
+	setLocale: function(newLocale){
 		/**
 		 * Function date.setLocale
 		 * @name: date.setLocale
@@ -223,9 +353,9 @@ var date = {
 		 * @parameter:
 		 *	locale:
 		 */
-		locale = locale.split("-")[0].toLowerCase();
-		if (localeStrings.hasOwnProperty(locale)){
-			date.locale = locale;
+		newLocale = newLocale.split("-")[0].toLowerCase();
+		if (localeStrings.hasOwnProperty(newLocale)){
+			locale = newLocale;
 		}
 	},
 	registerLocale: function registerLocale(name, weekDays, months){
