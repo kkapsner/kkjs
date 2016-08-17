@@ -68,6 +68,12 @@ var formatting = {
 	d: {
 		format: function(date){
 			return diggits(date.getDate(), 2);
+		},
+		parse: {
+			match: /^\d{1,2}/,
+			process: function(strInput, set){
+				set("date", parseInt(strInput, 10));
+			}
 		}
 	},
 	e: {
@@ -83,22 +89,11 @@ var formatting = {
 			return diggits((date - helpDate) / (1000 * 3600 * 24) + 1, 3);
 		}
 	},
-	U: {
-		format: function(date){
-			return "";
-		}
-	},
 	V: {
 		format: function(date){
 			return diggits(date.getWeek(), 2);
 		}
 	},
-	W: {
-		format: function(date){
-			return "";
-		}
-	},
-
 	b: {
 		format: function(date){
 			return localeStrings[locale].months.s[date.getMonth()];
@@ -117,15 +112,19 @@ var formatting = {
 	m: {
 		format: function(date){
 			return diggits(date.getMonth() + 1, 2);
+		},
+		parse: {
+			match: /^\d{1,2}/,
+			process: function(strInput, set){
+				set("month", parseInt(strInput, 10) - 1);
+			}
 		}
 	},
-
 	C: {
 		format: function(date){
 			return Math.floor(date.getFullYear() / 100);
 		}
 	},
-
 	g: {
 		format: function(date){
 			return diggits(date.getWeekYear() % 100, 2);
@@ -143,18 +142,26 @@ var formatting = {
 		}
 	},
 	Y: {
-		parse: {
-			match: /^\d{1,4}/,
-
-		},
 		format: function(date){
 			return diggits(date.getFullYear(), 4);
+		},
+		parse: {
+			match: /^\d{1,4}/,
+			process: function(strInput, set){
+				set("year", parseInt(strInput, 10));
+			}
 		}
 	},
 
 	H: {
 		format: function(date){
 			return diggits(date.getHours(), 2);
+		},
+		parse: {
+			match: /^\d{1,2}/,
+			process: function(strInput, set){
+				set("hours", parseInt(strInput, 10));
+			}
 		}
 	},
 	I: {
@@ -170,6 +177,12 @@ var formatting = {
 	M: {
 		format: function(date){
 			return diggits(date.getMinutes(), 2);
+		},
+		parse: {
+			match: /^\d{1,2}/,
+			process: function(strInput, set){
+				set("minutes", parseInt(strInput, 10));
+			}
 		}
 	},
 	p: {
@@ -185,11 +198,23 @@ var formatting = {
 	S: {
 		format: function(date){
 			return diggits(date.getSeconds(), 2);
+		},
+		parse: {
+			match: /^\d{1,2}/,
+			process: function(strInput, set){
+				set("seconds", parseInt(strInput, 10));
+			}
 		}
 	},
 	L: {
 		format: function(date){
 			return diggits(date.getMilliseconds(), 3);
+		},
+		parse: {
+			match: /^\d{1,3}/,
+			process: function(strInput, set){
+				set("milliSeconds", parseInt(strInput, 10));
+			}
 		}
 	},
 	z: {
@@ -251,33 +276,35 @@ var date = {
 		var strLength = str.length;
 		for (var formatI = 0, strI = 0; formatI < formatLength; formatI += 1){
 			if (strI >= strLength){
-				throw new Error("String does not match format.");
+				throw new Error("String does not match format: too short.");
 			}
 			if (format.charAt(formatI) === "%" && format.charAt(++formatI) !== "%"){
-				var diggitsMatch = /^\d+/.exec(str.substring(strI));
-				if (!diggitsMatch){
-					throw new Error("String does not match format.");
+				var formatChar = format.charAt(formatI);
+				var combinedFormat = combinedFormatting[formatChar];
+				if (combinedFormat){
+					format = combinedFormat + format.substring(formatI + 1);
+					formatI = -1;
+					formatLength = format.length;
 				}
 				else {
-					strI += diggitsMatch[0].length;
-					var diggits = parseInt(diggitsMatch[0], 10);
-					switch (format.charAt(formatI)){
-						case "Y": set("year", diggits); break;
-						case "y": set("year", 1900 + diggits); break;
-						case "m": set("month", diggits - 1); break;
-						case "d": set("date", diggits); break;
-						case "H": set("hours", diggits); break;
-						case "M": set("minutes", diggits); break;
-						case "S": set("seconds", diggits); break;
-						case "L": set("milliSeconds", diggits); break;
-						default:
-							throw new Error("Unknown format.");
+					if (formatting[formatChar] && formatting[formatChar].parse){
+						var match = formatting[formatChar].parse.match.exec(str.substring(strI));
+						if (match){
+							formatting[formatChar].parse.process(match[0], set);
+							strI += match[0].length;
+						}
+						else {
+							throw new Error("String does not match format \"" + formatChar + "\".");
+						}
+					}
+					else {
+						throw new Error("Unknown format \"" + formatChar + "\".");
 					}
 				}
 			}
 			else {
 				if (format.charAt(formatI) !== str.charAt(strI)){
-					throw new Error("String does not match format.");
+					throw new Error("String does not match format: mismatching characters. Expected " + format.charAt(formatI) + " got " + str.charAt(strI));
 				}
 				else {
 					strI += 1;
