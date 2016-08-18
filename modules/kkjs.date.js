@@ -412,6 +412,19 @@ var date = {
 	}
 };
 
+date.parse.help = date.format.help = function help(){
+	var help = Function.prototype.help.call(this);
+	help += "\n\nFormatting identifiers:";
+	Object.keys(formatting).forEach(function(f){
+		help += "\n\t" + f + ": " + (formatting[f].help || " no description given");
+	});
+	help += "\n\nCombined formatting identifiers:";
+	Object.keys(combinedFormatting).forEach(function(f){
+		help += "\n\t" + f + ": " + combinedFormatting[f];
+	});
+	return help;
+}
+
 if (typeof nagivator !== "undefined" && navigator.language){
 	date.setLocale(navigator.language);
 }
