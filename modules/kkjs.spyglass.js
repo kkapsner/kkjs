@@ -23,7 +23,7 @@ var spyglass = {
 			className: "spyglass",
 			parentNode: wrapper,
 			style: {
-				backgroundImage: "url(" + img.src + ")",
+				backgroundImage: "url(\"" + img.src + "\")",
 				width: attr.size,
 				height: attr.size,
 				margin: attr.size / -2
