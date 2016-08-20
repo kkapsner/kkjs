@@ -46,31 +46,31 @@ var locale = "en";
 
 var formatting = {
 	a: {
-		help: "Short version of the weekday name.",
+		description:"Short version of the weekday name.",
 		format: function(date){
 			return localeStrings[locale].weekDays.s[date.getDay()];
 		}
 	},
 	A: {
-		help: "Long version of the weekday name.",
+		description:"Long version of the weekday name.",
 		format: function(date){
 			return localeStrings[locale].weekDays.l[date.getDay()];
 		}
 	},
 	w: {
-		help: "Number of the weekday. Sunday is zero.",
+		description:"Number of the weekday. Sunday is zero.",
 		format: function(date){
 			return date.getDay();
 		}
 	},
 	u: {
-		help: "Number of the weekday. Monday is one and Sunday is seven.",
+		description:"Number of the weekday. Monday is one and Sunday is seven.",
 		format: function(date){
 			return (date.getDay() + 6) % 7 + 1;
 		}
 	},
 	d: {
-		help: "Two diggit representation of the day of the month (with leading zero).",
+		description:"Two diggit representation of the day of the month (with leading zero).",
 		format: function(date){
 			return diggits(date.getDate(), 2);
 		},
@@ -82,13 +82,13 @@ var formatting = {
 		}
 	},
 	e: {
-		help: "The day of the month.",
+		description:"The day of the month.",
 		format: function(date){
 			return date.getDate();
 		}
 	},
 	j: {
-		help: "Day of the year, three diggits with leading zeros.",
+		description:"Day of the year, three diggits with leading zeros.",
 		format: function(date){
 			var helpDate = new Date(date.getTime());
 			helpDate.setDate(1);
@@ -97,25 +97,25 @@ var formatting = {
 		}
 	},
 	V: {
-		help: "ISO-8601:1988 week number of the given year - two diggits with leading zeros.",
+		description:"ISO-8601:1988 week number of the given year - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getWeek(), 2);
 		}
 	},
 	b: {
-		help: "Short version of the month name.",
+		description:"Short version of the month name.",
 		format: function(date){
 			return localeStrings[locale].months.s[date.getMonth()];
 		}
 	},
 	B: {
-		help: "Long version of the month name.",
+		description:"Long version of the month name.",
 		format: function(date){
 			return localeStrings[locale].months.l[date.getMonth()];
 		}
 	},
 	m: {
-		help: "Two diggit representation of the month (with leading zero).",
+		description:"Two diggit representation of the month (with leading zero).",
 		format: function(date){
 			return diggits(date.getMonth() + 1, 2);
 		},
@@ -127,32 +127,32 @@ var formatting = {
 		}
 	},
 	C: {
-		help: "The century.",
+		description:"The century.",
 		format: function(date){
 			return Math.floor(date.getFullYear() / 100);
 		}
 	},
 	g: {
-		help: "The two last diggits of the year of the calendar week.",
+		description:"The two last diggits of the year of the calendar week.",
 		format: function(date){
 			return diggits(date.getWeekYear() % 100, 2);
 		}
 	},
 	G: {
-		help: "The year of the calendar week - four diggits with leading zeros.",
+		description:"The year of the calendar week - four diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getWeekYear(), 4);
 		}
 	},
 
 	y: {
-		help: "The two last diggits of the year.",
+		description:"The two last diggits of the year.",
 		format: function(date){
 			return diggits(date.getFullYear(), 4).substr(2);
 		}
 	},
 	Y: {
-		help: "The year - four diggits with leading zeros.",
+		description:"The year - four diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getFullYear(), 4);
 		},
@@ -165,7 +165,7 @@ var formatting = {
 	},
 
 	H: {
-		help: "The hours (24h) - two diggits with leading zeros.",
+		description:"The hours (24h) - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getHours(), 2);
 		},
@@ -177,19 +177,19 @@ var formatting = {
 		}
 	},
 	I: {
-		help: "The hours (12h) - two diggits with leading zeros.",
+		description:"The hours (12h) - two diggits with leading zeros.",
 		format: function(date){
 			return diggits((date.getHours() + 11) % 12 + 1, 2);
 		}
 	},
 	i: {
-		help: "The hours (12h).",
+		description:"The hours (12h).",
 		format: function(date){
 			return (date.getHours() + 11) % 12 + 1;
 		}
 	},
 	M: {
-		help: "The minutes - two diggits with leading zeros.",
+		description:"The minutes - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getMinutes(), 2);
 		},
@@ -201,19 +201,19 @@ var formatting = {
 		}
 	},
 	p: {
-		help: "Lower case 'am' or 'pm'.",
+		description:"Lower case 'am' or 'pm'.",
 		format: function(date){
 			return (date.getHours() < 12)? "AM": "PM";
 		}
 	},
 	P: {
-		help: "Upper case 'AM' or 'PM'.",
+		description:"Upper case 'AM' or 'PM'.",
 		format: function(date){
 			return (date.getHours() < 12)? "am": "pm";
 		}
 	},
 	S: {
-		help: "The seconds - two diggits with leading zeros.",
+		description:"The seconds - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getSeconds(), 2);
 		},
@@ -225,7 +225,7 @@ var formatting = {
 		}
 	},
 	L: {
-		help: "The milliseconds - two diggits with leading zeros.",
+		description:"The milliseconds - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getMilliseconds(), 3);
 		},
@@ -237,14 +237,14 @@ var formatting = {
 		}
 	},
 	z: {
-		help: "The timezone offset in hours - two diggits with leading zeros.",
+		description:"The timezone offset in hours - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getTimezoneOffset() / 60, 2);
 		}
 	},
 
 	s: {
-		help: "The seconds since 1970-01-01 00:00:00 GMT.",
+		description:"The seconds since 1970-01-01 00:00:00 GMT.",
 		format: function(date){
 			return Math.floor(date.getTime() / 1000);
 		}
@@ -428,7 +428,7 @@ date.parse.help = date.format.help = function help(){
 	help += "\n\nFormatting identifiers:";
 	Object.keys(formatting).forEach(function(f){
 		if (formatting[f][funcName]){
-			help += "\n\t" + f + ": " + (formatting[f].help || " no description given");
+			help += "\n\t" + f + ": " + (formatting[f].description || " no description given");
 		}
 	});
 	help += "\n\nCombined formatting identifiers:";
