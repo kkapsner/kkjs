@@ -39,6 +39,13 @@
 	"disallowUnusedVariables": true,
 	"disallowYodaConditions": true,
 	"jsDoc": {
+		"commentInFunction": true,
+		"checkAnnotations": {
+			"preset": "jsdoc3",
+			"extra": {
+				"author": true
+			}
+		},
 		"checkParamExistence": true,
 		"checkParamNames": true,
 		"requireParamTypes": true,

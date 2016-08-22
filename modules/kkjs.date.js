@@ -12,7 +12,7 @@
  */
 
 function diggits(nr, z){
-	/* formats a number with leading zeros */
+	/* Formats a number with leading zeros. */
 	nr = Math.round(nr).toString(10);
 	while (nr.length < z){
 		nr = "0" + nr;
@@ -27,7 +27,20 @@ var localeStrings = {
 			s: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
 		},
 		months: {
-			l: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			l: [
+				"January",
+				"February",
+				"March",
+				"April",
+				"May",
+				"June",
+				"July",
+				"August",
+				"September",
+				"October",
+				"November",
+				"December"
+			],
 			s: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 		}
 	},
@@ -37,7 +50,20 @@ var localeStrings = {
 			s: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
 		},
 		months: {
-			l: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+			l: [
+				"Januar",
+				"Februar",
+				"März",
+				"April",
+				"Mai",
+				"Juni",
+				"Juli",
+				"August",
+				"September",
+				"Oktober",
+				"November",
+				"Dezember"
+			],
 			s: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
 		}
 	}
@@ -46,31 +72,31 @@ var locale = "en";
 
 var formatting = {
 	a: {
-		description:"Short version of the weekday name.",
+		description: "Short version of the weekday name.",
 		format: function(date){
 			return localeStrings[locale].weekDays.s[date.getDay()];
 		}
 	},
 	A: {
-		description:"Long version of the weekday name.",
+		description: "Long version of the weekday name.",
 		format: function(date){
 			return localeStrings[locale].weekDays.l[date.getDay()];
 		}
 	},
 	w: {
-		description:"Number of the weekday. Sunday is zero.",
+		description: "Number of the weekday. Sunday is zero.",
 		format: function(date){
 			return date.getDay();
 		}
 	},
 	u: {
-		description:"Number of the weekday. Monday is one and Sunday is seven.",
+		description: "Number of the weekday. Monday is one and Sunday is seven.",
 		format: function(date){
 			return (date.getDay() + 6) % 7 + 1;
 		}
 	},
 	d: {
-		description:"Two diggit representation of the day of the month (with leading zero).",
+		description: "Two diggit representation of the day of the month (with leading zero).",
 		format: function(date){
 			return diggits(date.getDate(), 2);
 		},
@@ -82,13 +108,13 @@ var formatting = {
 		}
 	},
 	e: {
-		description:"The day of the month.",
+		description: "The day of the month.",
 		format: function(date){
 			return date.getDate();
 		}
 	},
 	j: {
-		description:"Day of the year, three diggits with leading zeros.",
+		description: "Day of the year, three diggits with leading zeros.",
 		format: function(date){
 			var helpDate = new Date(date.getTime());
 			helpDate.setDate(1);
@@ -97,25 +123,25 @@ var formatting = {
 		}
 	},
 	V: {
-		description:"ISO-8601:1988 week number of the given year - two diggits with leading zeros.",
+		description: "ISO-8601:1988 week number of the given year - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getWeek(), 2);
 		}
 	},
 	b: {
-		description:"Short version of the month name.",
+		description: "Short version of the month name.",
 		format: function(date){
 			return localeStrings[locale].months.s[date.getMonth()];
 		}
 	},
 	B: {
-		description:"Long version of the month name.",
+		description: "Long version of the month name.",
 		format: function(date){
 			return localeStrings[locale].months.l[date.getMonth()];
 		}
 	},
 	m: {
-		description:"Two diggit representation of the month (with leading zero).",
+		description: "Two diggit representation of the month (with leading zero).",
 		format: function(date){
 			return diggits(date.getMonth() + 1, 2);
 		},
@@ -127,32 +153,32 @@ var formatting = {
 		}
 	},
 	C: {
-		description:"The century.",
+		description: "The century.",
 		format: function(date){
 			return Math.floor(date.getFullYear() / 100);
 		}
 	},
 	g: {
-		description:"The two last diggits of the year of the calendar week.",
+		description: "The two last diggits of the year of the calendar week.",
 		format: function(date){
 			return diggits(date.getWeekYear() % 100, 2);
 		}
 	},
 	G: {
-		description:"The year of the calendar week - four diggits with leading zeros.",
+		description: "The year of the calendar week - four diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getWeekYear(), 4);
 		}
 	},
 
 	y: {
-		description:"The two last diggits of the year.",
+		description: "The two last diggits of the year.",
 		format: function(date){
 			return diggits(date.getFullYear(), 4).substr(2);
 		}
 	},
 	Y: {
-		description:"The year - four diggits with leading zeros.",
+		description: "The year - four diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getFullYear(), 4);
 		},
@@ -165,7 +191,7 @@ var formatting = {
 	},
 
 	H: {
-		description:"The hours (24h) - two diggits with leading zeros.",
+		description: "The hours (24h) - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getHours(), 2);
 		},
@@ -177,19 +203,19 @@ var formatting = {
 		}
 	},
 	I: {
-		description:"The hours (12h) - two diggits with leading zeros.",
+		description: "The hours (12h) - two diggits with leading zeros.",
 		format: function(date){
 			return diggits((date.getHours() + 11) % 12 + 1, 2);
 		}
 	},
 	i: {
-		description:"The hours (12h).",
+		description: "The hours (12h).",
 		format: function(date){
 			return (date.getHours() + 11) % 12 + 1;
 		}
 	},
 	M: {
-		description:"The minutes - two diggits with leading zeros.",
+		description: "The minutes - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getMinutes(), 2);
 		},
@@ -201,19 +227,19 @@ var formatting = {
 		}
 	},
 	p: {
-		description:"Lower case 'am' or 'pm'.",
+		description: "Lower case 'am' or 'pm'.",
 		format: function(date){
 			return (date.getHours() < 12)? "AM": "PM";
 		}
 	},
 	P: {
-		description:"Upper case 'AM' or 'PM'.",
+		description: "Upper case 'AM' or 'PM'.",
 		format: function(date){
 			return (date.getHours() < 12)? "am": "pm";
 		}
 	},
 	S: {
-		description:"The seconds - two diggits with leading zeros.",
+		description: "The seconds - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getSeconds(), 2);
 		},
@@ -225,7 +251,7 @@ var formatting = {
 		}
 	},
 	L: {
-		description:"The milliseconds - two diggits with leading zeros.",
+		description: "The milliseconds - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getMilliseconds(), 3);
 		},
@@ -237,14 +263,14 @@ var formatting = {
 		}
 	},
 	z: {
-		description:"The timezone offset in hours - two diggits with leading zeros.",
+		description: "The timezone offset in hours - two diggits with leading zeros.",
 		format: function(date){
 			return diggits(date.getTimezoneOffset() / 60, 2);
 		}
 	},
 
 	s: {
-		description:"The seconds since 1970-01-01 00:00:00 GMT.",
+		description: "The seconds since 1970-01-01 00:00:00 GMT.",
 		format: function(date){
 			return Math.floor(date.getTime() / 1000);
 		}
@@ -261,15 +287,13 @@ var combinedFormatting = {
 var date = {
 	parse: function parseDate(format, str){
 		/**
-		 * Function date.parse
-		 * @name: date.parse
-		 * @version: 1.0
-		 * @author: Korbinian Kapsner
-		 * @description:
-		 * @parameter:
-		 *	format:
-		 *	str:
-		 * @return value: the date object
+		 * Parses a string according to a given format as a date.
+		 *
+		 * @name date.parse
+		 * @author Korbinian Kapsner
+		 * @param {string} format - The expected input format.
+		 * @param {string} str - The string representing the date.
+		 * @return {Date} - The parsed date object.
 		 */
 
 		var data = {};
@@ -314,7 +338,10 @@ var date = {
 			}
 			else {
 				if (format.charAt(formatI) !== str.charAt(strI)){
-					throw new Error("String does not match format: mismatching characters. Expected " + format.charAt(formatI) + " got " + str.charAt(strI));
+					throw new Error(
+						"String does not match format: mismatching characters." +
+						" Expected " + format.charAt(formatI) + " got " + str.charAt(strI)
+					);
 				}
 				else {
 					strI += 1;
@@ -353,16 +380,13 @@ var date = {
 
 	format: function formatDate(format, date){
 		/**
-		 * Function date.format
-		 * @name: date.format
-		 * @version: 0.9
-		 * @author: Korbinian Kapsner
-		 * @last modify: 04.08.2009
-		 * @description:
-		 * @parameter:
-		 *	format:
-		 *	date:
-		 * @return value: the formated date-representation
+		 * Outputs the date in a specific format.
+		 *
+		 * @name date.format
+		 * @author Korbinian Kapsner
+		 * @param {string} format - The desired date format.
+		 * @param {Date} date - The date to be formatted.
+		 * @return {string} - The formated date representation.
 		 */
 		return format.replace(/%(.)/g, function(m, f){
 			var combinedFormat = combinedFormatting[f];
@@ -383,28 +407,31 @@ var date = {
 
 	setLocale: function(newLocale){
 		/**
-		 * Function date.setLocale
-		 * @name: date.setLocale
-		 * @author: Korbinian Kapsner
-		 * @description: sets the locale setting if it is known.
-		 * @parameter:
-		 *	locale:
+		 * Sets the locale setting if it is known.
+		 *
+		 * @name date.setLocale
+		 * @author Korbinian Kapsner
+		 * @param {string} newLocale - The locale to be set.
+		 * @return {boolean} - If the locale was set or not.
 		 */
 		newLocale = newLocale.split("-")[0].toLowerCase();
 		if (localeStrings.hasOwnProperty(newLocale)){
 			locale = newLocale;
+			return true;
+		}
+		else {
+			return false;
 		}
 	},
 	registerLocale: function registerLocale(name, weekDays, months){
 		/**
-		 * Function date.registerLocale
-		 * @name: date.registerLocale
-		 * @author: Korbinian Kapsner
-		 * @description: registeres a new locale to be used.
-		 * @parameter:
-		 *	name: the name of the locale
-		 *  weekDays: the information for the week days.
-		 *  months: the information for the months.
+		 * Registeres a new locale to be used.
+		 *
+		 * @name date.registerLocale
+		 * @author Korbinian Kapsner
+		 * @param {string} name - The name of the locale
+		 * @param {string} weekDays - The information for the week days.
+		 * @param {string} months - The information for the months.
 		 */
 		if (localeStrings.hasOwnProperty(name)){
 			throw new Error("Local already registered.");
