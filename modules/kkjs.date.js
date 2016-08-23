@@ -446,6 +446,79 @@ var date = {
 			weekDays: weekDays,
 			months: months
 		};
+	},
+	registerFormatting: function registerFormatting(c, description, format, parse){
+		/**
+		 * Registeres a new formatting that can be used for format and parse.
+		 *
+		 * @name date.registerFormatting
+		 * @author Korbinian Kapsner
+		 * @param {string} c - The character that the new formatting is using.
+		 * @param {string} description - The description of the formatting.
+		 * @param {Function} format - The function to be called when the
+		 *    formatting is requested. Gets the date as parameter and has to
+		 *    return a string.
+		 * @param {Object} parse - Optional. The object representing the parse
+		 *    procedure. It has to have a property "match" which has to be the
+		 *    regular expression matching the part to be parsed. Also a property
+		 *    "process" has to be present which has to be the function that
+		 *    parses the input. It gets the input string (which is derived by
+		 *    the regExp) and a set function as parameter. This set function
+		 *    expects two parameter - the part of the date to be set (e.g.
+		 *    "date") and the value.
+		 */
+		if (c.length !== 1){
+			throw new Error("Identifier has to be one character.");
+		}
+		if (formatting[c] || combinedFormatting[c]){
+			throw new Error("Identifier already used.");
+		}
+		if (typeof format !== "function"){
+			throw new Error("Format function is not a function.");
+		}
+		if (typeof parse !== "undefined"){
+			if (typeof parse !== "object"){
+				throw new Error("Parse has to be an object.");
+			}
+			if (!(parse.match instanceof RegExp)){
+				throw new Error(
+					"The property \"match\" of parse has " +
+					"to be a regular expression."
+				);
+			}
+			if (typeof parse.process !== "function"){
+				throw new Error(
+					"The property \"process\" of parse has " +
+					"to be a function."
+				);
+			}
+		}
+		formatting[c] = {
+			description: description,
+			format: format,
+			parse: parse
+		};
+	},
+	registerCombinedFormatting: function registerCombinedFormatting(c, combinedFormat){
+		/**
+		 * Registeres a new conbined formatting that can be used for format and
+		 * parse.
+		 *
+		 * @name date.registerCombinedFormatting
+		 * @author Korbinian Kapsner
+		 * @param {string} c - The character that the new formatting is using.
+		 * @param {string} combinedFormat - The new combined formatting.
+		 */
+		if (c.length !== 1){
+			throw new Error("Identifier has to be one character.");
+		}
+		if (formatting[c] || combinedFormatting[c]){
+			throw new Error("Identifier already used.");
+		}
+		if (typeof combinedFormat !== "string"){
+			throw new Error("Combined formatting has to be a string.");
+		}
+		combinedFormatting[c] = combinedFormat;
 	}
 };
 
