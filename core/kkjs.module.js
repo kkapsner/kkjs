@@ -28,22 +28,27 @@ function getModulePromise(path){
 		modulesCache[path] = new Promise(function(resolve, reject){
 			var xhr = new XMLHttpRequest();
 			xhr.open("GET", path, true);
-			xhr.onreadystatechange = function(js){
+			xhr.onreadystatechange = function(){
 				if (this.readyState === 4){
 					try{
+						// IE9 bug
+						var status = 0;
+						try {
+							status = this.status;
+						} catch(error){}
 						if (status === 0 || status === 200 || status === 304){
 							var directory = path.replace(/[^\/]+$/, "");
 							var module = {
 								load: function(modules){
-									loadModule(modules, directory);
-								}
+									return loadModule(modules, directory);
+								},
+								resolve: resolve,
 								info: {
 									path: path,
 									directory: directory
 								}
 							};
-							var exports = evaluate(js, moduleInfo);
-							resolve(exports);
+							evaluate(this.responseText, module);
 						}
 						else {
 							reject(status);
@@ -71,9 +76,19 @@ function loadModule(modules, base){
 	});
 	return Promise.all(promises);
 }
-window.loadModule = loadModule;
-}(function(js, module){
-	var exports = {};
-	eval(js);
-	return exports;
-});
+window.module = {
+	info: {
+		
+	},
+	load: function (modules){
+		var scripts = document.getElementsByTagName("script");
+		var rootScript = scripts[scripts.length - 1];
+		var base = rootScript.src.replace(/[^\/]+$/, "");
+		return loadModule(modules, base);
+	}
+};
+}(
+	function(js, module){
+		eval(js);
+	}
+));

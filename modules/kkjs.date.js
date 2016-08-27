@@ -542,7 +542,10 @@ if (typeof nagivator !== "undefined" && navigator.language){
 	date.setLocale(navigator.language);
 }
 
-if (typeof exports !== "undefined"){
+if (typeof module !== "undefined" && module.resolve){
+	module.resolve(date);
+}
+else if (typeof exports !== "undefined"){
 	for (var i in date){
 		if (date.hasOwnProperty(i)){
 			exports[i] = date[i];
