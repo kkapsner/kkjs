@@ -42,7 +42,9 @@ function getModulePromise(path){
 								load: function(modules){
 									return loadModule(modules, directory);
 								},
-								resolve: resolve,
+								register: function(module){
+									resolve(module);
+								},
 								info: {
 									path: path,
 									directory: directory
@@ -80,6 +82,14 @@ window.module = {
 	info: {
 		
 	},
+	register: function (module){
+		var scripts = document.getElementsByTagName("script");
+		var rootScript = scripts[scripts.length - 1];
+		var path = rootScript.src;
+		if (!modulesCache[path]){
+			modulesCache[path] = Promise.resolve(module);
+		}
+	}
 	load: function (modules){
 		var scripts = document.getElementsByTagName("script");
 		var rootScript = scripts[scripts.length - 1];
