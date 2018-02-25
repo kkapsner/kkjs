@@ -193,6 +193,25 @@ var table = {
 		}
 	}.makeArrayCallable([0]),
 	
+	forEachVisibleRow: function forEachVisibleRow(table, callback){
+		/**
+		 * Function table.forEachVisibleRow
+		 * @name: table.forEachVisibleRow
+		 * @author: Korbinian Kapsner
+		 * @description: iterates over all visible rows of a table
+		 * @parameter:
+		 *	table: the <table> to iterate over
+		 */
+		
+		var index = 0;
+		eachRow(table, function(row){
+			if (row.offsetHeight && row.offsetWidth){
+				callback.call(undefined, row, index);
+				index += 1;
+			}
+		});
+	},
+	
 	sortable: function sortable(table, afterSortCallback){
 		/**
 		 * Function table.sortable
