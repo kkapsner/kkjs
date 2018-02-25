@@ -193,7 +193,7 @@ var table = {
 		}
 	}.makeArrayCallable([0]),
 	
-	sortable: function sortable(table){
+	sortable: function sortable(table, afterSortCallback){
 		/**
 		 * Function table.sortable
 		 * @name: table.sortable
@@ -205,6 +205,7 @@ var table = {
 		 *	cells in the ith column and is convernted to a number if possible.
 		 * @parameter:
 		 *	table: the <table> to make sortable
+		 *	afterSortCallback: a callback after the sorting is performed
 		 */
 		
 		css.$("th", {node: table.tHead}).forEach(function(th){
@@ -304,11 +305,14 @@ var table = {
 				rows.forEach(function(r){
 					table.tBodies[0].appendChild(r.node);
 				});
+				if (afterSortCallback){
+					afterSortCallback.call(undefined, table);
+				}
 			};
 		}
 	}.makeArrayCallable([0]),
 	
-	filterable: function filterable(table){
+	filterable: function filterable(table, afterFilterCallback){
 		/**
 		 * Function table.filterable
 		 * @name: table.filterable
@@ -320,6 +324,7 @@ var table = {
 		 *	cell in the ith column.
 		 * @parameter:
 		 *	table: the <table> to make filterable
+		 *	afterFilterCallback: a callback after the filtering is done
 		 */
 		
 		css.$("th", {node: table.tHead}).forEach(function(th){
@@ -357,11 +362,14 @@ var table = {
 						"add"
 					](r, hideClassName);
 				});
+				if (afterFilterCallback){
+					afterFilterCallback.call(undefined, table);
+				}
 			};
 		}
 	}.makeArrayCallable([0]),
 	
-	selectable: function filterable(table){
+	selectable: function selectable(table, afterSelectCallback){
 		/**
 		 * Function table.selectable
 		 * @name: table.selectable
@@ -373,6 +381,7 @@ var table = {
 		 *	cell in the ith column.
 		 * @parameter:
 		 *	table: the <table> to make selectable
+		 *	afterSelectCallback:  a callback after the filtering is done
 		 */
 		
 		// iterate through all <th>-Nodes in the <thead>
@@ -451,6 +460,9 @@ var table = {
 							"add"
 						](r, hideClassName);
 					});
+					if (afterSelectCallback){
+						afterSelectCallback.call(undefined, table);
+					}
 				};
 			}
 			else {
@@ -464,6 +476,9 @@ var table = {
 							"add"
 						](r, hideClassName);
 					});
+					if (afterSelectCallback){
+						afterSelectCallback.call(undefined, table);
+					}
 				};
 			}
 		}
