@@ -499,14 +499,21 @@ var table = {
 					parentNode: controlsContainer,
 					childNodes: [
 						{
-							tag: "input",
-							type: "checkbox",
-							checked: hideableStatus,
-							events: {
-								change: hideEventListener
-							}
+							tag: "span",
+							className: "group",
+							childNodes: [
+								{
+									tag: "input",
+									type: "checkbox",
+									checked: hideableStatus,
+									events: {
+										change: hideEventListener
+									}
+								},
+								{tag: "span", innerHTML: kkjs.dataset.get(th, "name") || th.innerHTML}
+							]
 						},
-						{tag: "span", innerHTML: th.innerHTML}
+						" "
 					],
 				});
 			}
