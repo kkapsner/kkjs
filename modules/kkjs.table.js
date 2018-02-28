@@ -375,11 +375,14 @@ var table = {
 			return function(){
 				var regExp = new RegExp(this.value.quoteRegExp(), "i");
 				eachRow(table, function(r){
-					css.className[
-						(dataset.get(getIthColumn(r, i), "value") || "").match(regExp)?
-						"remove":
-						"add"
-					](r, hideClassName);
+					var cell = getIthColumn(r, i);
+					if (!dataset.get(cell, "doNotHide")){
+						css.className[
+							(dataset.get(cell, "value") || "").match(regExp)?
+							"remove":
+							"add"
+						](r, hideClassName);
+					}
 				});
 				if (afterFilterCallback){
 					afterFilterCallback.call(undefined, table);
@@ -472,12 +475,15 @@ var table = {
 				return function(){
 					var values = Array.prototype.map.call(this.selectedOptions, function(o){return o.value;});
 					eachRow(table, function(r){
-						// hide all rows that don't have the right 
-						css.className[
-							(!values.length || values.indexOf(dataset.get(getIthColumn(r, i), "value")) !== -1)?
-							"remove":
-							"add"
-						](r, hideClassName);
+						var cell = getIthColumn(r, i);
+						if (!dataset.get(cell, "doNotHide")){
+							// hide all rows that don't have the right value
+							css.className[
+								(!values.length || values.indexOf(dataset.get(cell, "value")) !== -1)?
+								"remove":
+								"add"
+							](r, hideClassName);
+						}
 					});
 					if (afterSelectCallback){
 						afterSelectCallback.call(undefined, table);
@@ -488,12 +494,15 @@ var table = {
 				return function(){
 					var value = this.value;
 					eachRow(table, function(r){
-						// hide all rows that don't have the right value
-						css.className[
-							(!value || dataset.get(getIthColumn(r, i), "value") === value)?
-							"remove":
-							"add"
-						](r, hideClassName);
+						var cell = getIthColumn(r, i);
+						if (!dataset.get(cell, "doNotHide")){
+							// hide all rows that don't have the right value
+							css.className[
+								(!value || dataset.get(cell, "value") === value)?
+								"remove":
+								"add"
+							](r, hideClassName);
+						}
 					});
 					if (afterSelectCallback){
 						afterSelectCallback.call(undefined, table);
