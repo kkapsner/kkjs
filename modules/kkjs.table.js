@@ -152,6 +152,23 @@ function getColumnIndex(cell){
 	return columnIndex;
 }
 
+function getCellValue(cell, parse){
+	var value = kkjs.dataset.get(cell, "value");
+	if (value === undefined){
+		value = cell.textContent;
+		if (value === undefined){
+			value = cell.innerHTML;
+		}
+	}
+	if (parse){
+		if (value.match(/^\d+(?:\.\d+)?(?:e[+-]?\d+)?$/i)){
+			value = parseFloat(value);
+		}
+	}
+	
+	return value;
+}
+
 function createHideStyle(){
 	var name = "kkjsTableHide_" + Date.now().toString(36) + (Math.floor(Math.random() * 1296)).toString(36)
 	styleRule.create("." + name + "{display: none !important;}");
@@ -307,14 +324,12 @@ var table = {
 					if (typeof r.originalPosition === "undefined"){
 						r.originalPosition = idx;
 					}
-					var value = dataset.get(getIthColumn(r, i), "value") || "";
-					if (value.match(/^\d+(?:\.\d+)?(?:e[+-]?\d+)?$/i)){
-						value = parseFloat(value);
-					}
 					rows.push(
 						{
 							node: r,
-							value: (up && up !== true)? r.originalPosition: value
+							value: (up && up !== true)?
+								r.originalPosition:
+								getCellValue(getIthColumn(r, i), true)
 						}
 					);
 				});
@@ -325,7 +340,14 @@ var table = {
 					table.tBodies[0].appendChild(r.node);
 				});
 				if (afterSortCallback){
-					afterSortCallback.call(undefined, table);
+					afterSortCallback.call(
+						undefined,
+						{
+							table: table,
+							columnIndex: i,
+							direction: up? "asc": "desc"
+						}
+					);
 				}
 			};
 		}
@@ -378,14 +400,21 @@ var table = {
 					var cell = getIthColumn(r, i);
 					if (!dataset.get(cell, "doNotHide")){
 						css.className[
-							(dataset.get(cell, "value") || "").match(regExp)?
+							getCellValue(cell).match(regExp)?
 							"remove":
 							"add"
 						](r, hideClassName);
 					}
 				});
 				if (afterFilterCallback){
-					afterFilterCallback.call(undefined, table);
+					afterFilterCallback.call(
+						undefined,
+						{
+							table: table,
+							columnIndex: i,
+							search: this.value
+						}
+					);
 				}
 			};
 		}
@@ -437,7 +466,7 @@ var table = {
 				// different values (stored in data-value in the <td>s)
 				eachRow(table, function(r){
 					var cell = getIthColumn(r, i);
-					var value = dataset.get(cell, "value");
+					var value = getCellValue(cell);
 					if (value && !names[value]){
 						names[value] = true;
 						var name = dataset.get(cell, "text") || value;
@@ -479,14 +508,21 @@ var table = {
 						if (!dataset.get(cell, "doNotHide")){
 							// hide all rows that don't have the right value
 							css.className[
-								(!values.length || values.indexOf(dataset.get(cell, "value")) !== -1)?
+								(!values.length || values.indexOf(getCellValue(cell)) !== -1)?
 								"remove":
 								"add"
 							](r, hideClassName);
 						}
 					});
 					if (afterSelectCallback){
-						afterSelectCallback.call(undefined, table);
+						afterSelectCallback.call(
+							undefined,
+							{
+								table: table,
+								columnIndex: i,
+								selected: values
+							}
+						);
 					}
 				};
 			}
@@ -498,21 +534,28 @@ var table = {
 						if (!dataset.get(cell, "doNotHide")){
 							// hide all rows that don't have the right value
 							css.className[
-								(!value || dataset.get(cell, "value") === value)?
+								(!value || getCellValue(cell) === value)?
 								"remove":
 								"add"
 							](r, hideClassName);
 						}
 					});
 					if (afterSelectCallback){
-						afterSelectCallback.call(undefined, table);
+						afterSelectCallback.call(
+							undefined,
+							{
+								table: table,
+								columnIndex: i,
+								selected: value
+							}
+						);
 					}
 				};
 			}
 		}
 	}.makeArrayCallable([0]),
 	
-	hideable: function hideable(table, controlsContainer){
+	hideable: function hideable(table, controlsContainer, afterHideCallback){
 		/**
 		 * Function table.hideable
 		 * @name: table.hideable
@@ -630,6 +673,17 @@ var table = {
 						},
 						true,
 						true
+					);
+				}
+				if (afterHideCallback){
+					afterHideCallback.call(
+						undefined,
+						{
+							table: table,
+							columnIndex: columnIndex,
+							columnSpan: colSpan,
+							hidden: hidden
+						}
 					);
 				}
 			};
