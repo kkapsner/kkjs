@@ -153,6 +153,9 @@ function getColumnIndex(cell){
 }
 
 function getCellValue(cell, parse){
+	if (!cell){
+		return "";
+	}
 	var value = kkjs.dataset.get(cell, "value");
 	if (value === undefined){
 		value = cell.textContent;
@@ -288,6 +291,22 @@ var table = {
 			 * @return value: the sorting event listener
 			 */
 			
+			function emptySorter(sortFunction){
+				return function(a, b){
+					if (a.value === b.value){
+						return 0;
+					}
+					if (a.value === ""){
+						return 1;
+					}
+					else if (b.value === ""){
+						return -1;
+					}
+					else {
+						return sortFunction(a, b);
+					}
+				};
+			}
 			var sortFunction;
 			if (up){
 				sortFunction = function(a, b){
@@ -334,7 +353,7 @@ var table = {
 					);
 				});
 				
-				rows.sort(sortFunction);
+				rows.sort(emptySorter(sortFunction));
 				
 				rows.forEach(function(r){
 					table.tBodies[0].appendChild(r.node);
