@@ -395,6 +395,7 @@ var table = {
 					tag: "input",
 					className: "kkjs-table-filter",
 					parentNode: th,
+					titleTemplate: dataset.get(th, "titleTemplate") || "{matchingCount} of {totalCount}",
 					events: {
 						advancedChange: createFilterEventListener(i, hideClassName)
 					}
@@ -415,6 +416,8 @@ var table = {
 			
 			return function(){
 				var regExp = new RegExp(this.value.quoteRegExp(), "i");
+				var matchingCount = 0;
+				var totalCount = 0;
 				eachRow(table, function(r){
 					var cell = getIthColumn(r, i);
 					if (!dataset.get(cell, "doNotHide")){
@@ -423,8 +426,15 @@ var table = {
 							"remove":
 							"add"
 						](r, hideClassName);
+						matchingCount += !!r.offsetHeight;
+						totalCount += 1;
 					}
 				});
+				if (this.titleTemplate){
+					this.title = this.titleTemplate
+						.replace(/\{matchingCount\}/g, matchingCount)
+						.replace(/\{totalCount\}/g, totalCount);
+				}
 				if (afterFilterCallback){
 					afterFilterCallback.call(
 						undefined,
@@ -502,6 +512,7 @@ var table = {
 					childNodes: options,
 					selectedIndex: multiselect? -1: 0,
 					multiple: !!multiselect,
+					titleTemplate: dataset.get(th, "titleTemplate") || "{matchingCount} of {totalCount}",
 					events: {
 						change: changeListener
 					}
@@ -522,6 +533,8 @@ var table = {
 			if (multiselect){
 				return function(){
 					var values = Array.prototype.map.call(this.selectedOptions, function(o){return o.value;});
+					var matchingCount = 0;
+					var totalCount = 0;
 					eachRow(table, function(r){
 						var cell = getIthColumn(r, i);
 						if (!dataset.get(cell, "doNotHide")){
@@ -531,8 +544,15 @@ var table = {
 								"remove":
 								"add"
 							](r, hideClassName);
+							matchingCount += !!r.offsetHeight;
+							totalCount += 1;
 						}
 					});
+					if (this.titleTemplate){
+						this.title = this.titleTemplate
+							.replace(/\{matchingCount\}/g, matchingCount)
+							.replace(/\{totalCount\}/g, totalCount);
+					}
 					if (afterSelectCallback){
 						afterSelectCallback.call(
 							undefined,
@@ -548,6 +568,8 @@ var table = {
 			else {
 				return function(){
 					var value = this.value;
+					var matchingCount = 0;
+					var totalCount = 0;
 					eachRow(table, function(r){
 						var cell = getIthColumn(r, i);
 						if (!dataset.get(cell, "doNotHide")){
@@ -557,8 +579,15 @@ var table = {
 								"remove":
 								"add"
 							](r, hideClassName);
+							matchingCount += !!r.offsetHeight;
+							totalCount += 1;
 						}
 					});
+					if (this.titleTemplate){
+						this.title = this.titleTemplate
+							.replace(/\{matchingCount\}/g, matchingCount)
+							.replace(/\{totalCount\}/g, totalCount);
+					}
 					if (afterSelectCallback){
 						afterSelectCallback.call(
 							undefined,
