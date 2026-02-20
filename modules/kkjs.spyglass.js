@@ -40,6 +40,10 @@ var spyglass = {
 			);
 			kkjs.css.set(spy, "display", "");
 		});
+		return {
+			wrapper: wrapper,
+			spy: spy
+		};
 	}.setDefaultParameter(null, new Function.DefaultParameter(
 		{
 			size: 200
