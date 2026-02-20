@@ -50,7 +50,7 @@ var EventEmitter = require("kkjs.EventEmitter");
 var DOM = require("kkjs.DOM");
 var dataset = require("kkjs.dataset");
  
-var Kightbox = EventEmitter.extend(function(){
+var Kightbox = EventEmitter.extend(function(config){
 	/**
 	 * Constructor Kightbox
 	 * @name: Kightbox
@@ -60,11 +60,16 @@ var Kightbox = EventEmitter.extend(function(){
 	 */
 	
 	if (!(this instanceof Kightbox)){
-		var box = new Kightbox();
+		var box = new Kightbox(config);
 		box.openLink.apply(box, arguments);
 		return box;
 	}
 	var This = this;
+	if (config){
+		Object.keys(config).forEach(function(key){
+			This[key] = config[key];
+		});
+	}
 	this.container = node.create({
 		tag: "div", className: "kkjs_kightbox",
 		events: {click: function(ev){if (ev.target === this){This.close();}}},
@@ -97,18 +102,11 @@ var Kightbox = EventEmitter.extend(function(){
 	this.hideButton("next");
 	this.hideButton("prev");
 	
-	
-	["n", "ne", "e", "se", "s", "sw", "w", "nw"].forEach(
-		function(name, i, arr){
-			arr[i] = node.create({tag: "div", parentNode: this.innerContainer, className: "border " + name});
-		},
-		this
-	);
-	
 	event.add(Kightbox.overlay, "click", function(){This.close();});
 	
 })
 .implement({
+	windowPadding: 10,
 	minSize: false,
 	setMinSize: function(size){
 		/**
@@ -266,8 +264,8 @@ var Kightbox = EventEmitter.extend(function(){
 		 */
 		
 		var size = DOM.getWindowSize();
-		size.height -= 100;
-		size.width -= 100;
+		size.height -= this.windowPadding;
+		size.width -= this.windowPadding;
 		this.setMaxSize(size);
 		
 		return this;
@@ -317,7 +315,7 @@ var Kightbox = EventEmitter.extend(function(){
 			var This = this;
 			if (noAnimation || !this.isOpen){
 				css.set(
-					[this.contentContainer, this.metaInfo],
+					[this.contentContainer],
 					{width: width + "px"}
 				);
 			}
@@ -327,14 +325,6 @@ var Kightbox = EventEmitter.extend(function(){
 					{width: width + "px"},
 					{
 						duration: 0.2,
-						onrun: function(){
-							/**
-							 * Set meta-info node width to the same so it does
-							 * proper line breaks.
-							 */
-							
-							This.metaInfo.style.width = This.contentContainer.style.width;
-						}
 					}
 				);
 			}
@@ -362,12 +352,9 @@ var Kightbox = EventEmitter.extend(function(){
 		 */
 		
 		if (typeof height === "number"){
-			var oldWidth = this.metaInfo.style.width;
-			this.metaInfo.style.width = this.size.width + "px";
-			if (this.maxSize.height - this.metaInfo.offsetHeight < height){
-				height = this.maxSize.height - this.metaInfo.offsetHeight;
+			if (this.maxSize.height < height){
+				height = this.maxSize.height;
 			}
-			this.metaInfo.style.width = oldWidth;
 			
 			this.size.height = height;
 			if (noAnimation || !this.isOpen){
@@ -612,10 +599,12 @@ var Kightbox = EventEmitter.extend(function(){
 		}
 		if (descriptor.description){
 			this.description.innerHTML = descriptor.description;
+			this.description.style.display = "";
 			show = true;
 		}
 		else {
 			this.description.innerHTML = "";
+			this.description.style.display = "none";
 		}
 		
 		this.metaInfo.style.display = show? "block": "none";

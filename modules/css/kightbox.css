@@ -22,6 +22,12 @@
 	padding: 10px;
 	text-align: center;
 	background-color: #FFFFFF;
+	box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.75);
+	line-height: 0;
+}
+
+.kkjs_kightbox .container > *{
+	line-height: initial;
 }
 
 .kkjs_kightbox_overlay {
@@ -39,51 +45,6 @@
 	width: 13px;
 	height: 18px;
 	
-}
-
-.kkjs_kightbox .border.n {
-	bottom: 100%;
-	left: 0;
-	width: 100%;
-	background-image: url('../images/fancy_shadow_n.png');
-}
-.kkjs_kightbox .border.ne {
-	bottom: 100%;
-	left: 100%;
-	background-image: url('../images/fancy_shadow_ne.png');
-}
-.kkjs_kightbox .border.e {
-	bottom: 0;
-	left: 100%;
-	height: 100%;
-	background-image: url('../images/fancy_shadow_e.png');
-}
-.kkjs_kightbox .border.se {
-	top: 100%;
-	left: 100%;
-	background-image: url('../images/fancy_shadow_se.png');
-}
-.kkjs_kightbox .border.s{
-	top: 100%;
-	left: 0;
-	width: 100%;
-	background-image: url('../images/fancy_shadow_s.png');
-}
-.kkjs_kightbox .border.sw {
-	top: 100%;
-	right: 100%;
-	background-image: url('../images/fancy_shadow_sw.png');
-}
-.kkjs_kightbox .border.w {
-	top: 0;
-	right: 100%;
-	height: 100%;
-	background-image: url('../images/fancy_shadow_w.png');
-}
-.kkjs_kightbox .border.nw {
-	bottom: 100%;
-	right: 100%;
-	background-image: url('../images/fancy_shadow_nw.png');
 }
 
 .kkjs_kightbox .button {
