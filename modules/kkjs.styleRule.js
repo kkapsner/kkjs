@@ -103,7 +103,7 @@ var styleRule = {
 		doc = DOM.getDocument(doc);
 		var style = doc.styleSheets;
 		
-		for (var i = style.length - 1; i >= 0 && (!styleRule._styleSheetWriteable(style[i]) || style[i].disabled);){
+		for (var i = style.length - 1; i >= 0 && (!styleRule._styleSheetWriteable(style[i]) || !styleRule._styleSheetApplied(style[i]));){
 			i--;
 		}
 		if (i === -1){
@@ -150,6 +150,31 @@ var styleRule = {
 			return false;
 		}
 		return true;
+	},
+	_styleSheetApplied: function _styleSheetApplied(st){
+		/**
+		 * Function styleRule._styleSheetApplied
+		 * @name: styleRule._styleSheetApplied
+		 * @author: Korbinian Kapsner
+		 * @version: 0.9
+		 * @description:
+		 * @parameter:
+		 *	st:
+		 */
+		
+		if ("diabled" in st && st.disabled){
+			return false;
+		}
+		const media = st.media;
+		if (!media || media.length === 0){
+			return true;
+		}
+		for (let i = 0; i < media.length; i += 1){
+			if (media[i] === "all"){
+				return true;
+			}
+		}
+		return false;
 	},
 	_getRules: function getRules(style){
 		/**
