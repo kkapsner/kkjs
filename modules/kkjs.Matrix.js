@@ -1,6 +1,8 @@
 (function(){
 "use strict";
 
+var kMath = require("kkjs.Math");
+
 function Matrix(height, width/*, initializer*/){
 	var initializer;
 	if (arguments.length > 2){
@@ -323,6 +325,27 @@ Matrix.prototype.conv = function matrixConv(conv/*, outputSize*/){
 	);
 };
 
+Matrix.prototype.det = function matrixDeterminant(){
+	if (this.width !== 2 || this.height !== 2){
+		throw new TypeError("Currently only the determinant of 2x2 matrices supported.");
+	}
+	return this.get(0, 0) * this.get(1, 1) - this.get(0, 1) * this.get(1, 0);
+};
+
+Matrix.prototype.invert = function matrixInvert(){
+	if (this.width !== this.height){
+		throw new TypeError("Pseudoinvertion not supported.");
+	}
+	if (this.width !== 2){
+		throw new TypeError("Currently only invertion of 2x2 matices supported.");
+	}
+	var det = this.det();
+	return Matrix.fromArray([
+		[this.get(1, 1), -1 * this.get(0, 1)],
+		[-1 * this.get(1, 0), this.get(0, 0)]
+	]);
+};
+
 Matrix.prototype.join = function matrixJoin(rowJoin, colJoin){
 	var rows = [];
 	this.forEachRow(function(row){
@@ -375,6 +398,12 @@ Matrix.fromArray = function matrixFromArray(arr){
 		return arr[row][col];
 	});
 };
+
+Matrix.fromVector = function matrixFromVector(vector, horizontal){
+	return new Matrix(!horizontal? vector.getLength(): 1, horizontal? vector.getLength(): 1, function(row, col){
+		return vector.getEntry(row * col);
+	});
+}
 
 Matrix.combine = function matrixCombine(m1, m2, callbackFn/*, thisArg*/){
 	if (typeof callbackFn !== "function"){
