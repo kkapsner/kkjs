@@ -364,7 +364,7 @@ Matrix.prototype.join = function matrixJoin(rowJoin, colJoin){
 };
 
 Matrix.prototype.toString = function matrixToString(){
-	this.join(", ", "\n");
+	return this.join(", ", "\n");
 };
 
 Matrix.prototype.toArray = function matrixToArray(){
