@@ -58,6 +58,24 @@ Matrix.prototype.getSubMatrix = function matrixGetSubMatrix(rowOffset, colOffset
 	return subMatrix;
 };
 
+Matrix.prototype.getRowColRemovedSubMatrix = function getRowColRemovedSubMatrix(removedRow, removedCol){
+	var original = this;
+	var subMatrix = new Matrix(0, 0);
+	subMatrix.height = this.height - 1;
+	subMatrix.width = this.width - 1;
+	
+	subMatrix.get = function get(row, col){
+		if (row >= removedRow){row += 1;}
+		if (col >= removedCol){col += 1;}
+		return original.get(row, col);
+	};
+	subMatrix.set = function set(row, col, value){
+		throw new TypeError("Set operation not allowed on matrix view.");
+	}
+	
+	return subMatrix;
+}
+
 Matrix.prototype.getTransposedMatrix = function matrixGetTransposedMatrix(){
 	var original = this;
 	var trMatrix = new Matrix(0, 0);
@@ -326,10 +344,22 @@ Matrix.prototype.conv = function matrixConv(conv/*, outputSize*/){
 };
 
 Matrix.prototype.det = function matrixDeterminant(){
-	if (this.width !== 2 || this.height !== 2){
-		throw new TypeError("Currently only the determinant of 2x2 matrices supported.");
+	if (this.width !== this.height){
+		throw new TypeError("Only square matrices have a determinant");
 	}
-	return this.get(0, 0) * this.get(1, 1) - this.get(0, 1) * this.get(1, 0);
+	switch (this.width){
+		case 1: return this.get(0, 0);
+		case 2: return this.get(0, 0) * this.get(1, 1) - this.get(0, 1) * this.get(1, 0);
+		default:
+			let sign = 1;
+			let det = 0;
+			for (let row = 0; row < this.height; row += 1){
+				const subMatrix = this.getRowColRemovedSubMatrix(row, 0);
+				det += sign * this.get(row, 0) * subMatrix.det();
+				sign *= -1;
+			}
+			return det;
+	}
 };
 
 Matrix.prototype.invert = function matrixInvert(){
