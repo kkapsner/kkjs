@@ -1,8 +1,6 @@
 (function(){
 "use strict";
 
-var kMath = require("kkjs.Math");
-
 function Matrix(height, width/*, initializer*/){
 	var initializer;
 	if (arguments.length > 2){
